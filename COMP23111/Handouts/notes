@@ -1,0 +1,155 @@
+What is the DBMS?
+	- User POV: Collection of services that enable cost-efficient data management.
+	- CS POV: Convergence of many advanced topics in CS
+
+A DBMS Manages:
+	- Collection of interrelated data.
+	- Suite of software tools to interact with said data.
+	- Software environment which is convenient and efficent.
+
+	Used:
+		Online, In factories, HR Departments, Banking - EVERYWHERE!
+
+Why we don't use files:
+	- Writing to file is inefficient and error prone.
+	- Many files many formats.
+	- Data redundancy/inconsistency.
+	- Difficulty in accessing data.
+	- Integrity enforcement is in program code and is hard to change.
+	- Failures may leave database in inconsistent state.
+	- Concurrent access is required (windows!!)
+	- Safety/Security, hard for authentication and access to only specific areas.
+
+Why we do use DBMS:
+	- Format Independence
+	- Uniform Representation
+	- Different views in different programs.
+	- Concurrent updates
+	- Fault resilience + seamless recovery.
+	- Role-based authentication + authorization.
+
+Abstraction:
+	- Physical Level - Records
+		- Specifies formats/records/files/indexes
+	- Logical Level - Tables
+		- Specifies relationships
+	- View Level - Queries
+		- Specifies views/retrieval queries/abstractions
+
+Data Model:
+	- Data
+	- Data Relationships
+	- Data semantics
+	- Data constraints
+
+	All part of the data model.
+
+	A DBMS supports one or more logical data model, when a database is designed it is designed specifically for one data model.
+
+	Examples:
+	Relational, Object Based, Semistructured (XML), Document Based
+
+What is a schema:
+	
+	A Schema defines the logical structure of the database. It is similar to types and variables in programming languages. It holds information about customers/accounts and the properties that link them together ie relationships.
+
+	A physical schema defines the design of database structures at the physical level - records/files/indicies.
+
+	Logical schema defines the design of database structures at the logical level: tables/columns/logical dependancies.
+
+Database Design Theories
+
+	Normalization Approach
+
+		Specifies formal conditions for a schema design to meet some quality goals.
+		Directly implementable designs.
+		Requires specialist designers, and hard for users @ validation stage.
+
+	Conceptual Approach
+
+		Requires no specialist designers, easy for users @ validation stage.
+		Good design follows natural consequence.
+		Not directly implementable.
+
+	Conceptual Modelling
+
+		Models effectively a ER diagram using Entity and Relationships. Hence the name ER diagram.
+
+Fact of the day:
+
+	Some retard called rows "tuples" what a scrubbins.
+
+An example relation schema
+
+	Beers(name, manf)
+
+	We can declare the attributes
+
+	Beers(name:String, manf:String)
+
+	The primary key should be underlined with a solid line!
+
+	Foreign keys however should be underlines with a dashed line!
+
+The Database Schema:
+
+	The database schema is effectively the set of all relation schemas in the database.
+
+Relational Algebra
+
+	Creates a "Relation", built up of operators, parameters and operands which are often other relation names.
+
+	The result can be used as a query language.
+
+	When a relational algebra is evaluated against a database the expression yields a relation which is the result of the query!
+
+	Relational algebra could contain the union, intersection, difference, cartesian product, selections, projections, renaming.
+
+	Types:
+
+		Selection - Retarded o
+
+			Selects all the values in table that satisfy x
+
+			NEWTABLE := retO x='toselect'(Table)
+
+		Projection - pi
+
+			Makes a table consisting of the columns from the table.
+
+			NEWTABLE := pi column,column(Table)
+
+		Cartesian Product - x
+
+			Makes a table of all of the values mixed together!
+
+			Result : Thing x OtherThing
+
+		Renaming - drunk p
+
+			Renames the headers.
+
+			Table :=p table(newname, newname)(Table)
+
+		Theta Join - crossy boxy (with table links)
+
+			Joins the tables together if the joining fields have odd names!
+
+			Table := TableOne crossyboxy tableone.link=tabletwo.link tabletwo 
+
+		Natural Join - crossy boxy
+
+			Joins the tables together who have the same column name!
+
+			Table := tableone crossyboxy tabletwo
+
+		Extended Projection pi(->)
+
+			Allows calculations/Renames
+
+			Table := pi A+B->C, A , A->A2(Table)
+
+	Building Complex RA Expressions!
+
+		You can draw them out as operator trees, this is a good way to build/decrypt RA expressions. They take normal maths shit to make em
+

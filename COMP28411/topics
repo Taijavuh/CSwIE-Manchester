@@ -1,0 +1,63 @@
+Topics
+
+	2012
+	- Network applications
+	- Protocol Design (Structure/Type)
+	- Incorrectly interpreted data/ways to enforce data integrity/data transforms
+	- Network key security
+	- Service Models (ACK, timeout, retransmissions, SEQ)
+	- Packet Transfers/ACK
+	- Network Congestion and it's effect on TCP
+	- Netmasks/CIDR/IP Allocation/Classes of IP
+	- Difference between IPv4 and IPv6
+	- Bitmasks
+	- IPv4 vs IPv6 + max supported customers
+	- Netmasks
+	- Traffic Routing
+	- Interconnection
+	- Linux Commands for Routing
+	- Understanding NAT
+	- Wireless Networks
+	- Data rates (DR vs Error Rates)
+	- Data rates and reliablility.
+	- Why UDP?
+	- How can we make UDP sensibly reliable?
+
+	2013
+	- Quality of Service
+	- Network Extensibility, Network Scaleability
+	- DNS
+	- Load distribution
+	- Distributed Architectures
+	- Main purpose of IP and TCP/UDP. How they identify destinations.
+	- What configuration computers need to work on a network (IP/Gateway/Subnet)
+	- How can this be done dynamically (DHCP).
+	- Reliability Mechanisms (Go back N and selective ACK)
+	- Security of shared keys and how this works.
+	- Protocols used to map names to ports.
+	- data-link protocols (ATM?)
+	- What happens when a switch dies.
+	- What happens when a new switch is installed?
+	- Why are there no network collisions on wired vs wireless.
+	- How can wireless networks avoid collisions.
+	- How constant bitrates are effected by traffic bursts on: light/congested networks.
+	- Best effort service + network congestion.
+	- QoS and queuing.
+
+	2014
+	- Information needed for internet access
+	- How NAT works.
+	- CIDR class C allocation + netmasks.
+	- Networking Protocol Stack - Service Model
+	- Service Model of UDP TCP
+	- Interpretation of data in distributed systems
+	- DNS operation.
+	- Packet formats - Good/Bad points
+	- Symmetric/Non-Symmetric keys?
+	- Network security elements, utlising public/private keys
+	- Features of TCP (and classification)
+	- Why not TCP for streaming.
+	- Why use PPPoA/E (ATM/Ethernet) instead of ethernet.
+	- What is the format of an ethernet frame?
+	- Why does ethernet use larger CRC?
+	- What are the advantages/disadvantages of Ethernet/ATM Link Layer Protocols?

@@ -1,0 +1,145 @@
+Algorithms
+
+	Key Words/Terms
+
+	- Time Complexity - The number of operations required to compute a result.
+
+	Methods for Calculating Worst Case/Best Case
+	- All cases need to be considered from pseudo code when calculating cost i.e:
+		Initialising Variables = 1 cost
+		Indexing into array = 1 cost
+		Comparison at start of loop = n cost
+		Body of loop = number of operations * (n-1) cost
+		Returning values = 1 cost
+
+	- For recursive algorithms again consider it similar to a loop, where worst case is likely to be (n-1) cost for the base case!
+
+	- We don't do average case because it would be much trickier as a probability distribution on the inputs would be required which would increase the complexity of the job!
+
+	Working with the big boy, "big-Oh"
+
+	- f(n) and g(n) are functions mapping nonneg int's to real numbers. f(n) is O(g(n)) This is the definition of big-Oh so f(n) is the big-Oh of g(n)
+
+	- When working with big-Oh we can consider that a equation like 7n-2 of time complexity can be converted into big-Oh format by simple using O(n), as these values can be moved to c=7 and n0=1 in the definition of 
+	(f(n) = O(g(n)) for f(n) lte c . g(n) when n gte n0 - We therefore need the values n0 and c which can be taken out of the time complexity.)
+
+	- Converting complexity to big-Oh:
+		Polynomicals always take the first value O(n^k)
+		Anything with logn first is O(logn)
+		BUT if it's log^x n is O(n^y)
+		Something static 2^100 is just O(1)
+		A decreasing function like 5/n is O(1/n)
+
+	The Official Text on this
+
+	"
+	1. if d(n) is 0(f(n)) then ad(n) is 0(f(n)), for any constant a>0.
+	2. if d(n) is 0(f(n)) and e(n) is 0(g(n)), then d(n) + e(n) is 0(f(n) + g(n)). 
+	3. if d(n) is 0(f(n)) and e(n) is 0(g(n)), then d(n)e(n) is 0(f(n)g(n)).
+	4. If d(n) is 0(f(n)) and f(n) is 0(g(n)), then d(n) is 0(g(n)).
+	5. if f(n) is a polynomial of degree d (that is, f(n) = ao + a1n + ... + adn^d)
+	then f(n) is 0(n^d).
+	6. n^x is O(a^n) for any fixed x>0 and a>1
+	7. log n^x is 0(logn) for any fixed x>0.
+	8. log^x n is 0(n^Y) for any fixed constants x > O and y > 0.
+	"
+
+	A key to solving big-Oh would appear to be clarity, representing the "General" growth of a algorithm rather than it's exact calculation.
+
+	Relatives of Big-Oh
+
+	- Big-Omega (GTE) - Omega is the best case!
+	- Big-Theta - Theta is where the best and worst case are exactly the same.
+	- Little-Oh (LT) - 
+	- Little-Omega (GT) - 
+
+
+
+
+	Amortized Analysis
+	- Considers a sequence of operations rather than the worst case.
+	- Segmentation allows the cost of perticularly heavy parts of an algorithm split the cost over time and allows a much more fair analysis of the algorithm.
+
+	Sorting
+
+		Key Points
+		- Stable - Equal keys are not reordered.
+
+		Bubble Sort
+			Properties - Stable, InPlace.
+			Space Complexity O(1)
+
+			Worst Case O(n2) - Best Case O(n)
+
+			Works by moving through the list swapping elements next to each other until the list is completely sorted. The worst case will need to traverse the list as many times as there are elements in the list.
+
+		Heap Sort
+			Properties - Not Stable, InPlace
+			Space Complexity O(1)
+
+			Worst/Best/Average Case - O(nlogn)
+
+			Always takes nlogn!
+
+			Works by sorting dividing the elements into a binary tree and comparing elements to their parents to therefore move elements up to the top of the tree. The element at the top of the tree is then sorted!
+
+		Insertion Sort
+			Properties - Stable, InPlace
+			Space Complexity O(1)
+
+			Worst Case - O(n2)
+			Best Case - O(n)
+
+			Works by creating two parts to the list, sorted and unsorted, then inserts elements to the correct part of the list by shifting through the list until the correct part is reached.
+
+		Merge Sort
+			Properties - Stable, (Can be in place)
+			Space Complexity - O(n)
+			
+			Worst/Best/Average - O(nlogn)
+
+			Works by splitting up all of the elements in the list to singular values then using a merge algorithm that works through each list comparing the first items and adding them to a larger list until the original list has been recreated and is in order.
+
+		Quick Sort
+			Properties - Not Stable, Can be in place
+			Space Complexity - O(n)
+
+			Worst Case - O(n^2)
+			Average Case - O(nlogn)
+			Best Case - O(nlogn)
+
+			Quick sort uses a pivot and works through all the elements in the list moving them or leaving them depending on their values vs the pivot. After each pass the pivot can be considered to be in it's correct position. Eventually the list will be ordered by the pivot!
+
+			(It's a nice idea to pick the first pivot by averaging a selection of numbers!)
+
+		Selection Sort
+			Properties - Not Stable, InPlace
+			Space Complexity - O(1)
+
+			Worst Case - O(n^2)
+			Average Case - O(n^2)
+			Best Case - O(n^2)
+
+			Selection sort works through the list comparing all the elements to the lowest element if the element is lower it will remember it and then when reaching the end of the list it will replace the element.
+
+		Bucket Sort
+			Properties - Stable, Not InPlace
+			Space Complexity: O(nk)
+
+			Worst Case - O(n^2)
+			Average Case - O(n+k) * Where k is the number of buckets
+			Best Case - O(n+k)
+
+			Bucket sort effectively prepares a list for more effective sorting, it creates "buckets" and puts the elements into the buckets so they can be sorted. The buckets are then sorted and could effectively be pieced back together.
+
+		Radix Sort
+			Properties - Can be stable, can be inplace
+			Space Complexity: O(n+k)
+
+			Worst/Average/Best Case - O(nk) * k is the max number of digits.
+
+			Radix sort groups together like numbers and then works through the list starting from the least significant numbers and putting them in buckets. By working through the lists like this the most signficant figure is done last, thus ordering the list!
+
+	
+
+

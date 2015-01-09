@@ -1,0 +1,75 @@
+Algorithm Design - Will Occur
+	Describe an algorithm for the task.
+	Give worst-case time complexity
+
+	2012
+	- Removing duplicates from list of integers
+	- Determine if two integers have a sum of k
+	- Make a list from two lists of all elements which do not appear in both lists.
+
+	2013
+	- Determine if two integers have a sum of k
+	- Determine if a list has a element which occurs more than n/2 times
+	- Choosing k items from a list of n distinct integers at random utilising a function called "random(m)" which chooses an integer between 1 and m
+
+	2014
+	- Determine if two integers have a sum of k (3/3)
+	- Compute a list of two lists which shows numbers which intersect both
+	- Splitting an array of characters at a given point
+
+Sorting
+	
+	2012
+	- What two properties must a sorting algorithm have to sort a list of integer keys into acending order.
+	(Keys must be in nondecending numerical order + ...)
+	- Which of the following statements correctly describe QuickSort?
+	(Algorithm Knowledge)
+	- Specify an algorithm to sort a list of items whose keys are binary.
+	(Algorithm Knowledge)
+	- Which column of data represents a stable sorting proceedure which sorts by name then by age.
+
+	2013
+	- What is the worst case time complexity of the following algorithms in terms of the number of items N to be sorted.
+	(Algorithm Knowledge)
+	- Look at the pseudo code and determine.
+	- Describe and explain QuickSort and MergeSort, give time complexity
+	- Given a modification to this sorting algorithm, what will restore the values.
+
+	2014
+	- What sorting algorithm can do X
+	(Algorithm Knowledge)
+	- What is wrong with the pseudo code provided, bigO calculations.
+	- Name properties and details about comparison based sorting.
+
+Complexity / Algorithm Analysis
+	
+	2012
+	- Calculate big oh if functions f(n) and g(n) have complexity x in the following fragments.
+	- Simplify your answers now you know x
+	- What are true about bigO x
+	- Testing methodologies for algorithms (good/bad practice)
+
+	2013
+	- For x state which of the following functions grows faster.
+	- What is true about the following functions + their complexity.
+	- Why do computer scientists give time complexity using bigO	
+
+	2014
+	- What functions have the complexity x
+	- Things about bigO
+	- Calculate bigO
+	- Calculate worst case bigO
+
+
+Key Things to Revise
+	Algorithm Design
+		- Algorithm Knowledge for major algorithms and good ideas for basic/medium complexity algorithms. (A strong idea base)
+
+	Sorting
+		- Algorithm Knowledge for major algorithms (BigO, TimeComplexity)
+		- How to calculate BigO/TimeComplexity
+
+	Complexity / Algorithm Analysis
+		- How to calculate bigO and worst case bigO
+		(Worst case time complexity ect)
+		- Why bigO notation?
