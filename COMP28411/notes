@@ -1,0 +1,152 @@
+Networking Notes
+
+ - Networking, end to end communication where an application is an end point.
+
+ 	TCP
+ 	- Connection Orientated
+ 	- Reliable
+ 	- Flow Control (No flooding)
+ 	- Congestion Control (throttles traffic)
+ 	- NO: timing, minimum throughput, security
+
+
+ 	UDP
+ 	- NO: reliability, connection establishment, flow control, congestion control, timing, guarantee, security.
+
+ 	Key to Protocols:
+ 	- Both source and destination MUST make the same interpretation of data.
+ 	- Efficient encoding
+ 	- Utilises compression
+
+ 	Canonical (Standard) Network Representation
+ 	- Source translates to, destination translates from.
+ 	- Process involves two translations, the structure of these may differ depending on architecture.
+
+ 	Reciever Makes Right
+ 	- Transmit as is! Avoids unnessecary conversion.
+
+ 	Compression is a form of encoding!
+
+ 	Architectures: p2p/client-server
+
+ 	Application Extensibility
+ 	- A potential set of extensibility is the DO DON'T WILL WON'T structure where an application can be told to "DO" and the standard will allow the server to reply with "WILL" or "WON'T" depending on it's understanding, this allow the client to react appropriately, ie reject unknown requests.
+ 	- Good protocol design will allow for applications to work with older versions and the newer version will be informed if there is a compatibility issue!
+
+ 	DNS
+ 	- The . is the top level "root" domain and the system cascades up and down, all names are unique within a "zone" and the top level "zone" or root issues the next level down. ect.
+ 	- The root servers are named a-m and are built into the DNS implementation code
+
+ 	IP Service Model
+ 	- Created via service models of underlying networks.
+ 	- Connectionless
+ 	- Unreliable - NO error recovery, NO guarenteed delivery.
+
+ 	Addresses
+ 	- ICANN delegates Address Blocks to Regional Internet Registries who delegates address blocks to ISP's/Companies who then distribute out to end users.
+
+ 	Routing
+ 	- ISP's will effectively say send me anything with addresses beginning with x.x.x.x/x this will enable routing within the internal ISP to ensure data reaches the correct place.
+
+ 	NAT
+ 	- NAT allows us to conserve the address and maybe to some extent security, it allows address that are unique only to the local/ corporate network. And then a NAT box is used to produce a table which relates external traffic incoming to the system into a specific internal address and routes all related traffic directly to the machine.
+ 	
+ 	DHCP
+ 	- DHCP allows computers on a network to automatically be assigned an IP address, in order to do this there is a set path to follow of interactions between the DHCP client and the DHCP server.
+ 	- DHCP Discover -> from 0.0.0.0:68 to 255.255.255.255:67
+ 	- DHCP Offer -> from DHCP Server ID:67 to 255.255.255.255:68
+ 	- DHCP Request -> from 0.0.0.0:68 to 255.255.255.255:67
+ 	- DHCP ACK -> from DHCP Server ID:67 to 255.255.255.255:68
+
+ 	This is a four step process which allows the new client to obtain a new IP address from an issuing DHCP client. It is possible that the client recieves more than one response this is why transaction ID are used and this allows the DHCP servers to differentiate between the items.
+
+ 	ARP
+ 	- ARP is the address resolution protocol and allows machines on the network to ARP on the broadcast channel 255.255.255.255 asking for a specific machine to identify themselves.
+
+ 	IPv6
+ 	- Made to deal with the growth of the internet, more scaleable addresses BUT means we have to change all of the existing systems which are configured to work with IPv4 a change which has been going on for ages.
+ 	- Additionally has resource allocation support, automatically configured.
+ 	- Security support.
+ 	- Real time services support
+ 	- Better routing functionality/mobile host support
+ 	- Address space is partitioned, decoded by most significant bits.
+ 	- Many addresses already reserved for future problems.
+ 	- Multicast addresses -> designed to represent a little like the domain system. world:country:organisation:building:server:potato
+
+ 	API
+ 	- Like a connection socket: defines the structure but not what passes through.
+
+ 	Protocol:
+ 	- Valid sequences of API calls, allows a interaction between two ends to achieve some form of service.
+
+ 	The Networking Stack:
+
+ 	Application
+ 	Transport
+ 	Network
+ 	Link
+ 	Physical
+
+ 	This works by cascading down the stack and each layer adds or removes it's own header from the stack, allowing the next layer to unwrap it's parts!
+
+ 	A unicast is a transmission to a single node.
+
+ 	A broadcast is a transmission to all nodes.
+
+ 	A multicast is a transmission to many nodes but not all nodes.
+
+ 	Check codes can be used to ensure that data recieved is complete.
+
+ 	Network Security
+
+ 	Symmetric Key:
+ 	- Same key to encrypt/decrypt.
+ 	- Must stored securely.
+ 	- Secure channel used to transfer key.
+
+ 	Public Key Encryption (aSymmetric Encryption):
+ 	- Private key must be kept securely.
+ 	- Private key does NOT need to be transferred.
+ 	- The private key effectively adds enough information to have only one solution to decrypt.
+ 	- Generally slower than symmetric key encryption.
+ 	- Two keys which can decrypt each other.
+ 	- Public key with a counterpart private key.
+ 	- Encrypting with both allows only the intended recipient to unlock in effect.
+
+ 	As symmetric keys are often considerably quicker, public/private keys are used to pass a symmetric key and the encryption follows onwards from here.
+
+ 	Playback is a possible form of attack, it comes about when a command does not have a unique identifier and thus can be repeated!
+
+ 	We can implement network security at a variety of levels:
+ 	Application - PGP, SSH - Each application must implement it's own security.
+ 	Transport - TLS/SSL - Provides interapplication security, one method of implementation for all applications.
+ 	Network - IPSEC - Can be used to build secure networks.
+
+ 	TLS  - Provides security to TCP base applications, shttp... Server/Client Authentication + data encryption.
+
+ 	The real keypoint is how important encryption is, and authentication is best done using public-keys. Afterwards we can share keys and carry on.
+
+ 	Performance and Switching:
+
+ 	Data is transferred either by circuit switching or packet-switching. Circuit switching is a fixed path with dedicated resources. Packet switching sends data in chunks when it can.
+
+ 	Traditional Circuit Switching:
+ 	- No sharing
+ 	- All link bandwidth
+ 	- All switch capacity
+ 	- Acts as a circuit
+ 	- Guaranteed performance
+ 	- EXPENSIVE and rarely appropriate!
+
+ 	Networking Circuit Switching:
+ 	- Resources shared by division, fixed sizes when network is established.
+ 	- Bits are reserved for end-to-end transfers.
+ 	- Parts can be idle
+ 	- Division can be carried out by FDM (frequency division multiplexing) alternatively by TDM (time division multiplexing)
+ 	- FDM - Everyone gets a slice of the pie, but it's at low volume.
+ 	- TDM - Division is carried out by time, thus it is delivered in bursts.
+
+ 	Packet Switching:
+ 	- The end-to-end data stream is divided into packets. These packets then share the network resources as they need to, taking use of full link bandwidth.
+
+

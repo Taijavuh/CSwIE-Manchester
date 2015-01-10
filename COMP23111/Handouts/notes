@@ -151,5 +151,9 @@ Relational Algebra
 
 	Building Complex RA Expressions!
 
-		You can draw them out as operator trees, this is a good way to build/decrypt RA expressions. They take normal maths shit to make em
+		You can draw them out as operator trees, this is a good way to build/decrypt RA expressions. They take normal maths shit to make em.
+
+		What the fuck is a bag?
+
+			It's like a set but can contain duplicates.
 

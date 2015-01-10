@@ -1,0 +1,306 @@
+Operating Systems
+
+	The Basics
+
+		Process - A program that is currently in execution. It's not a program on the disk.
+
+		Address Space - Memory locations which are usable by the process.
+
+		Thread - The sequence of instructions obeyed.
+
+		Process = Thread + Address Space
+
+		Multi-threading - Many threads of execution which are within the same process.
+
+		Several programs can be in memory at the same time.
+
+		The OS may pause a program swap it out of memory and restore it later, this is an effective application of relocation.
+
+		An OS can provide a "Virtual Machine" which is a convenient abstraction allows the program to think they have utilisation of the hardware all by themselves.
+
+		OS has two execution modes:
+		- User Mode - Normal programs and applications run in user mode.
+		- System/Privileged/Supervisor Mode - Operating system components run in system mode.
+
+		The following are protected in user mode:
+		- Memory Operations
+		- CPU Allocation
+		- I/O Operations
+		- File Operations
+		- Network Operations
+
+		Applications can utilise protected resource by performing a System Call this is like a method and operates much like this:
+
+		- Accessor for System Mode
+		- Calls OS routine that is required.
+		- Parameters are checked
+		- Action performed
+		- Returns to User Mode
+
+		Most programmming languages do no allow system calls to be made directly, however the standard libraries will often feature prewritten methods which allow the system calls to be carried out.
+
+		An operating system is effectively partitioned in to loads of little pieces which effect the operating system in their own way. 
+		IE: File Manager - Looks after the file on the hard drive.
+		Memory Manager - Allocates and deallocates memory space and keeps track of what memory is currently in use.
+		Process Manager - creation, deletion, CPU allocation
+		Network Manager - Handles network traffic ect
+		User Interface - GUI, shell
+
+		The running of an application from the command line would effectively be something like this:
+
+		- Read command
+		- Find program file
+		- Allocate
+		- Read the fle into memory
+		- Find appropriate libraries required for execution
+		- Execute
+		- Finish "cleanly"
+
+		Monolithic System - Where all components are not architecturally separate and thus the system is effectively just one massive mess.
+
+		Layered approach keeps a structure to the operating system, at the bottom is the hardware and near the top is the UI. The layers work by accessing the functions/operations and services of lower layers. The "kernel" sits right at the bttom and has probably the most fundamental functions for resource management.
+
+		Large operating systems tend to have issues (complexity/debugging) thus are very large.
+
+		Microkernels keep very minimal functionality in the OS, hence the name.
+
+	The Process Manager
+
+		The Process Manager supports the use of "Processes and Multi-Processing" (Programs which are executing - Many programs) as well as "Threads and Multi-Threading" (Sequences of instructions to be executed - Many sequences)
+
+		Time-Sharing: All processes share a CPU and PC the process believes it is executing on it's own virtual CPU whilst the real CPU switches between processes thus to process many programs at once.
+
+		The action of process switching keeps the CPU busy.
+
+		The operating system is effectively a collection of processes.
+
+		Thread = ABSTRACTION of instruction-sequence obeyed by CPU
+
+		How the Process Manager works:
+
+			- The system is started
+			- A running process wishes to start a new process
+			- A process-creation system call is executed
+			- The parent process creates a new child process
+
+		In Unix parent processes are associated throughout.
+
+		A process can be terminated in a multitude of ways:
+
+			- Normal Exit (As Expected)
+			- Error Exit (Program Exited but something went wrong during execution)
+			- Fatal Error (Error caused program to exit)
+			- Killed (Unix kill 234)
+			- It is also possible for the parent process to terminate.
+
+		Process State Machine
+
+			Newly created processes start as "Ready"
+			Ready -> Running
+			IF (waiting for I/O or Event) -> Blocked
+			ELSE -> Ready (we can assume in this instance the operation was interrupted/time-slice expired)
+			Blocked (I/O or Event Happens) -> Ready
+			IF (terminated/finished) -> Exit
+
+			3 KEY States - Ready, Running, Blocked
+
+			The PCB (Process Control Block/Process Descriptor)
+
+			This is a table maintained by the operating system with information on all the processes.
+
+			- Process ID
+			- Parent ID
+			- State (Saved Registers)
+			- Memory Management
+			- File/I/O Management
+			- CPU Scheduling
+			- Accounting
+			....	
+
+		Threading
+
+			Pro's
+			- Threads are faster to create than a new process.
+			- Are great on systems with multiple CPU's
+			- Allows the process to do something even if part of it is blocked.
+
+			Con's
+			- They all share one address space.
+			- They all need PC, Registers, Stack
+			- They all share code/files ect
+			- Harder to code
+
+			Threads can exist on two levels: User-Level and Native/Kernel Level
+
+			The difference between the two is:
+
+			- User Level - Threads exist within the process and thus the creation is swift. However the threads only exist on one CPU!
+
+			- Kernel Level - These threads exist so that the OS creates and schedules the threads, this method is good for multiple CPU's and to prevent the entire process from blocking however the creating is slower as a system call must be made.
+
+		Scheduling
+
+			The scheduler is a component of the process manager and it makes the decision as to what "ready" process should be run next.
+
+			There is one scheduler per CPU (core)
+
+			The scheduling is carried out by a specific scheduling algorithm, of which there can be a few of.
+
+			This applies at both process/kernel level threads
+
+			CPU Burst: Process is Executing on CPU
+			I/O Burst: Process is Blocked waiting for I/O
+
+			CPU Bound: Process has Long CPU Bursts
+			I/O Bound: Process has Short CPU Bursts
+
+			A long CPU burst will keep other processes waiting.
+
+			Non-Preemptive Scheduling: Process runs until terminated or blocked
+
+			Preemptive Scheduling: Process can run for a fixed period of maximum time. Once this time is reached it is interrupted and set to be ready so another process can be run. This requires a timer interrupt which can be called a time-slice or time quantum.
+
+			Preemptive Scheduling Methods:
+
+			First Come First Served (FCFS)
+
+				Simple algorithm, whatever process is in the ready state first runs first until it is blocked or finished.
+
+				Requires a single queue.
+
+				When the CPU is free take the item from the head of the queue.
+
+			Round Robin (RR)
+
+				Simple algorithm, often used in time-sharing systems, improves averages for waiting/turn around.
+
+				Works by running the queue one unit of time at a time thus each process gets an equal allocation of processing time.
+
+				Requires a single queue.
+
+			Shortest Remaing Time First (SRTF)
+
+				This algorithm is not time-sliced but is preemptive.
+
+				For each newly ready process it will check if it's CPU burst is less than the time to complete the current process's CPU burst. If this is the case, the process active with be terminated and the new process will be run.
+
+				An issue with this algorithm is STARVATION, it is quite possible that using this algorithm a process may be overlooked many times if it has a long period of execution.
+
+			Non-Preemptive Scheduling Methods:
+
+			Shortest Job First
+
+				As you would expect this method simply chooses the shortest job to run first. IE the process with the shortest CPU burst in the queue.
+
+				This minimises average turnaround/waiting
+
+			Priority Scheduling
+
+				Using process priority will allow us to run first/last or allow longer/shorter time slices and help ease the issues of starvation.
+
+				A separate policy and mechanism is likely to allow priorities to work better in a modern system.
+
+				Static Priorities - preDetermined for each process. (externally defined)
+
+				Dynamic Priorities - assigned by the system to achieve a set goal. (internally defined)
+
+				A system can use a combination of both.
+
+			Having Multiple Queues
+
+				Potentially having multiple queues can help the priority scheduling work:
+
+				Higher priority queues which must always run first.
+				Higher priority queues get more processor time than lower priority.
+				Processes may move between queues dynamically.
+
+			Multilevel Feedback
+
+				Another way to order the queues using priorities is to assess how they utilise the time that they are allocated, by starting all the processes in the same queue and those that do not use their quota get moved up whilst the opposite gets moved down. AS they move down the queue they are assigned a greater amount of execution time (quanta)
+
+				This is know as ordering by bound (higher priority for I/O bound, lower priority for CPU bound)
+
+			Another Way
+
+				A even more complex way of handling process scheduling is to run queues with a different algorithm. IE Q1=FIFO Q2=RR Q3=priority
+
+				In Q3 each process is given a quantum which gets reduced by 1 per clock tick when the quantum reaches 0 it is removed from the CPU.
+
+				And then basically the process with the highest quantum gets priority.
+
+			Disadvantages:
+
+				It's not so great at scaling, boosting I/O bound processes is less desirable.
+
+			There are plenty of other process/thread scheduling algorithms, real time systems may have their own algorithms which meet the priority of the task. IE: earliest deadline first.
+
+		Process/Thread Syncronisation
+
+			All this information applies to both threads and processes!
+
+			Data Inconsistency - Disagreement about data values
+
+			Synchronisation - Using policies and mechanisms to ensure the correct operation of cooperating processes.
+
+			Critical Section/Region - Section of code which shared data is utilised.
+
+			Mutual Exclusion (mutex) - At most on process can be in the critical section at one time. Thus ensuring data inconsistency cannot occur
+
+			Semaphores
+
+			P(S) - WAIT
+
+			V(S) - SIGNAL
+
+			S is intialised as the number of processes allowed in the critical section at once, this is normally one.
+
+			P() Adds a process to the queue and frees the CPU up.
+
+			V() Takes a process from the queue and makes it ready to execute.
+
+			Deadlock
+
+			A collection of waiting processes, each process is waiting for something which can only be provided by another of the processes which are waiting!
+
+			An example of Deadlock could be the dining philosophers!
+
+			Message Passing
+
+			If data is to be shared, semaphores are a good way to control access.
+
+			If no shared data we can send copies to other processes!
+
+
+	Java Threads
+
+	extends Thread or implements Runnable
+
+	use class.start() to start which initialises the run method.
+
+	Can throw interruptedexceptions!
+
+	The synchronized declaration can be made which will aquire a lock before the method can start.
+
+	A synchronized block can also be added ie
+
+	synchonized {
+
+	} // sync
+
+	A lock can be relinquished temporarily using 
+
+	void wait()
+
+	And threads can be notified the lock has been relinqiushed by using
+
+	void notify()
+	OR
+	void notifyAll()
+
+	Any object can be explicitly notified.
+
+	
+
+
+
+

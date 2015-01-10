@@ -1,0 +1,66 @@
+Key Topics
+
+	2012
+		- ER Diagrams and Completing them
+		- Relational Schema
+		- Functional Dependencies
+		- NORMAL FORMS
+		- File Organisations
+		- Indexes (Single Level/Multi Level)
+		- Transactions
+
+	2013
+		- Transaction Manager
+		- Scaling Databases
+		- Conceptual Modelling
+		- Relational Schema
+		- Transations
+		- PL/SQL vs SQL Pro/Con
+		- Indexes (Single Level/Multi Level)
+		- What is a log file?
+		- ER Diagrams
+		- SQL Query for Math
+		- Logical Schema - Assignments
+		- Relatonal Schema Specifically the use of (#)
+		- Mapping ER Diagrams to Relational Schema
+		- Functional Dependancies
+		- Hashing vs Indexing
+
+	2014
+		- ER Diagrams
+		- Query Processing Components ie: Query -> RA, RA -> Execution Plan
+		- Scaling Databases
+		- Memory + Heaps
+		- Triggers
+		- Indexes
+		- Recovery Mechanism
+		- SQL Query
+		- SQL Query -> RA
+		- E-ER Diagram
+		- Database Security
+		- Transactions
+
+Key Questions
+	
+	- What are all the components of ER Diagrams?
+	- How to convert to relational schema?
+	- What are functional dependencies?
+	- What are single/multi level indexes?
+	- What are transactions, and how do they operate?
+	- How does a database scale?
+	- What is the conceptual model of a database?
+	- What are the major differences between PL/SQL and SQL?
+	- How does an SQL Query perform math (Averaging)?
+	- What is logical schema?
+	- When to hash and when to index?
+	- What is so good about memory and heaps (binary tree)?
+	- What are the functional implications of triggers?
+	- What do DBMS has as a recovery mechansim?
+	- What kind of database security issues are there?
+
+Minor Questions
+
+	- What is a log file?
+	- What are normal forms?
+	- How are files organised?
+	- What is the use of # in relational schema, if anything?
