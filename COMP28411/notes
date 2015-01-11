@@ -126,6 +126,8 @@ Networking Notes
 
  	The real keypoint is how important encryption is, and authentication is best done using public-keys. Afterwards we can share keys and carry on.
 
+ 	Certification Authorities - These guys bind a public key to a specific entity, the key is registered with the CA along with proof of identity, the certificate is then digitally signed by the CA saying that THIS is the public key for x.
+
  	Performance and Switching:
 
  	Data is transferred either by circuit switching or packet-switching. Circuit switching is a fixed path with dedicated resources. Packet switching sends data in chunks when it can.
@@ -148,5 +150,181 @@ Networking Notes
 
  	Packet Switching:
  	- The end-to-end data stream is divided into packets. These packets then share the network resources as they need to, taking use of full link bandwidth.
+
+ 	Congestion is where packets arrive faster than they can be sent out, therefore a buffer is implemented where items will arrive and sit in the buffer until they can be processed. If the buffer becomes full then we will begin to lose packets!
+
+ 	The difference: 
+
+ 	Circuit Switching gives that dedicated line, packet switching allows more users to utilise the network! (Assuming that 100% of the link is being used 100% of the time - circuit would be much better here)
+
+ 	Data does not arrive instantly, and not all of it arrives. There is a limit to the amount of data which can be sent per second.
+
+ 	Propagate (transfer speed)
+ 	Transmission (time taken @ point of sending)
+
+ 	End to End Delays can be caused by:
+ 	- Delays at a node on the network
+ 	- Delays processing the information in applications
+ 	- Waiting for access to a shared medium
+
+ 	Round Trip Time (RTT) can be used to determine the time it takes to reach the source of the information and then return again.
+
+ 	If there are no queuing delays it's almost certain there will be some delay for some reason, no data is instant.
+
+ 	For one byte on a link there will be a propagation delay (delay due to transfer)
+ 	For a 25mb file there will be a delay due to the transfer link (most likely)
+
+ 	There can be a number of limits to speed:
+ 	- Remote Computer (link)
+ 	- Local Computer (link)
+ 	- Network connecting the two
+
+ 	Units are in BITS per second.
+ 	1Kbps = 1ms per bit
+ 	1Mbps = 1microsecond per bit
+ 	1Gbps = 1ns per bit
+
+ 	Transport Services/Protocols
+
+ 	Transport Services and Protocols provide a way to move data between elements of applications (process to process)
+
+ 	A transport service helps by isolating higher layer of the stack from the designs and imperfections of networking and simply allows it to work.
+
+ 	It implements ways for connection-orientated/connectionless communication, and provides parameters for Quality of Service (QoS)
+
+ 	When a connection orientated protocol is used the transport service must address:
+ 	- Error Control
+ 	- Reliability
+ 	- Sequencing
+ 	- Flow Control
+
+	Packets are sent to ports, the ports should have an attached application. If there isn't a port then an error message will be generated.
+
+	Implementation of ports is dependent on the operating system, they often act as a buffer and the application will fetch the information from the buffer.
+
+	UDP.. why? 	
+
+	- No connection establishment minimises delay
+	- Simple
+	- Small packet size due to small header
+	- No congestion control: can go ham.
+
+	Great for multimedia also used in DNS/SNMP/NFS + operating system applications.
+	- Applications would need to implement error detection/recovery
+	- Application specific error recovery.
+	- Adds a simple infrastructure to the underlying service model.
+
+	A way to detect errors in UDP is via a checksum:
+	Sender:
+		- Sequence of 16 bit integers, 1's complement addition of contents
+		- Checksum added to datagram
+	Receiver:
+		- Computes checksum of segment
+		- Compares recieved+computed
+			- Different - error
+			- Not Different - could still be errors!
+
+	Reliable data transfer requires a reliable transfer protocol over an unreliable channel. Or simply the data to travel over a reliable channel. The complexity of a solution for data over an unreliable channel depends on the characteristics of the unreliable channel.
+
+	Recovering
+
+	There are two methods utilised for recovering, acknowledgment and timeouts. ACK is a control packet, it effectively sends a message confirming that the data has been recieved by the reciever. If an ACK does not occur within a timeout period then the sender will retransmit the data.
+
+	There are a number of mechanisms for this which is a automated repeat request ARQ:
+
+	Stop and wait - The packet must be ACK'ed before the next packet is transmitted. Uses ONE bit sequence numbers 0 or 1. Utilisation of a network link is REALLY poor for stop and wait.
+
+	Sliding Window - Sliding windows allow multiple packets to be ACK'ed, as soon as they are recieved the window moves on. If an ACK is not recieved for a packet in the window it will be resent. Utilisation nears 100% in the best case
+
+	There are a couple of approaches to sliding windows and ACK's a cumulative ACK can be used which acknowledges all packets up to N thus if packet 9 is missing and 10 packets were sent ACK 8 would force packet 9 AND 10 to be resent
+
+	Selective repeat acknowledges all packets and thus only packets which are unsuccessfully recieved are resent. This could be achieved by using NACK which is negative acknowledgement.
+
+	Sliding windows can use a finite sequence of number to reduce the sequence number information in the packet. HOWEVER the sequence of number should be (max seq no + 1)/2 to prevent confusion in ordering.
+
+	Multimedia
+
+	Streaming Live Multimedia - A live stream effectively forms a buffer of information, the player then reads the information from the live pointer whilst the live stream writes to the end of the buffer!
+
+	Transferring Media 
+
+	1:1 - TCP will be loss/error free but will often be delayed due to congestion control and the packets will be bigger.
+
+	1:Many - The media is stored at the source and transmitted, streaming is when the playback begins before all the data has arrived.
+
+	Buffering allows a variable network delay to appear evened out and maintaining a constant bitrate playout to the user, to do this the client creates a small delay.
+
+	Data will arrive to the buffer at a variable rate and leave at a constant rate.
+
+	IF: 
+	- Buffer is full - Can leave cannot arrive there is overflow and data is lost.
+	- Buffer is empty - Can arrive but cannot leave this is underflow and there will be a gap/wait.
+
+	Ideally the buffer should never be full or empty when playing media!
+
+	Two Way Communication
+
+	Internet Phone - Packets for data are only generated during talk spurts, encapsulated into a UDP packet and sent.
+
+	Network Loss - Packets (IP Datagram) lost due to network congestion (router buffer overflow)
+
+	Delay Loss - Datagrams arrive too late for playout, a typical maximum tolerable delay is 400ms
+
+	Loss Tolerance - Depends on encoding used, in general packet loss can be between 1% - 10% as a tolerable level and the loss is potentially concealed by speeding up/down or playing something to fill the gap.
+
+	SIP - Session Initiation Protocol
+	IAX - Inter-Asterisk-eXchange (IAX2)
+	RTP - Real Time Protocol
+
+	Applied on the application layer. Not a service provider (not for carrying traffic)
+
+	SIP follows a client server model effectively signals two end points and creates a link between the two which they use to communicate. SIP is very verbose (descriptive)
+
+	SIP Codes:
+	1x - Info
+	2x - Success
+	3x - Redirection
+	4x - Failure
+	5x - Server Error
+	6x - Global Failure
+
+	IAX
+	- No text parsing
+	- State for signalling and media
+	- Ambigious termination
+	- All on one port
+	- No RTP
+
+	Quality of Service and RTP
+
+	RTP has no mechanism to ensure timely data delivery or any other form of QoS guarantees.
+
+	RTP encapsulation is only seen at the end systems and is not seen by intermediate routers. Thus routers providing a best-effort service make no special effort to ensure that RTP packets are prioritied.
+
+	However modern routers can carry out deep analysis of passing packets to adapt queuing etc.
+
+	RTP consists of:
+	Payload Type 7 bits: What is the encoding? MPEG - 26, H.261 - 31
+
+	Sequence Number 16 bits: Used to detect packet loss and restore sequence. May cycle quickly!
+
+	Timestamp 32 bits: 
+
+	SSRC field 32 bits: Identifies source of stream!
+
+	MISC
+
+	RTCP - RTP Control Protocol - Works with RTP each participant periodically transmits a control packet to everyone else, this contains a report with information like packets sent packets lost and jitter ect. The sender may then make modifications to the transmissions based on the feedback. Typically on the same multicast address.
+
+	RTP and RTCP are often on different port numbers, RTCP traffic is reduced when participants increases.
+
+	Sender RTCP Packets contain: Source of stream, current time, number of packets sent, number of bytes send. They also contain description such as the email address, senders name and address (SSRC) of stream.
+
+	RTCP can synchronize streams, if audio and video are generated separately then the RTP packets can use timestamps which are tied to the video/audio sampling clocks! Recievers use association to syncronize playout of audio/video.
+
+	RTCP attempts to limit it's traffic down to 5% of session bandwidth. Then 75% is given to recievers and 25% to senders. Participants determine transmission by the average packet size and then dividing across the allocated rate.
+
+
+
 
 

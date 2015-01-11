@@ -1,0 +1,76 @@
+Topics
+
+	2012
+	- Stump Instructions + Implementing New Instructions
+	- Running programs on the Stump
+	- Pipelining the Stump
+	- Hazards in pipeline designs
+	- Blocks in the Stump
+	- Explain how the Stump performs operations
+	- Explaining Verilog
+	- CMOS
+	- CMOS NOR Gate
+	- Describing operation of NOR gate.
+	- PMOS, NMOS
+	- Regression Testing in VLSI
+	- Why test manufactured chips
+	- Verification test patterns
+	- Scan paths
+
+	2013
+	- Verilog continuous, blocking, non blocking assignments.
+	- How to identify blocking/non-blocking.
+	- How are they scheduled in simulator
+	- What is the difference between a task + a function in verilog
+	- Writing a verilog function for branching.
+	- RISC processor (3 stages of execution), when is the PC updated
+	- STUMP has a different control to RISC, what is it?
+	- What is special about R0 in STUMP.
+	- Difference between Type 1 vs Type 2 instructions in STUMP
+	- Path usage on STUMP!
+	- What is the ISA and how is it different to microarchitecture.
+	- Advantages/Disadvantages of fixed length ISA vs variable length ISA
+	- Sequence of operations for fetch+execution on (x86) system
+	- ARM vs IA-32 (x86)
+	- Simulation, why?
+	- Purpose for different forms of simulation.
+	- Obtaining performance data.
+	- ASIC designs on CMOS chips.
+	- Improving performance of synthesised chips.
+	- Clock frequency on synthesised chips.
+
+	2014
+	- What makes Stump Load/Store
+	- Addressing Modes
+	- Explain how the Stump operates
+	- Signal Usage Charts for Phases
+	- Difference between blocking + non-blocking
+	- How the simulator will handle multiple always blocks
+	- Common devices in verilog
+	- Stump FSM in verilog.
+	- VLSI how many transistors on chip from 21nm to 14nm
+	- Characteristics of standard cell
+	- Stages of VSLI design - behavioural, pre-layout, post-layout
+	- Timing information
+	- Moores Law
+	- Pipelining
+	- Why pipelining will not be faster.
+	- Critical Path
+	- Solutions to issues with unpipelined chips.
+
+Key Areas
+	- Addressing Modes in Stump
+	- Understanding how the Stump operates
+	- Common devices in verilog
+	- Stump FSM in verilog
+	- Stages of VSLI design
+	- Moore Law
+	- ARM vs IA-32 (x86)
+	- Simulation of VSLI design + Verilog
+	- Difference between Type1/2 instructions for stump
+	- RTL path usage for Stump.
+	- Performance of Simulations
+	- Clock Frequency/Improving Performance on synthesised chips
+	- Understanding RISC processors.
+	- Task vs Function in verilog
+	- Difference between blocking + non-blocking in verilog
