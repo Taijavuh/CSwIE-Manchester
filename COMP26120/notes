@@ -4,6 +4,8 @@ Algorithms
 
 	- Time Complexity - The number of operations required to compute a result.
 
+	- Complexity - Prediction of the resources that the algorithm requires.
+
 	Methods for Calculating Worst Case/Best Case
 	- All cases need to be considered from pseudo code when calculating cost i.e:
 		Initialising Variables = 1 cost
@@ -53,12 +55,21 @@ Algorithms
 	- Little-Oh (LT) - 
 	- Little-Omega (GT) - 
 
-
+	Randomised Algorithms - 
 
 
 	Amortized Analysis
 	- Considers a sequence of operations rather than the worst case.
 	- Segmentation allows the cost of perticularly heavy parts of an algorithm split the cost over time and allows a much more fair analysis of the algorithm.
+	- IS NOT Average-Case analysis!
+
+	Bankers Method:
+
+	Gives operations a value, higher level operations have a cost attached to them which covers the cost of all the lower level operations that it may utilise.
+
+	Physicists Method:
+
+	Measures time an operation uses and measures potential time. Effectively calculates the potential of each operation to give a worst case analysis.
 
 	Sorting
 
