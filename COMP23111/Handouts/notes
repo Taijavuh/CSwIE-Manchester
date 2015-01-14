@@ -157,3 +157,523 @@ Relational Algebra
 
 			It's like a set but can contain duplicates.
 
+Entity Relationship Diagrams/Modelling:
+
+	A mini world is effectively the contents of the scope for the design activity. Constist of the specific activity and processes in an organisation that the envisaged database application is meant to support.
+
+	IE: If thie organisation is a university. The database may be designed to monitor programmes, enrolment and course delivery. Thus the activites in the miniworld may include:
+
+		Textbooks, Coursework, Unit Selection, Lectures
+
+	The goal of a database designer is to understand and document whilst producing related functional requirements.
+
+	A conceptual model (conceptual schema) then needs to be effectively mapped to a logical model. Also called (implementation) and (logical schema), logical schema is one that is directly supported by the DBMS that we intend to implement the database on.
+
+	AN ER MODEL IS PURELY CONCEPTUAL!
+
+	Entity - Has independent existence (a car)
+
+		An entity type is a collection to entitys which have the same attribute structure. Bit like a class in OOP.
+
+		An entity set is a collection of specific enitites which belong to the miniworld a a given point in time.
+
+	Attribute - A property value that contributes to characterize an entity (the colour of the car)
+
+		An Attribute can be:
+
+		- Composite vs Simple (given-name, family-name vs height)
+		- Single-valued vs multivalued (birth-date vs degrees-obtained)
+		- Stored vs derived (birth-date vs current-age)
+		- NULL-valued (N/A, missing, unknown)
+		- Complex-valued (multivalued)
+
+	The ER notion of key is not the same as primary/foreign key, they should be unique but the designer does not have to make primary or not.
+
+	A value set is a set of values that could potentially be assigned to a given attribute.
+
+	Relationship - Implicitly captured in verbal specifications when an attribute of an entity type is the same as or refers to and attribute of another entity type.
+
+	In the ER model relationships are expressed explicitly rather than as attributes.
+
+	Relationship Constraints
+
+		Participation Constraint - Specifies if the existant of the entity depends on it's being related to another entity. AKA - Minimum cadinality constraint (Might require all entities to participate in a relationship instance - This is total participation or existence dependency)
+
+	Specialization - The process of identifying that some subclasses of preexisting entity types are of specific interest. These are called the subclasses/sub-entity type or subtypes.
+
+	Generalization - The process of idenfitying that some superclasses of preexisting entity types are of specific interest. It's basically the reverse of specialization!
+
+	Attribute-defined - Effectively derieved from existing attributes!
+
+	Predicate-defined - Derieved from attribute and an external source, ie if a country is stored, we need to establish if it is in europe.
+
+	User-defined - Herp derp i am a silly.
+
+		Disjoint Constraint - Specifies that a the subclasses must be disjoint. No entity in the subclass may belong to any other subclass. This is marked by the D.
+
+		The opposite to the disjoint constrain is effectively the overlapping contraint where it is a O in the circle and this means "overlapping" so the subclasses are permitted to overlap.
+
+		Completeness Constraint - Specifies that every entity in the superclass must belong to at least one of the subclasses in which case it is said to be total (or covering) marked with a double line from the superclass to the circle in the eer diagrams or...
+
+		Some entity in the superclass may belong to none of the subclasses in which case it is said to be partial, marked with a single line in EER diagrams.
+
+		Disjoint and Completeness are independent constraints.
+
+		A tree can be formed when a EER diagram is made, however if a subclass ahs more than one superclass it will form a lattice.
+
+Mapping Conceptual to Logical
+
+	Step 1 - For each entity create a relation which includes all the simple attributes of the entity. Including all the leaf-level components of a composite attribute. Select a PK from the list. Make all other keys, secondary keys, ie unique.
+
+	Step 2 - For all weak entities create a relation to allow them to link up with the FK's they need to formulate a primary key.
+
+	Step 3 - For a binary relationship, identify the relations S and T that correspond to the entity types. IE map the fucking 1:1 shit using FKA (FUCKING ALVA**)
+		- FKA - Choose relations, include attributes.
+		- MRA - Merge two entity types into single relation, if both total.
+		- RRA - Create relation cross-referencing S+T, include all keys.
+
+	Step 4 - For binary 1:N relationship, identify, include FK.
+
+	Step 5 - For binary M:N (relationship with 2 foreign keys) map it bitch.
+
+	Step 6 - For multivalued attribute, create a new relationship and include components.
+
+	Step 7 - For any n-ary relationship (relationship with n foreign keys., just do it.
+
+	Step 8 - Think about how to map my D
+
+	Step 9 - Mapping union's use dat relationship swags.
+
+	Step 10 - ???
+
+	Step 11 - Profit!
+
+Normalization
+
+	Normalization is the process of decomposing unsatisfactory relations by breaking up their attributes into smaller relations.
+
+	A Normal form indicates that the particular quality level the corresponding relation schemea is at in its design.
+
+	FD = Functional dependency
+
+	1NF - A relation is in it's first normal form if all the fields contain only atomic values (No structure, Not lists or sets)
+
+	2NF, 3NF and BCNF are normal forms that are defined in terms of the keys and FD's of a relation schema.
+
+	Data Redundancy - Redundant data is effectively data which is repeated when it is not needed to be, redundant information can suffer from update anomalies from: Inserts/Deletes/Modifications
+
+	I.E if we want to update something, we may have to update two fields in a database for all members of staff.
+
+	Keys
+
+	If a relational schema has more than one key each is called a candidate key.
+	One of the candidate keys becoems the primary key and the others are called secondary keys.
+	A prime attribute much be a member of some candidate key.
+	A nonprime attribute is not a member of any candidate key.
+
+	Functional Dependency (FD) - Effectively holds over a relation that if table X has a relation with a set pair then t1 must = t2 in Y.
+
+	FD x->A is said to be trivial is every attribute in A also appears in X then A is trivial.
+
+	Applying FD's: Basically something logical like a staffs ID -> name, position, salary, branchNo, branch address and this is applied database wide so the id cannot appear without the correct information.
+
+	Normal Forms
+
+	Boyce-Codd Normal Form (BCNF) - R is in BCNF if THE only non-trivial FD's that hold over R are key constraints. 
+
+	BCNF - Effectively no dependency which can be predicted using FD's, basically a direct key link!
+
+	Third Normal Form (3NF) - R is in 3NF if X has a key for R and A is part of some key.
+
+	3NF - A relation scheme which is in 3NF if it is in 2NF and no-non prime attribute a in r is transitively dependent on the primary key.
+
+	2NF - A relation schema is in 2NF if it is in 1NF and every non-prime attribute A in R is fully functionally dependent on the primary key. (IE all values are dependent on the primary key)
+
+	Decomposition
+
+	A decomposition of R consists of replacing R by two or more relations such that:
+
+	Each new relation schema contains a subset of the attributes of R.
+
+	Every attribute of R appears as an attribute of one of the new relations.
+
+	Lossless join effectively joins two tables together creating the cartesian product of the table on which the join is being conducted on. It is however not dependence preserving. And a lossless join can only be conducted on a relation scheme which is in BCNF.
+
+Advanced SQL
+
+	PL/SQL - Procedural Language, compiled for speed. PL/SQL treats a table as a flat file accessed one row at a time.
+
+	Has variable/constant declaration, control structures, exception handling and modularization.
+
+	Block structured, blocks can be separate or nested.
+
+	Can be build with proceedures, functions and anon blocks.
+
+	A PL/SQL block has 3 parts: 
+		- Optional declaration (variables, constants, cursors, exceptions are defined and initialized)
+		- Mandatory executable part in which the variable are manipulated.
+		- Optional exception part to handle any exceptions.
+
+	The Structure
+
+	DECLARE
+
+	BEGIN
+
+	EXCEPTION
+
+	// HAZZAR
+
+	Notes on things I maybe forgot/didn't know
+
+	SELECT whatever INTO varname - Saves results to varname for later use.
+
+	IF cond THEN state - You know what this does.
+	ELSIF cond THEN state
+	ELSE state
+	END IF 
+
+	CASE exp - Case statements work too.
+		WHEN cont THEN res
+		.
+		.
+		ELSE res
+	END CASE
+
+	name: - Name of loop
+	LOOP - It's a loop
+		something
+		EXIT name; - Abort!
+	END LOOP name; - End
+
+	WHILE - While
+	LOOP
+		do
+	END LOOP
+
+	FOR var IN lower .. upper - FOR
+	LOOP
+		state
+	END LOOP;
+
+	Exceptions:
+
+	In DECLARE:
+
+		e_herp_derp EXCEPTION;
+		PRAGMA EXCEPTION_INIT(e_herp_derp, -1);
+
+	In BEGIN:
+
+		THEN RAISE e_herp_derp
+
+	In EXCEPTION:
+
+		WHEN e_herp_derp THEN
+			DO SOMMIT
+
+	Cursors:
+
+		A cursor allows us to logically iterate through a query result which may have multiple tuples, it is used as long as an arbitrary number is returned.
+
+		- Must be declared and opened before it can be used
+		- Must be closed to deactivate it 
+		- Can be used to update rows
+		- Can recieve passed-into parameters
+
+		FETCH is used to get each result row.
+
+		Cursors have properties ie NOTFOUND or ISOPEN
+
+	Subprograms:
+
+		Named PL/SQL blocks that can be invoked with parameters. Provide extensibility with modularity. Aid abstraction and promote reusabilty/maintainability. Resemble functions in higher level programming.
+
+		Functions are a type of subprogram
+
+		As are stored proceedures.
+
+		Both of these can modify input and return output parameters, the difference between the two is a function must return a single value to the caller whereas a proceedure does not require this.
+
+		Thus a function must use RETURN parameter;
+
+		Parameters can be defined as IN, OUT and INOUT this determined their read/write capability whilst the program is running.
+
+	Packages:
+
+		Packages associates a name to a collection of subprograms, grouping and storing them together. They provide encapsulation and the database compiles the code and stores in in memory and in the database.
+
+	Triggers:
+
+		Triggers define an action which occurs when an event occurs in the application. If an event associated with a trigger takes place we can say the trigger fired.
+
+		Triggers are useful for re-computing the value of derived attributed, enforcing value-dependent constraints.
+
+		Audit data changes.
+
+		Two types of trigger:
+
+			Row-Level: Executes for each row of the table affected.
+
+			Statement-Level: Triggers execute once per triggering event, even if multiple rows are affected.
+
+		Triggers can trigger triggers. This is called cascading and can cause non-termination.
+
+		CREATE TRIGGER name
+			BEFORE AFTER INSTEAD OF INSERT DELETE UPDATE
+		ON table
+			REFERENCING OLD NEW AS oldname
+			FOR EACH
+
+			ect...
+
+		Triggers are great:
+
+			- Eliminates redundant code.
+			- Makes modification easy!
+			- Increased security
+			- Improved integrity
+			- Improved processing power (efficient)
+			- Good fit for client server architecture
+
+		NO THEY ARE NOT YOU SILLY WITCH:
+
+			- Performance overhead
+			- Cascading Events
+			- Can't schedule em
+			- Can't port them
+
+Transactions/Concurrency and Recovery
+
+	- Transaction Management
+	- Concurrency Control
+	- Recovery Management
+
+	Three key aspects of DBMS
+
+	Transaction Management
+
+		Transaction is a series of actions carried out be a user or applications which read/update the database. It's the logical unit of work on the database, an application could be seen as a series of transactions with non-database processing inbetween.
+
+		A transaction tranforms (or transitions) a database from on state to another, however the consistency may not persist while the transaction is being executed.
+
+		A transaction can succeed or fail. A failed transaction is rolled back, a commited transaction cannot be aborted and an aborted transaction that is rolled back can be restarted at a later date.
+
+		Transaction Properties
+
+		- Atomiticy - All or nothing
+		- Consistency - Must transform the database from one consistent state to another.
+		- Isolation - Partial effect of incomplete transactions should not be visible to other transactions.
+		- Durability - Effects of a commited transaction are permanent and must NOT be lost.
+
+	Concurrency Control
+
+		Concurrency control is the process of manageing simulataineous operations on the database without allowing them to interfere with one another. This prevent interference when two or more users are utilising the database at the same time and they are updating data. However it is possible that two correct transactions may execute successfully but the interleaving of their operations may produce a incorrect result.
+
+		We need concurrency control to prevent:
+
+			Lost Update Problem - Where a successful update is overridden by another user. Ie effectively allowing commits before someone else has completed the edit. Thus rendering an update incorrect.
+
+			Uncommited Dependency Problem - Where a transaction can see the results of another transaction before it has commited thus if a rollback was to occur there may be issues.
+
+			Inconsistent Analysis Problem - When a transaction reads several values but another transaction updates some of them during T
+
+		Serializability
+
+			Concurrency control effectively has the job of scheduling transactions in a way that avoids any interference, you could run the transactions serially but this limits parallelism and causing a massive blow to the performance of the system.
+
+			A schedule is a sequence of read/writes by a set of concurrent transactions
+
+			Serial Schedule is where the operations of each transaction are executed consecutively without any interleaved operations.
+
+			Non-Serial schedule is a schedule where operations from any transactions in a set of concurrent transactions are interleaved.
+
+			Basically the concurrency control employs a serializable method of finding transactions which can run AT THE SAME TIME!
+
+		Two main techniques for Concurrency Control
+
+			- Locking
+			- Timestamping
+
+		Locking makes a transaction claim all the resources it wants and then unlocks them after the transaction is done. Nobody else can use the element.
+
+		Two-Phase locking is where a transaction has two phases, one where it can aquire locks, and one where it must release them.
+
+		Deadlock and Livelock can still occur.
+
+		Deadlock - Nothing can move
+
+			Prevented with timeouts/deadlock prevention (DBMS looks ahead to see if deadlock will occur)/detection + recovery (recognizes deadlock and breaks it.)
+
+		Livelock - Transaction is kept waiting forever.
+
+
+		Timestamping allows an order to be established and if there is an issue all transactions with an earlier timestamp will be rolled back.
+
+		Locking can occur on many levels ie: table,record ect
+
+		Partial Undo - Only effected transaction needs to be undone.
+		Global Undo - All transactions need to be undone.
+
+	Recovery Facilities
+
+		It's a backup mechanism which makes copies of the database periodically to keep track of transactions and database changes. Has checkpoints allowing updates to database in progress to be made permanent. And a recovery manager.
+
+		Logfile contains all sorts of information about updates to the database.
+
+		If something is damaged we roll back to the last copy of the database and reapply the updates of commited transactions in the log file.
+
+		If something is inconsistent we only need to undo the stuff that cause inconsistency.
+
+		Three techniques:
+
+			Deferred Update - Updates are not writted to the database until a transaction has committed. If the transaction fails the database has not been modified. Might be necessary to redo updates of commited transactions as their effect may be late.
+
+			Immediate Update - Updates are written to the database as they occur, thus if the transaction fails we will need to redo the updates of committed transactions. Log records must be writted before we write to the database.
+
+			Shadow Paging - We maintain two page tables during the life of a transaction, ie one in the shadows. The current page is updated, if there is an error the shadow page gets pushed back to live otherwise the changes go through.
+
+	File Organization and Indexing
+
+		Data is organised into files, files consist of one or more records ect.
+
+		When data is requested for access in terms of the logical model, the DBMS maps this to the storage model and returns it to RAM.
+
+		The physical record is a unit of transfer and one physical record may contain may logical ones. But the opposite is also possible. Pages is a common term for this.
+
+		Heaps - Contain records in no order.
+		Sequential - Ordered on a given field.
+		Hashed - Logical addresses defined by a hash function.
+
+		Heaps - New records are inserted at the end of the file, insertion is quick but retrieval is expensive. Deletion is similar, thus this is good for a small database but bad for anything big.
+
+		Sequential - Binary Search can be used, insertion + deletion is expensive as the correct position must be found then space made for insertion, potentially cascading the page. An overflow file may be made which then gets merged with the main file, this makes insertion more efficient but retrieval less efficient.
+
+		Hashed - Records sorted into buckets, one field becomes the hash key, the record is stored in bucket I and has the hash key of the field. Search is very efficient, collisions may occur when a new record hashes to a bucket which is already full. Hashed files are kept randomly and are often called direct-access files.
+
+		If there is a collision then the system performs a linear search to find an avaliable slot for insertion. If there is a space the search succeeds.
+
+		A second has function is avaliable if there is a collision in the first, this gives a new address which avoids collision. This is like an overflow.
+
+		Indexes - An index is a file which allows the DBMS to locate records in a file and speed up the response to queries. It acts like one in a book and allows us to skip through the file. 
+
+		A dense index has a index entry for every search key. 
+
+		Whereas a sparse one has only some.
+
+		Main types of index:
+
+		- Primary Indices
+		- Clustering Indices
+		- Secondary Indices
+
+		Primary Index - Defined on an ordered data file. It's a sparse index has the key of it's anchor record (block pointers)
+
+		Clustering Index - Defined on an ordered data file, it's a sparse index which keeps a record of whenever a value changes ie 1-2 would be a pointer.
+
+		A secondary index can also be defined and this has the data ordered by two fields and will act as a dense index as it will have a huge amount of info and the results may be spread all over the database.
+
+		Multi-Level Indexes
+
+		Multilevel indexes create a tree like format which is an index of the index thus cutting down on the search time. however a multilevel index may have issues with insertion and deletion.
+
+		Balanced Trees - Has the same tree depth from root to leaf. Access depends on depth rather than breadth. Advantageous to have shallower (bushier) trees.
+
+		A B+- tree is a B tree which each node only has keys with a leaf level for the values where the leaves are linked. This is like a linked list which allows for rapid traversal.
+
+		Organisation Guidelines
+
+		- Heap
+
+		Good for bulk loading, small data, always retrieving tuples, index as an access method.
+
+		- Hashed
+
+		Good: Tuples are retrieved based on an exact match of the hash field
+
+		Bad: Retrieved on pattern match, a field other than the hash field, on only part of the hash field, hash field is frequently updated.
+
+		B+- Trees are more versatile than hashed files, supports pattern matching. Also dynamic so performance does not decrease and efficient retrieval can be used.
+
+	DBMS Architecture
+
+		- Lots of managers much like an operating system.
+		- Users have roles and different tasks that they might be interesting in carrying out.
+
+		Different types of system:
+		
+		Centralized - Run on one machine, simple cheap easy, can be many users on one machine.
+		
+		Client-Server - Large, designed to satisfy requests generated at many client systems, each a single-user system. Often has a division of a front/back end.
+		
+		Pros - More functionality, flexibility, better UI, easier to maintain.
+
+		Servers are either transaction servers or data servers.
+
+		Transaction Servers - Also called a query server and effectively recieves requests from clients via RPC. Has many processes to implement the database architectures.
+
+		Data Servers - Used on high-speed lans where clients have similar processing power to the server. Tasks are typically computationally intensive. Basically the data is sent to the client for computation and results are sent back to the server. 
+
+		Parallel Systems - Paralell database systems consists of multiple processors and disks connected by a fast interconnect. Measured by throughput and response time.
+
+		Parallel Systems can:
+
+			Share memory, Share disk, share nothing or some trampy combo of them all.
+
+			Shared memory machines often have access to the memory via an interconnection network or bus. It can be very efficient for communication. Downside is we cannot scale beyond 32/64 processors as the interconnection becomes a bottleneck.
+
+			Shared Disk machines can access all disks via an interconnection network but the processors have private memory. Memory bus is therefore not a bottleneck. If a processor fails, any other machine can pick up the slack. Bottleneck now however is a the interconnection to the disk system. BUT we can scale better, just with a slower communication.
+
+			Share nothing machines share information via network. They can scale up to thousands of processors without interference. But the cost of communication is high and sending data involves software interaction at both ends.
+
+		Speeding up, speeding up is linear if speedUp = n.
+
+		SubLinear speedup means the full investment on more resources is not fully recouped in elapsed-time reduction.
+
+		Batch Scale Up
+
+			Use a N-times larger computer on N-time larger problem.
+
+		Transaction Scale Up
+
+			N times as many users submitted requests to a n times larger database on an n times larger computer. This is ideal for parallel execution.
+
+		Speed-Up/Scale-Up Limitations
+
+		- Often sublinear due to:
+
+			- Startup Costs on processes.
+			- Interference on processes accessing shared resources, competing rather than doing useful things.
+			- Skew, overall execution time determined by slowest of parallel time during parallel execution
+
+		Distributed Systems
+
+			Data spread over multiple machines, with a network interconnect. 
+
+			Same software/schema on all sites. Data may be across many sites. - Provides the illusion of a single database.
+
+			Different software/schema on different sites - Integrate existing databases to provide useful functionality.
+
+			Local Transactions access data on the site where the transaction was intiated.
+
+			Global Tranasactions access data at a site which is different to the one where the transaction was initiated or at many sites.
+
+			++
+			 Sharing data allows many sites to use the same data.
+			 Each site can retain a degree of control.
+			 Better system avaliablity through redundancy, many failover systems.
+
+			--
+			 Software development costs
+			 More bugs
+			 Increased overheads
+
+			Distributed Databases
+
+				two-phase commit protocol with a coordinator who runs the show.
+				distributed concurrency control required.\
+
+
+Mandatory Reading
+
+	this is basically the lecture notes again...
