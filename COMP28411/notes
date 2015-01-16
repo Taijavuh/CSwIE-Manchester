@@ -324,6 +324,289 @@ Networking Notes
 
 	RTCP attempts to limit it's traffic down to 5% of session bandwidth. Then 75% is given to recievers and 25% to senders. Participants determine transmission by the average packet size and then dividing across the allocated rate.
 
+	Best Effort?
+
+		There are no promises on the internet. Packets can be delayed due to a huge array of reasons.
+
+			- Encoding, queues at source
+			- Intermediate queues at routers along the way
+			- Arrival queue and de-packetization/encoding.
+
+		Multimedia is delay sensitive! This is the opposite of data which is loss intolerant but is delay tolerant. You don't mind dropping a frame of your streamed video. But your going to be mad if you download an app and it does work because it's corrupt!
+
+	TCP - Pro/Con (mainly con)
+
+		Everything is setup before use and torn down afterwards:
+		-- thus we must wait before sending data.
+		++ but it maintains state
+
+		Byte Stream
+		-- Fragmented into packets not samples
+		-- TCP decides on packing NOT the application.
+
+		In order, error free delivery
+		-- On error must wait for successful retransmission
+		-- On loss must wait for successful retransmission, long delay.
+		-- Limited no. of sequence bits, not often an issue.
+
+		Congestion Control
+		-- Traffic delayed/thrown away/slowed down/stopped
+
+	UDP - Pro/Con
+
+		No connection:
+		-- Application is responsible for who to send the packets to and where it is up to.
+		++ Can start/stop immediately
+
+		Packet Stream
+		++ Application can decide how many sample to put in each packet, ie keeping them small.
+
+		Order Delivery
+		++ On error the application gets to decide what to do, maybe it doesn't care!
+		-- On dropped the application is forced to decide what to do maybe causing confusion
+
+		Another transport protocol for multimedia, based ontop of UDP is RTP. 
+
+	If a packet fails to arrive or has errors, we can:
+
+		WAIT - (TCP) Wait and see if it is retransmitted.
+
+		NACK - (If expected) Send a NACK to let the sender know you didn't quite get it.
+
+		If it's late, we might get a few copies. Throw away the ones we don't want.
+
+		Retransmission delay can be high, this is why UDP may predict or ignore loss as it may aswell not arrived.
+
+		Errors can be detected with CRC (optional in UDP)
+		- Data networks will reject CRC failed packets.
+		- Media networks on the other hand may use the packets.
+
+	Real-Time Transport Protocol (RTP)
+
+		Specifies packet structure for carrying audio/video data. A RTP packet will often provide:
+
+			Payload type - MP3....
+			Sequencing number
+			Timestamping
+
+		RTP runs under the applicaton layer but is orientated towards the transport layer. It is NORMALLY encapsulated in UDP segments.
+
+		It provides interoperability i.e two internet phone applications may be running RTP and it is possible they may be able to work together.
+
+	IP Sound
+
+		Loss can be caused by a slow CPU, loss on route or a late arrival.
+
+		The reciever attempts to play out each chunk exactly qms after the chunk was generated. Ideally the chunk arrives when the buffer is large enough to ensure that all information arrives and is appropriately ordered.
+
+		A fixed playout delay fixes the delay!
+
+		An adaptive playout an estimate is made as to how long the machine should have as a delay to recieve and order the packets! The idea being to minimize the delay as much as possible whilst keeping the loss rate sufficiently low.
+
+	Live Media Requirements
+
+		Easy to distribute
+		Quick to start/stop
+		Short delay
+		Low error rate
+
+		MUST KNOW:
+
+		Order of frames
+		Timing of frames
+		What has arrived
+		What the content is
+		When it synchronizes with other streams (separate audio/video)
+
+		Unicast - Packet sent to single destination
+			- Used by TCP, UDP normally does this.
+			- Majority of routing is configured for unicast.
+
+		Broadcast - Packet sent to everybody on IPv4/Ethernet but not IPv6.
+			- Normally UDP (NEVER TCP)
+			- Address 255.255.255.255 is broadcast address for "this network"
+			- Broadcasts are normally blocked at the router, this is the boundary.
+
+		Multicast - One packet duplicated to many
+			- Normally UDP (NEVER TCP)
+			- Address 224.0.0.0/4 (top addr is 239.255.255.255) this are not forwarded outside local sub-networks by routers.
+			- There are groups of multicast addresses, some are global and routed appropriately.
+
+		Anycast - Anycast talks to a service which has multiple servers with the same IP address. The routing then chooses the nearest target for the cast based on the topology. This allows effectively load balancing and attack resilience.
+
+		Anycast is achieved by changing the DNS resolver, then routers return the closest route to the anycast IP.
+
+		Effctively multicast is like an address you can sign on to and sign out of. Queries can be used to retain the membership of the group.
+
+		Routing between the sender and reciever as both can be anywhere is tricky, we can do it in a few ways:
+
+			Flooding - Simple and the least efficient simple tells everyone to span out looking for the nodes, it's like sending a search party in every single possible direction.
+
+			Spanning Tree - An alternative method is to use a spanning tree which selects a sub-set of nodes and forwards packets out to those only part of the tree. This will find the node but concentrates the trafic over core routes and doesn't always find the best path.
+
+			Reverse Path Broadcasting - Works like a spanning tree but the routers effectively decide if they are the shortest route. Therefore the only route that will arrive at the parent will be the fastest and thus the parent link. This is simple but more efficient, however the adverts happen regardless of if the sub-tree has a group member in it.
+
+			Truncated RPB - Will prune the tree to ensure that there is no forwarding if the members of the group and forward the request up to let the node above know that it can prune this node.
+
+			Because the memberships can change, the tree needs to be refreshed regularly. Which causes a full flood and prune! D:
+
+		Static centres can be established at points in the network and multicast traffic can be duplicated and unicast to these centers. This avoids full tree flooding. BUT they are nearer to core routers so shared links can create sub-optimal routes and therefore delays.
+
+	Real Time Services
+
+		The internet needs to ensure that TCP + UDP and RTP are implemented and that QoS is also in place. With:
+		- Classes of service and effective prioritizing
+		- Policies
+		- Scheduling
+
+		This makes the best effort service which is a one-size fits all service model that doesn't really work well with priorities.
+
+		An alternative solution is having multiple classes of service which get treated differently, ie like having a VIP service vs a regular service. Packet marking is needed to a router to distinguish between different clesses, and a policy on how to treat these packets.
+
+		If applications misbehave (bandwidth wise), we need to provide protection to ensure that it doesn't effect the other application. However allocating a non shareable portion of bandwidth is inefficient as the application may not be using their allocation all the time.
+
+		In order to work around this a scheduling and policy mechanism is in place The schedule will choose which packet to send on the link next, and the policy will come in to action when all the resources are exceeded. Packets will then be dropped based on:
+		- Tail drop - Last packet - Default on the internet.
+		- Priority
+		- Random
+		- Front - Good for real-time media, it's probably too late.
+
+		Priority scheduling allows the highest priority queued packet to be sent, this is a good way to run QoS however over a small link is not always fair!
+
+		Round Robin scheduling is designed to be more fair by cycling queues. However this can lead to high priority traffic being delayed!
+
+		Weighted Fair Queueing this is more fair, each class gets a weighted amount of service per cycle. Much like round robin but implements priority aswell.
+
+		Policy Mechanisms
+
+		The aim is not to exceed parameters which have been declared. Two criteria help form the policies:
+
+		- Average rate - How many packets can be sent per unit.
+		- Peak Rate - Maximum packets sent at the same time.
+
+		The traffic is limited by a leaky bucket style policy, it will fill up and the average rate and only allow a maximum of the burst size elements. This allows the contraints of the connection to be maintained.
+
+		Combinining this with the WFQ method will guarentee QoS. As long as the peak rate is not exceeded and the allocation does not exceed resources.
+
+	Multimedia in the Home
+
+		DLNA - Digital Living Network Alliance is a protocol family which is designed for local use! It makes very easy to use UPnP streaming which allows everything to talk to everything. 
+
+		UPnP 1 - Based on TCP/IP, HTTP, XML, UDP port 1900
+
+		Control points and controlled devices, NO DNS/DHCP
+
+		Simply sends data with no machine/language restrictions. An address auto configuration is created (169.154.0.0/16) it's a point to point connection with no external connectivity.
+
+		UPnP 2 - Has name resolution much like DNS. Can issue requests for IP addresses associated with a host name
+
+		SSDP - Simple Service Discovery Protocol allows adverts to control points.
+
+		UPnP 3 - Devices register to listen for events and associated values. They can respond using their own events. Modern UPnP supports remote acces, NAT traversal and authentication!
+
+		DLNA - DLNA sites on top of UPnP to connect devices as clients to players! There are lots of device classes with many transport methods and codecs!
+
+	Link Layer
+
+		Hosts/Routers/Switches/Hubs - Nodes
+
+		Communications Channel - Link
+
+		Layer 2 Packets - Frame
+
+		The responsibility is for the node to adjacent node transfer of a layer 3 datagram over a link.
+
+		This uses layer 1 (physical) methods to move frames between directly interconnected hosts.
+
+		The link layer is implemented in every node! contains link/physical layers of the stack, it is a combination of hard/soft/firmware
+
+		On the sending side it encapsulates the datagram in the frame, and adds checking bits, flow control ect.
+
+		On the recieving side it check for errors and flow control then extracts the datagram and passes it up.
+
+		Virtual links can exist these are things like PPPoA/E as they appear like a complete network even if the implementation is not exactly so.
+
+		Encapsulation works be sending the data and control to the next sub layer, each layer treats it as a black box of bytes as not to effect it's structure.
+
+		Flow control is an optional service and is not always implemented at the link layer. It's purpose is to control flow!
+
+		LAN/MAC Addresses 
+
+		IP Address - 32 bit IP (Network Layer) - Used to get the datagram to destination IP subnet. Partially geographical.
+
+		MAC (or physicial/ethernet) address - 48 bit address - Moving towards 64 bit for IPv6 cards, has a burnt in NIC. Used in most devices.
+
+		LAN Addresses - Each adapter has a unique address broadcast address (FF-FF ect) NOT ALL SYSTEM HAVE BROADCAST (ATM)
+
+		MAC address allocation is administered by IEEE, a manufacturer buys a portion of space and assigns them.
+
+		MAC address = passport no.
+		IP = postal address
+
+		MAC addresses are portable but an IP is not. Routing depends on the IP location ect.
+
+		ARP - Links IP's to mac addresses, stored on router/switch somewhere. In an ARP table. TTL is the time to live and is the time it takes for the mapping to be forgotten.
+
+		Switches learn! They buffer packets, and it is possible to route data simultaneously assuming that the data is going from/to different locations. This is not possible with a hub.
+
+		Routers are network layer and switches are link layer. Routers maintain routing tables and implement routing algorithms, bridges (switches) connected separate networks together.
+
+		Two main types of multiaccess network:
+
+		- Point to Point (P2P) - These have a single sender and a single reciever and the connection is direct. Known as (PPP/HDLC/PPPoA/PPPoE)
+
+		- Broadcast - Single shared broadcast channel, ethernet (up to 100mbps) and wireless. Everyone can transmit at the same time so interference can be an issue.
+
+		Collisions - On a broadcast channel whenever two+ nodes transmit at the same time resources will be thrown away. THUS coordination is needed.
+
+		MAC is the Medium Access Control protocol and it does 3 main things:
+
+		- Channel Partitioning
+		- Random access
+		- Turn taking
+
+		Channel Partitioning - Avoiding interference can be done by spacing out overlap so there is none, having different frequencies, using time division to assign slots, using code to differentiate the communication.
+
+		Time Division Multiple Access (TDMA) - Access to channel in rounds, each station gets a fixed length slot. This is okay but unused slots just go idle.
+
+		Frequency Division Multiple Access (FDMA) - Divided into frequency bands, each station is assigned a fixed frequency band. Unused time goes idle.
+
+		Random Access Protocols - When a packet has to be sent it is transmitted at full channel data rate. If two or more nodes transmitting there is a collison but the MAC protocol specifies how to detect collisions and how to recover from them.
+
+		ALOHA is an example of a RAP - No synchronizaton. When the frame first arrives it is transmitted. RAP's are good when there is little traffic or users as there will be few collisions.
+
+		Slotted ALOHA - Set of frames all the same size and time is divided into equal sized slots. Nodes only start transmitting at the slot beginning and if two nodes collide ALL nodes detect a collision. When a node obtains data it transmits in the next slot. IF there is a collision the node retransmits the frame in the next slot until success.
+
+		Slotted ALOHA is good because a single node can transmit at full rate of the channel, the system is decentralized and is simple.
+
+		BUT there are collisions wasting slots, idle slots and nodes may be able to detect collision quicker than transmitting a packet. CLOCK SYNC needed.
+
+		CSMA (Carrier Sense Multiple Access) - Listen before transmit, if the channel is idle transmit the entire frame, if it's busy defer the transmission.
+
+		With CSMA collisions can still occur, propagation means nodes MAY not hear each others transmission.
+
+		CSMA/CD (Collision Detection) - Easy in wired LAN, not so easy in wireless. Thus on wireless CA (Collision Avoidance) is used. 
+
+		Taking Turns (MAC Protocols)
+
+			Polling is a method that the master node invites slave nodes to transmit in turn. This means there is an overhead, delay and a single point of failure.
+
+			Token passing is an alternative where the nodes pass a token around a ring only the person with the token can transmit. But this has delays and again a single point of failure.
+
+		Final Notes
+
+		Non Return to Zero Encoding (NRZ) - Like you would expect
+
+		Non Return to Zero Encoding (NRZI) - 1 on change, 0 on no change.
+
+		Manchester Encoding - _|- = 0   -|_ = 1 - Bit rate is now twice the baud rate! Much easier clock recover!
+
+		Twisted Pair Cables - Unshielded (UTP) or Shielded (STP) - More expensive but less susceptible to noise. Effectively two wires twisted around each other to reduce effects of interference. Signal and return path for each cable. Typically 2/4 pairs in a cable. Shielded was originally for data transmission and unshielded for voice. But now unshielded is used in LAN. Probably the cheapest of all media.
+
+		Coaxial Cable - Commonly used in TV used for high frequency shielded transfer of electromagnetic waves, still used for wireless down leads and cable TV connections.
+
+		Fiber Optics - Light ray bounces off internal cladding (acts like mirrors) velocity factor is less than Coax!
+
 
 
 
