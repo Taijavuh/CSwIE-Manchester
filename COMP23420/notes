@@ -1,0 +1,264 @@
+COMP23420 - Software Engineering
+
+	Why do software projects fail?
+		- Unmanaged risks
+		- Inaccurate estimation
+		- Poor communication
+		- Use of immature tech
+
+	Software Development Methods:
+
+		- Agile - Short iterations working on a block of the project at a time, ideally show product at the end of each iteration. Long term planning is minimal.
+		- Extreme - Type of agile programming with focus on getting the code right in really small windows of time.
+		- Iterative - Consistent circle of planning, implementation, testing and evaluation until the end product is met.
+		- Waterfall - Flowing down the stages of the waterfall from each step of development to the next. You try to avoid moving back up as the later an issue is found the more it costs to fix. Often inefficient as it costs to move back towards the start to redefine specifications.
+		- Spiral - Like iterative but with a set end point, rather than a potential infinite loop.
+		- Lean - Eliminate waste, decide as late as possible, deliver as quick as possible. A cut back form of devlopment.
+		- V-Model - Similar to waterfall, working upwards after the implementation point.
+
+	What tends to change in requirements?
+
+		Experience - UI
+		Change in business management direction
+		Marketing requirements
+		Technology change
+		Standards/regulations/certification
+		Misunderstanding/Inconistency
+
+	Agile Methods/Processes
+
+		Aim to respond in an 'agile' way to requirements.
+		Follows an iterative set of cycles.
+		Emphasis on testing
+		XP + SCRUM are key.
+
+		XP - Customer rep always avaliable, tests written first, programming in pairs. Strong emphasis on simplicity.
+
+		Agile methods handle changes in requirements better, but they require more competence and confidence from developers and planning for long term is hard.
+
+	Unified Process
+
+		A unified process works to create a "best of both worlds" it's designed for object-orientated systems and is the nearest to an industry-standard process! It's iterative but distiguishes between phases/diciplines/artefacts.
+
+		Inception -> Elaboration -> Construction -> Transition
+		  (Scope)       (Plan)         (Build)       (Deploy)
+
+		Iterations are contained within the phases! And each phase concludes with a milestone which reassesses the project and works out if the project needs to be restructured or not.
+
+	Waterfall vs Iterative
+
+		Waterfall does not attempt to identify and tackle riskiest issues first. Whereas iterative focuses on early iterations to drive down the risk.
+
+		Waterfall assumes that requirements are fully specified and defined in the first phase of the project. Iterative on the other hand will consistently define the requirements and they will stabilize over a few iterations.
+
+		Waterfall expects the architecture to be fully specified at the start of implementation. As requirements will usually change and the original design will not be reliable and a lack of feedback until it's too late.
+
+		basically waterfall sux
+
+
+	Generic Flow
+
+		Requirements -> Models -> Design -> Implementation -> Testing -> Release
+
+		Modelling Features:
+
+			Functional Model - Activity Diagram/Use Cases
+			Structural Model - Domain Classes/System Classes
+			Behavioural Model - Sequence Diagrams/Communication Diagrams/State Machine Diagrams
+
+	Functional Requirements - The system should DO
+	Non-Functional Requirements - The system should BE
+
+	Non Functional Requirements may also be seen as software qualities.
+
+	Business Process - Set of structured tasks that gives rise to a service or product, it is likely that a system will capture an element of the business process.
+
+	Activity Diagram - Can model both the is-as and the to-be of the system. Captures all the activities and how objects flow between them. Logical model, decribes what it does not how it does it.
+
+	An action is a piece of behaviour.
+	An activity is a composed set of actions
+
+	Normally only activities are in activity diagrams!
+
+	Object node represents objects in object flow.
+
+	Control Flow - The sequence of execution.
+
+	Glossaries - Common understanding of a domain within the team, needs to be updated over time.
+
+	Actors perform use cases on a system, AND actors have use cases performed on them.
+
+	An actor is an entity, can be a human or other that directly uses or is used by the system.
+
+	Initial activity diagram should reflect the things that happen in the system and will ultimately be released in the new system.
+
+	Activities will map to form use cases.
+
+	For use cases we want to know ENTRY and EXIT conditions!
+
+	In order to meet all the user requirements we need to realise all the use cases!
+
+	Use cases are realised by domain classes which are conceptial classes that represent entities in the problem domain.
+
+	Use Case -> Domain
+
+		- Take the usecase and identify the participating members, creating a flow.
+		- Domain classes may play many different roles in different use case realisations.
+
+	Once the domain classes have been established, these are then converted into system classes which represent the domain classes in implementation!
+
+	Domain -> System Classes
+
+		- Take the domain classes and create classes which will represent the elements in a real system.
+
+	The Domain Model
+
+		It's a model modular representation of the realised domain classes, showing how the domains relate to complete the system. But it does not implement any technical representations. The domain model MUST contain all the domain classes.
+
+		The domain model does not contain software artefacts or classes. Attributes should be primitive types, nothing complex. The domain model is supposed to be simple!
+
+	System Classes
+
+		System classes contain functions and attributes and have the features required to implement domain classes. They show software objects NOT domain objects. They are usually more detailed than domain classes, and include software orientated things.
+
+		System Classes -(Implement)-> Domain Classes -(Which Realise)-> Use Cases
+
+		A system class diagram is much like a domain model diagram but complete with a more software orientated approach, with methods.
+
+
+	Good Design Guidelines
+
+	High Cohesion - A class represents a single well-defined entity.
+
+	Low Coupling - A class interacts with as few other classes as reasonably possible.
+
+	Typically an idea to organise into layer:
+
+		- Foundation Layer
+		- Problem Domain
+		- Data Management
+		- Human Computer Interaction
+		- Phyisical Architecture
+
+	The key skill of software design it to find the correct system classes and assign responsibilities to them so the use case realisations are covered!
+
+	Law - Must, a standard of formal rules that must be adhered to.
+	Ethics - Should, set of ideals defined by the community and can differ from place to place.
+
+	In software engineering:
+	- How the software benefits other people.
+	- How the software may harm others? (ie negligence, bugs, data protection)
+
+		Key:
+		- Consent before use of data!?
+		- Data protection!
+		- Data security!
+
+	Sequence Diagrams show the processes that are carried out for an use case. These use the horizonal chart which has loads of lines to show interactions between classes.
+
+	Communication Diagrams are much more like a flow chart but still feature the classes, arrows dictate the actions.
+
+	A state machine diagram shows the entire flow, complete with processes. This can span the entire system if required.
+
+	User Interfaces
+
+		Also need the same time and care as the software as they are the point of contact between the user and the software!
+
+		For some reason they get left till last but they should be done early on. Once functionality is known the UI can be designed. Should follow the same agile processes.
+
+		UI designer has the skill of selecting a design that affords the functionality. The system state should be presented and used to illustrate the system to the user.
+
+		Direct Manipulation interfaces basically give the user freedom to "command" ie the user will go for what they want and effectively tell it to do something. ie HEY YOU DO THAT. Plenty of functionality all the time.
+
+		Recognition vs Recall!
+
+		CLI - Not good for everyday users, great for mass action. Good for arbitrary complex actions. Often faster for some tasks.
+
+		Batch Processing - Batch of commands, limited - no interaction. Repeated steps.
+
+		Heuristic Evaluation - Rules of thumb
+
+			Effectively a set of rules used to critique an interface.
+
+			Principles:
+
+			- Simple and natural dialogue - No irrelevant information, order matches task.
+
+			- Speak the user's languages - Use concepts from the user's world, no system specific terms.
+
+			- Minimize user memory load - Don't make users remember things, leave information in place until it is not needed.
+
+			- Consistency - Action sequences should carry through the system, don't have different parts perform differently.
+
+			- Give feedback - Let users know what they have done to the system.
+
+			- Show exits clearly - If users get to a part of the system they don't want to be in, they need to be able to leave without causing damage.
+
+			- Provide shortcuts - Help experienced users avoid lengthy dialogs + messages they don't need.
+
+			- Provide useful error messages - Let the user know whats gone wrong and how to correct it.
+
+			- Prevent errors - Whenever errors happen, ask if it could have been prevented.
+
+		Usability
+
+			They key to UI design is to meet a mid point with efficiency, effectiveness and satisfaction.
+
+			Utility is the functionality of a system utility can exist without usability but not vise versa.
+
+			It is a good idea to apply theory to understand why something is useable.
+
+			Principles:
+
+			- Visabilty of system status
+			- Match between system and the real world
+			- Clear emergency exit
+			- Consistency
+			- Error Prevention
+			- Recognition
+			- Aesthetic design
+			- Diagnostics
+			- Help + Documentation
+
+			Human vs Computer
+
+				- Human has mental models and is great at association ect.
+				- Computer is good at memory, is fast and great at long repetitive tasks. Not very fault tolerant.
+
+			The UI's job is to provide a mediation between the users model of a task and the systems model of a task. The UI should convey and image which represents the task in a way it can be intepreted and used effectively.
+
+			HCi
+
+			Presentation - How the system renders state and allows the user to evaluate state + alteration to the state.
+			Observation - What the user notices of the presentation; Can they see what they need to.
+			Articulation - Expression of the users execution plan
+			Performance - Systems execution of a plan, results are presented to the user.
+
+			Frameworks
+
+			Can be used to co-ordinate HCi issues, focus on ergonomics, dialogue design and the rendering state.
+
+			Modelessness
+
+				A model places interpretations upon the user's actions, ie what a keystroke means in a perticular situation. Ideal property of a user interface, user can do whatever whenever. Computer interface should not have distinct modes that restrict the users actions depending on the mode they are in.
+
+				IE - Modes should be avoided.
+
+			However! Modelessness may mean the user cannot cope with everything at once, thus mini modes are acceptable - Long term modes/spring-loaded modes/alert modes/emulation modes. Depends on the application!
+
+			Where mini modes are used it should be easy and clear to locate
+
+			Learnability
+
+			The users should be able to learn interaction with the system easily so they can complete tasks. The system should be easy to learn and easy to remember so that users can return after short and long breaks and remember how to use the tool.
+
+			The user should be able to just walk up and use the UI.
+
+			The system should help form a good mental model for the user, and map task language to input language effectively.
+
+			The user should effectively be able to predict what should happen in some generic cases.
+
+			The user should also be able to reach all parts of the system, mapping all the parts of the task model to a system model.
+
+
+
