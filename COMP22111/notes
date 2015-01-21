@@ -1,0 +1,121 @@
+Processor Microarchitecture
+
+	VLSI - Very Large System Integration
+
+	Complexity is managed using a top down approach, creating a divide and conquer style approach.
+
+	Top down approach encapsulates abstraction, this helps the designer.
+
+	VLSI Design Flow
+
+		Requirements Analysis -> System Specification -> Chip Architecture -> Register Transfer Level (RTL) -> Logic Design -> Circuit Design -> Layout -> Manufacture
+
+		With step back testing at all the intermediate stages!
+
+	Design Choices
+
+		Full Custom
+
+		- You basically design everything yourself:
+
+		ADV
+		Total Flexibility
+		Fully speed, area + power optimised
+		Easy to protect IP (IPR)
+
+		DIS
+		Ages to design
+		Expensive to rework
+		High volume needed
+
+		Semi Custom
+
+		- Predefined/characterised standard cells, should fit together, just need to provide routing.
+
+		ADV
+		Reduced design time
+		Less error prone
+		Can optimise parts of the design
+		Easily protects IPR
+
+		DIS
+		Limited flexibility
+		Expensive to rework
+		High volume needed
+
+		Programmable Logic Devices (PLD)
+
+		- A circuit which can be programmed to provide a variety of functions. It's effectively a device which brings a design to life without the need for specialised boards to be manufactured.
+
+		ADV
+		Excellent for prototyping
+		Fast development time
+		Easy to change design
+		Low design costs
+		Reasonable speed
+		Decreased time to product
+
+		DIS
+		Lmited flexibility
+		Low volume product
+		Less protected IPr
+
+	Sequential Systems
+
+		Combinatorial Logic - Takes an abitrary number of inputs to produce an abitrary number of outputs, can evaluate any function. But requires specialised, complex and reliable logic.
+
+		Sequential Logic - Output depends on input and history of output!
+
+		A good way to image a seqential system is to imagine the system has states and the output of the system is determined by whatever state the system is in and the inputs!
+
+		It's possible for the state to change under some combinations of state+inputs.
+
+		Seqential circuits can also be made when there are no external inputs at all. The outputs and next state are determined purely by the current state.
+
+	RTL Design
+
+		The RTL design reflects the general seqential system. The standard architecture has two key elements:
+
+		- The Datapath - Manipulates data in registers depending on the system's requirements.
+
+		- The Controller - Initiates sequence of commands thus to control the datapath according to the requirements at a certain time.
+
+		The control logic uses status signals it recieves from the datapath to determine the sequence of control signals.
+
+		The control logic is generally a seqentual circuit that determines the state of the digital system that dictate the control commands. The current state of the control block and determine the commands and potentially the outputs from the datapath. The controller will then determine the next state aswell.
+
+		The controller is FSM with a number of operational states, and moves around them.
+
+	Finite State Machines
+
+		FSM's can only be in one state at a time, there are then rules to determine the next state (state logic) which may comprise of the input at the current state and the current state. 
+
+		The state is held as a binary code, there are valid binary codes for all of the states. Once the next state has been determined it is loaded into the system then becomes active on the next clock tick.
+
+		Simple Processor States:
+
+			Fetch - Output address, input instruction
+			Decode - Decide what instruction should do
+			Execute - Change processors register
+
+		Decode may be different for different instructons, but there will be similarities.
+
+		Execution may have different behaviours depending on the instructions.
+
+		RTL is a means of separating data from control to simplify the design process. RTL effectively ignore values of data and treats thems as individual variables. RTL is a level of abstraction!
+
+		Subsystems are not completely separate and they will infulence each other. But they do have well defined boundaries which helps keep the complexity manageable.
+
+	ARM Microprocessor
+
+		ARM is a 32-bit microprocessor, thick lines show 32-bit buses. Thinner lines show control paths.
+
+	Design Process
+
+		The specification of a digital system should be sufficiently rigorous to determine the behaviour in any combination of internal and input states. This should also help determine the interfaces. (I/O)
+
+		Ones the specification is written it should be straightforward to determine what exactly the datapath needs to do, and all the requirements for the control block.
+
+		The key is to make things as simple as possible but no simpler.
+
+		The specification must enable us to make deductions about what would be required from the circuit.
