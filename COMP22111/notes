@@ -119,3 +119,432 @@ Processor Microarchitecture
 		The key is to make things as simple as possible but no simpler.
 
 		The specification must enable us to make deductions about what would be required from the circuit.
+
+	RISC Processors and the Stump Processor!
+
+		Stump is ARM like. Has a 16 bit data/address bus and uses a RISC architecture.
+
+		Thus:
+		- Fixed Instruction Size
+		- Load/Store Architecture
+		- Large Register Bank
+
+		ISA - Instruction Set Architecture - View the assembly language programmer sees of the processor architecture. Includes processor registers, address and data formats!
+
+		The processor is a good example of a seqential machine, instructions are executed at a rate determined by an external clock.
+
+		Conseqently a processor will have an RTL datapath and a control block with a FSM controlling that movement and manipulation of data.
+
+		Why RISC (Reduced Instruction Set Computers):
+
+			Early processors were designed to offer greater functionality through complex architectures to support complex instructions. This was in an attempt to close the sematic gap between high level programming and machine instruction. This was due to the slow speed of memory!
+
+			However now that memory has vastly increased in speed the goal of the RISC architecture is to execute a single instruction in a single clock cycle thus creating a much more simple but much faster architecture!
+
+			The RISC-style architecture exists because the belief that hte processor should be designed to optimise simple common instructions rather than implementing complex code to support rarely used functions.
+
+			Most Common - Data Movement (Registers/Main Memory)
+			2nd - Instructions (branches)
+			3rd - Arithmetic
+
+			Thus the architecture is designed specifically to work with these, the three most frequently used instructions.
+
+			Pros vs CISC (Complex Instruction Set Computers):
+			- More on chip memory
+			- Simple instruction set
+			- More efficient branching
+			- Simpler control structure, one instruction per cycle!
+			- Smaller die size, thus can add more performance enhancements
+			- Shorter development time
+			- Higher performance
+			- Lower power consumption
+			- Simple datapath
+
+		The Architecture:
+
+			- Fixed instruction size with well defined formats.
+			- Load/Store architecture, data can only be operated on when in local registers.
+			- Bank of registers is provided to support the architecture.
+
+		Program Counter
+
+			- Register that contains the address of the next instruction in memory!
+			- Each step the next instruction is fetched from memory using the address given in the PC.
+			- Once the instruction is fetched is it place in the IR (Instruction Register) then decoded to determine what operation is required!
+			- The PC must then be incremented to the address of the next instruction.
+			- If there is a branch, the PC is overwritten should the branch be followed.
+
+		Condition Code Register
+
+			N - Negative flag, set if ALU value is negative!
+			Z - Zero flag, set if result is zero
+			V - Overflow flag,  set is calculaton is wrong!
+			C - Carry flag, set if the results of the calculation overflows.
+
+		RISC Instruction Format
+
+			3 Main types of instruction
+			- Register to Register - OP | Reg | Reg | Literal/Reg
+			- Load/Store - OP | Reg | (Memory Address OR Reg | Literal/Reg)
+			- Branch - OP | Condition | Branch Address
+
+			A literal value will generally be in 2's complement form!
+
+			Load/Store will write/read effectively to and from memory and registers. The memory address can be made up of two registers, an actual memory address or a register and a literal.
+
+			If the branch condition is satisfied then the branch address will provide the offset for the address which the program counter should branch to.
+
+		RISC Control
+
+			Three phases:
+
+				Fetch - Fetches instruction from memory.
+					- The address of the next instruction is held in the PC, this is put on the bus and placed into the IR. Then the PC is incremented.
+
+				Execute - Produces a result.
+					- The IR is decoded to determine what operation to run, and the operaton is performed. Result could be data or an address depending on the instruction. the status flags are updated!
+
+				Writeback - Writes the result back to the registers
+					- After execution we write back to a register, or form an address for a load/store. If it's a load store we put the address on the address bus and active an address read! For an address write we do the same thing but intiate an address write which put the register to the memory address!
+
+			Each takes a single clock cycle.
+
+			Using pipelining can allow a single instruction to perform in a single clock cycle.
+
+			RISC has a much simpler control than a CISC. But CISC processors are able to user a faster clock, probably because they need the extra speed.
+
+		Addressing Modes
+
+			Immediate - Instruction has a literal value.
+
+			Register - Operand is held in a register, ie R1
+
+			Absolute - Instruction contains the full memory address of the operand.
+
+			Register Indirect - The instruction specifies a register that holds the addres of the operand in memory. (ARM/Stump can use offset addressing)
+
+			Offset - Operand is held in a memory address specified by a register but and offset is also provided which allows us to +- a number of addresses.
+
+			PC-Relative - Offset addressing using the PC as the base register, the operand is held in memory calculated from the PC +- a literal value that is provided. Often used for relative branch!
+
+			Indexed - Like offset addressing, except the secodn register is used instead of a literal good for arrays.
+
+			Scaled Index - Same as index except the offset register can be scaled.
+			AutoIncrement/AutoDecrement - Variation of offset/index addressing which allows the base register to be modified during a load/store, can be don't pre/post index. Useful in PUSH/POP
+
+			Memory Indirect - Effectively memory points at another memory entry.
+
+		Stump Specification
+
+			- 16-bit fixed size format
+			- RISC 3-addres format
+			- 8 registers in register bank
+			- R0 is hard wired to 0
+			- R7 is the program counter
+			- R1-6 are general purpose registers
+			- 8 different instructions (only 3 bit field to specify)
+
+			Addressing Modes
+
+			Immediate Addressing - Contains a literal value that is used directly in an operation. Often used by in conjunction with a register.
+
+			Register Addressing - Instruction specifies a register when the operand is located and another register when the value to operate with is!
+
+			Offset Addressing - Two registers, one with a memory address and one with a offset to apply to the memory address. Could also use a literal.
+
+			PC Relative - The PC is used as the base and the literal/register is added/subtracted from the PC to give the new address.
+
+			Indexed Addressing - Adding two registers together give the address of a register in main memory.
+
+			Instruction Format
+
+			Instruction help us identify:
+			- Instruction Type
+			- If status flags should be updated or not
+			- The register sources for operands
+			- Destination register
+
+			Instructions:
+			000 - ADD - Addition (2's complement)
+			001 - ADC - Addition with Carry In
+			010 - sUB - Subtract
+			011 - SBC - Subtract with Borrow
+			100 - AND - Bitwise AND
+			101 - OR - Bitwise OR
+			110 - LD/ST - Load register from memory / store register to memory
+			111 - BCC - Branch if condition code is satisfied
+
+			Shifter
+
+				00 - No Shift
+				01 - ASR Sign bit copied to bit 16->15
+				10 - ROR Clockwise circular shift 0 -> 15
+				11 - RRC Clockwise circular shift through carry Carry -> 15
+
+				The bit that is moved out ie 0 is moved the the CSH (Carry Shifter Out)
+
+			Condition Code Register
+
+				The value of bit 11 determines if the condition code register should be updated or not.
+
+				0 - CC Register NOT updated
+				1 - CC Register updated
+
+				The condition code register contains the
+
+				N,Z,V,C flags these were explained above.
+
+
+			There are three main types of instruction in the STUMP:
+
+			Type 1 - Type 1 Instructions take the following format
+
+				INSTR | 0 | STCC | DST | REGA | REGB | SHIFT
+
+				The shift allows any shift operation to be performed on REGA.
+
+			Type 2 - Type 2 instructions take the following format
+
+				INSTR | 1 | STCC | DST | REGA | Immediate Literal
+
+				The immediate value is a 5-bit signed 2's complement value, it is sign extended to 16-bits before being used.
+
+			Type 3 - Type 3 Instruction (Conditional Branch)
+
+				1111 | Condition [4 | (11-8)] | Offset [8 | (7-0)]
+
+				For a conditional branch the condition will specify what must be true for the branch to be executed.
+
+				The offset is an 8-bit signed 2's complement offset which will be added to the program counter to determine the next address should the branch be taken.
+
+				Branching cannot set the CC register!
+
+			Ideally when designing the stump we want to ensure we have a sensible number of input and output pins so that the final design can be sensibly packaged. This is the case with the stump.
+
+			Stump State Machine
+
+				The stump control block will require 3 states:
+				- Fetch
+				- Execute
+				- Memory
+
+				The first cycle will be fetch, and it will read the address pointed to by the PC into an IR then increment the PC to fetch a different instruction next time.
+
+				The second cycle will decode and most of the execution. The register write will take place at the end of the cycle. The exceptions are memory operations whcih will require an address calculation using the ALU as an adder followed by a memory read/write. Thus the memory cycle will be used for the read/write phase whilst the execute calculates the memory address.
+
+	Verilog
+
+		Verilog is a HDL - Hardware Description Language
+
+		HDL's allow us to implement design at all the levels of abstraction in the top down design process.
+
+		System - Algorithmic level, code structured much like C using control statements - May not be directly synthsizeable though.
+		Functional - Register transfer level
+		Logic - Structural, using AND, OR logical expression.
+		Circuit - Transistor level.
+
+		There are two main HDL's which can be used to describe hardware in a text-based form.
+		- Verilog
+		- VHDL (Very high speed integrated circuit hardware description language)
+
+		Both are standard and are supported widely and can be used for designing and simulating systems. However VHDL is far more general purpose than Verilog and it could be argued it is also more complex.
+
+		HDL's are helpful for designers as they offer a text based way to describe designs that can be easily transferred between designers and systems. Being able to describe a circuit in software offers a way to simular the operation of the system before it is implemented. If there are issues then the code can be easily debugged and re-tested. This would be incredibly difficult and expensive to do with a physical circuit. CAD tools allow the ability to translate verilog models for implementation in silicon, which offers a rapid route to market.
+
+		HDL's can generate test bench data, describe the function of a logic block but also be used to translate the description into hardware using CAD tools.
+
+		HDL's describe algorithms in text statements, similar to a programming language:
+
+		Good if:
+			- Hides dirty details
+			- Makes hardware design more accessible
+		Bad because:
+			- There is a difference, must be appreciated
+			- Code is written to look more like a program!
+
+		HDL's have:
+		Pro's:
+		- Expresses some functions simply
+		- Suited to RTL design
+		- Performs logic synthesis - no need to produce gate-level designs
+		- Code may be easier to read, if written properly.
+
+		Con's:
+		- Can the code be synthesized?
+
+		HDL's can be sued to describe hardware and then synthesise the description into physical systems, but we can also use them as an aid in the testing and verification of designs.
+
+		The verilog flow:
+		- Produce structural verilog
+		- Merge with behavioural verilog
+		- Simulate (and tests)
+		- Synthesis
+		- Place the code onto the FPGA
+
+		This will take our onscreen design and convert it to a working circuit!
+
+		Abstraction
+
+		Verilog offers three different views of the system:
+		- Behavioural - View of a block
+		- Dataflow - Describes the way the data flows
+		- Structural - Describes the hardware.
+
+		The behavioural view allows us to represent operations in a simple way, keeping the levels of abstraction key!
+
+		A structural level allows us to specify the gates specifically.
+
+		These effectively allow us to represent the same thing with the same behaviour in many different ways. BUT they may not all synthesis.
+
+	Verilog as a Language
+
+		Modules - These are a basic building block for describing a digital system in verilog. More complex designs can be realised by connecting modules together!
+
+		Modules follow this structure:
+
+		module name(output reg [3:0] s,
+					intput 	   [2:0] a)
+
+		endmodule
+
+		There are two key types of variables in verilog:
+
+		Wire - Represends a net, connection between elements which are driven continuously. They don't need to be declares and should only be used with assign or when connecting stuff together
+
+		Reg - Retain their value until changed, may not be implemented as a hardware register. If assignment is done by = or <= the variable must be a reg.
+
+		Declaring them is simple
+
+		wire name;
+		reg [15:0] name;
+
+		Variables can take one of four values. 0, 1, Z or X 
+
+		Z is not driven, floating all over the place
+		X is don't care.
+
+		Prefixes - In verilog numbers are default decimal. However we can specify the base but doing 'b - binary, 'h - hex, 'd - decimal
+
+		thus 16'h1234 is a 16 bit number.
+
+		Always/Initial block - Used to describe a process
+		- Runs when the simulation states
+		- Always blocks runs continously unless a sensitivity list is present
+		- Will always do something
+		- Good for modelling/specifiying hardware
+		- A module may contain any number of either blocks
+		- Initial blocks only run ONCE.
+		- Initial and always blocks will run concurrently, thus we need to be careful when assigning variable values in different blocks.
+
+		CAREFUL - INITIAL IS NOT SYNTHESIZEABLE!!!!
+
+		always @ (sensi list) /initial
+		begin
+
+		end
+
+		We can specify values in the sensitivity list we wish to be executed.
+
+		Assignments
+
+		Continuous - assign - Only applied to wire, done using assign.
+		Blocking - (a = b) - Statements executed in order.
+		Non Blocking - (a <= b) - Statements executed concurrently.
+
+		Both blocking and nonblocking should be done inside an initial or always block.
+
+		Control Statements
+
+		if (cond)
+		begin
+
+		end
+		else if (cond)
+		begin
+
+		end
+		else
+		begin
+
+		end
+
+		if/else is self explaintory, but ensure that registers have a value assigned to them if they are included in a if/else
+
+		case (variable)
+			case1: statemnt;
+			case2: statemnt;
+			default: statemnt;
+		endcase
+
+		it's always a good idea to have a default case as if it is absent, the synthesis may generate unwanted hardware + behaviour.
+
+		Tasks
+
+		Task is similar to a software proceedure, can have any number of I/O, can call other tasks/functions, must reside in the module it was called from!
+
+		task name(input x, output y);
+
+		endtask
+
+		Functions
+
+		Similar to task but takes only input parameters and returns a single output. Default return is a single bit.
+
+		function name(input x, input y);
+
+		endfunction
+			
+		Task vs Function:
+
+		Calling - Task is a proceedural statements, cannot be called from an assign. Function can be called from within an expression.
+
+		I/O - Task can have any number of I/O, fucntion must have one input and a return value (1bit)
+
+		Timing + Event control - Tasks can contain timing + control + run concurrently, functions cannot.
+
+		Calling other tasks/functions - Tasks can call other tasks or functions, functions can call only other functions.
+
+		Returning values - Task does not return a value proceedurally. Function returns a single value to where it was called.
+
+		Structural Verilog
+
+		Using structural verilog we can glue modules together, connecting specifically their input and output.
+
+		IE
+
+		moduletype name(.inputname(1),
+						.inputname(2),
+						.inputname(3));
+
+		Magic!
+
+		Test Bench
+
+		- Creating a module to test your designs!
+		- All signals, clocks, resets will need to be defined.
+
+		Simulation
+
+		Whenever something happens it is added to the event queue. The simulator has to be able to handle concurrency effectively.
+
+		Although the events are held in a queue and scheduled in any order, the assignments will be executed in the order they are placed in the queue.
+
+		There is a simulator time which the simulator uses to run the events.
+
+		For non-blocking simulation there is a separate queue which will execute as soon as possible!
+
+	Implementing the Stump - This is minimal notes!
+
+		Key Units
+
+			Register Bank - Registers
+			Execute Unit - Takes operands from register bank or data interface, performs arethmetic.
+			Data Interface - Interfaces between the processor and external memory.
+			Address Interface - Acts as processor to memory interface for all external meory, handles addresses fro load/store
+			Control Block - Controls states, interprets instruction bits.
+
+		Sign Extension
+
+	Notes unfortunately end here! The exam is looming and I have switched to a collaborative document in hope to cover more content in less time!
+
+	
