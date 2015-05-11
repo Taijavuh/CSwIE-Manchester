@@ -5,3 +5,244 @@ Will be a question on knapsacks, with need to know complexity ect. bnb and dp me
 
 Other two could be on any of the other course material. Could be hashing and trees, or trees/tree searching.
 
+Trees
+
+A tree is an abstract data type for heirarchical storage of information. Ironically it represents the structure of a tree, who would know!
+
+The top of a tree is called the root!
+And each element in the tree is an arbitrary element, except for the root!
+
+Each element except for the root has a parent and zero or more children elements. This structure can be akind to that of a computer disk storage structure, or a family tree!
+
+A tree (t) is a non-empty set of nodes storing useful information in a parent-child relationship with these properties:
+	- T has a node r which is the root
+	- Each node that is different from r has a parent node u
+	- We can apply the rules of a family tree to that of the tree T
+		- Parents = parent also called ancestor
+		- Child = child also called descendant
+		- Two children with the same parent are called siblings
+	- A node is external (or a leaf node) if it has no children, and internal if it has one or more children.
+
+We can define a sub-tree inside a tree where all the decendants of a specified root are part of the sub-tree!
+
+A tree can also be ordered if a linear ordering relation is defined for the children of each node. Therefore we can define an order among them, a book could be an example of an ordered tree, where each decendant is a different chapter in the book.
+
+The Binary Tree:
+	- Probably the most key to us is the binary tree which is an ordered tree which each node has at most two children (1/0)
+	- A binary tree is proper if each internal node has two children
+	- For each internal node the children are labelled left/right and a left child should be ordered to come before the right so that if the tree was to be read right to left then it would read similar to a book, in the correct order.
+
+Example:
+	- We can represent an arithmetic expression utilising the binary tree where all of the external nodes are being operated on by the operation which resides within the internal node! Infact this is quite a good way for a computer to represent a mathematical expression as it can work from the bottom of the tree in a breath first format to complete the expression!
+
+Abstract Data Type Functions:
+
+	Accessor Methods:
+		- root() - Gets the root of the tree
+		Complexity: o(1)
+		- parent(v) - Gets the parent node of v
+		Complexity: o(1)
+		- children(v) - Returns an iterator of the children of the node, empty if leaf node!
+		Complexity: o(1)
+
+	Query Functions:
+		- isInternal(v) - Checks to see if the node has any children, if it does it is internal! 
+		Complexity: o(1)
+		- isExternal(v) - Checks to see if the node has any children, if it doesn't then it is external!
+		Complexity: o(1)
+		- isRoot(v) - Checks to see if the node has a parent, if it doesn't then it is the root of the tree!
+		Complexity: o(1)
+
+	Generic Methods:
+		- size() - Returns the overall number of elements which are present in the tree!
+		Complexity: o(1) or o(n) (this depends if the value is stored, it should be really)
+		- elements() - Returns an iterator which allows us to work our way through all of ELEMENTS IN A NODE (not the nodes) stored in the tree.
+		Complexity: o(n)
+		- positions() - Returns an iterator whihc allows us to work our way through all of the NODES in the tree!
+		Complexity: o(n)
+		- swapElements(v,w) - Switches the elements at nodes v and w
+		Complexity: o(1)
+		- replaceElement(v,e) - Gives us the element v and replaces it with the element e.
+		Complexity: o(1)
+
+	ADT Binary Tree Accessors:
+		- leftChild(v) - Returns the left child, or errors if null.
+		- rightChild(v) - Returns the right child, or errors if null.
+		- sibling(v) - Returns the sibling of v, or errors if the root.
+
+Depth of a Node:
+
+	- The depth of the node is the number of ancestors that a specific node has, not including it's self. For reference the depth of the root node is 0
+	- This implies a recursive definition, ie from the node keep finding the parent and adding one until the root is located!
+
+Height of a Tree:
+
+	- The height of the tree is equal to the maximum depth of an external node of the tree.
+	- If we were to use the algorithm previously stated the complexity would be a very poor o(n^2)
+	- An alternative: determine if the node is external, if not for each of the children get the greatest of the heights from it's children.
+
+Traversal of a Tree:
+
+	- The traversal of a tree is a systematic way of accessing all of the nodes.
+	- There are two key traversal schemes, preorder and postorder.
+
+	Preorder
+		- The root is visited first and then all of the sub trees rooted at it's children are traversed recursively.
+		- Utilsing this method will produce a linear ordering of the nodes in a tree where the parents are always appearing before their children.
+		- If the tree was a document this preorder would examine it sequentially.
+		- Notably similar to that of a depth first search for trees!
+
+	Postorder:
+		- The compliment of preorder, traverses the leaf nodes first before visiting the root!
+		- Postorder has the complexity of o(n)
+		- Useful if a property requires the results from it's children before it can be computed!
+		- This is notable similar to that of a breath first search for trees!
+
+Binary Trees
+
+	- Binary trees have a structure which enforces a specific leveling system where a level d has at most 2^d nodes.
+	- A proper binary tree has a number of external nodes that is one more than the number of internal nodes.
+
+	Preorder:
+		- Can be used on a binary tree to get the value of the node then recursively call leftChild, rightChild
+
+	Postorder:
+		- Can also be used on a binary tree by recursively calling leftchild, rightchild then getting the value of the node!
+
+	Inorder:
+		- Additionally we can use an "inorder" traversal where the movement is done in the order of the tree. This is effectively visiting the nodes from left to right.
+		- This can be achieved by checking if the nodes are internal and moving left through the tree until the leaf node is found, at which point we can work back up in the order left right left and traversing to the bottom always.
+
+Data Structures for binary trees && Priority Queues!
+
+	- We can use a different array of data structures for representing binary trees (vector-based, linked)!
+	- Priority queues need sorting so the data structure we need for this needs to be implemented!
+
+	Trees : Vector Based
+		- A vector based structure is based on a simple way of numbering the nodes.
+		- For every node in the tree would be assigned a fixed position in the vector! This would be calculated using the numbering function (p()) and is based off the level of the node.
+		- The root would be 1, level 1 would be 2,3, level 2, 4,5,6,7
+		- This is fixed for a binary tree and easy to implement!
+
+		Complexities of the methods:
+		positions(), elements() : o(n)
+		swapElements(), replaceElement() : o(1)
+		root(), parent(), children() : o(1)
+		leftChild(), rightChild(), sibling() : o(1)
+		isInternal(), isExternal(), isRoot() : o(1)
+
+	Trees : Linked Structure
+		- A linked data structure is generally only better than a vector implimentation when the tree height is large, as the vector implementation is likely to be space inefficient. ESPECIALLY if there are gaps!
+		- The linked data structure is a natural way to represent binary data!
+		- The linked data structure works by each node holding information about it's children
+
+	KW: Total Order - Total order is effectively a the order of objects with keys and the rules as to how this is supposed to be attained, where the objects carry shit all meaning and the keys do all the work!
+
+	Priority Queues:
+		- A priority queue is a container of elements with keys associated to them at the time of insertion.
+		- Two fundamental methods of the PQ are:
+			- insertItem(k,e) where k = key and e = element
+			- removeMin() removes the element P with the smallest key
+		- The priority queue ADT (Abstract Data Type) is relatively simple, the elements are inserted and removed based on their ranks. In order to allow this all a comparator is defined on the creation of the priority queue which enables the keys to be measured against each other and the position of the item in the queue to be determined!
+
+	Sorting Priority Queues:
+		- PQ could be used to sort the elements in a collection, by inserting all of the elements into the priority queue and then returning them to the collection by removing the minimum would sort all of the elements.
+		- But the priority queue itself needs to be sorted utilising some method:
+			- Selection Sort:
+				- Elements are inserted at the end of the queue and after insertion we need to locate it's position, to do this using selection sort will take o(n) whilst all other operations will take o(1)
+			- Insertion Sort:
+				- Before we insert the element we determine the location of the element and place it in the correct position. Similar to selection sort the insertion part is linear and takes O(n) as a result is slows down the PQ
+			- Heap Sort:
+				- This is the most efficient way to implement a PQ, a heap is effectively a binary tree. Thus by implementing a binary tree structure we can perform an insert with the efficiency of o(log(n))! MAGICAL!
+
+Heaps, Dictionaries and Hash Tables
+
+	The Heap:
+		- Can perform insertions and retrievals in logarithmic time!
+		- Store the elements in a binary tree instead of a sequence!
+
+	The Structure:
+		- The heap is a binary tree with a collection of keys acting as the nodes.
+		- It follows a relational structure
+		- There is a total order relationship on the keys.
+		- Effectively the heap-order property states that for every node, the parent is less than or equal to it's children. Thus the root is always the lowest value in the structure.
+		- Additionally the heap follows the complete binary tree property and the levels are propertly balanced, with a maximum of two children. (Standard rules for a binary tree)
+
+	A heap based priority queue:
+		- There are a number of things that a heap based priority queue is made up from:
+			- heap - The complete binary tree with keys that satisfy the heap-order property
+			- last - A reference to the last node in T.
+			- comp - The comparitor which defines the total order relation amongst the keys, the result of the comparitor should keep the minimal element at the root of the tree!
+		- Inserting to a heap base PQ
+			- To store a new key-element pair we need to add a new node to the tree, this is done as the LAST node in the tree.
+			- Once the insertion has been completed it is possible that the heap-order property is no longer true. As a result we use UPBUBBLING
+
+			Upbubbling:
+				- Upbubbling is the process of running the comparitor of the tree on the parent and the new node. If the new node is smaller then it must be cascaded up!
+
+		- Removal from a heap based PQ
+			- To remove a key-element pair we basically have to take away the root of the tree, since this would completely screw up a binary tree we need to do something about it.
+			- The process to do this is called downbubbling and ironically it's pretty much the opposite of upbubbling!
+
+			Downbubbling:
+				- Downbubbling is the process of switching the LAST node to the root element then performing comparison of child nodes in an attempt to find the highest value to switch it with until the the heap-order property is successfully validated again
+
+	The implementation of a heap based priority queue is the most efficient way to go about PQ's
+
+	Dictionaries + Hash Tables
+		- A computer dictionary is a data respository specifically designed to perform the search operation, the user will assign keys to elements and use the same keys to add/remove elements.
+		- The dictionary abstract data type has methods for insertion, deletion and searching!
+		- key element pairs are called ITEMS
+		- We can allow multiple elements to have the same key, but in some applicatons this is probably a bad idea.
+
+		An Associative Store
+			- This is when the keys are unique and are effectively addresses for a specific object.
+
+		Methods a ADT Dictionary Supports:
+			- findElement(k) - Finds an element with a key k
+			- insertItem(k,e) - Inserts element e with a key k
+			- removeElement(k) - Removes an element with key k
+
+		A simple way to implement a dictionary would be using a vector or list. This is a LOG FILE/AUDIT TRIAL method.
+			- This is great if the data doesn't change much, and there isn't too much data.
+
+			Complexity using Log Files:
+				- insertItem o(1)
+				- findElement o(n)
+				- removeElement o(n)
+
+		An alternative and more efficient way is using a hash table, there are two major components:
+			- Bucket arrays - An array of a fixed size n, where elements are key-element pairs
+			- Hash functions - A function which maps a key from a dictionary to a integer within the bounds of the array!
+
+			Collisions:
+				- It is quite likely that collisions will occur within a hash table. As a result our hash function needs to be sufficiently complex that it avoids collisions as best as possible.
+				- Polynomials are a excellent choice when formulating an appropriate hash function. They tend to end up with few collisions.
+
+			Compression Maps:
+				- A compression map is used when the hash codes generated by the hash function fall out of the range of the array. The compression map helps spread out the hashed values often using a prime number. An alternative method is to use multiple add and divide.
+
+					MAD - h = |ak+b|mod N
+					DIV - h = |k|mod N
+
+			Collision Handling:
+				- Should a collision occur we need to do our best to handle it. A simple way to do this is just create a mini dictionary inside the bucket, thus allowing more than one entry per bucket array value.
+
+			Rehashing:
+				- In order to keep the load factor below a constant. We may need to change the size of the bucket array and modify the compression map. This is rehashing.
+
+			Open Addressing:
+				- Open addressing is when only one element is stored per bucket, and thus a more sophisticated method of handling collisions is needed.
+
+				Linear Probing:
+					- One way is linear probing where when we attempt to enter a item into a bucket which is occupied we calculate a new position based off the entry point and increment until we find a free space.
+					- Doing this does make it hard to removeElement correctly!!
+
+				Quadratic Probing:
+					- An alternative is to linear probing is quadratic probing where the buckets attempted to iterate to are spread using ^2 to prevent clustering around a main point. However secondary clustering may occur depending on the size of the table.
+					- Additonally quadratic probing makes removal operations more complex.
+
+				Double Hashing:
+					- Double hashing is a process which eliminates the data clustering all together. In the case of double hashing, should a collision occur then a secondary hash function is used to find an appropriate location. This way the clustering is avoided and the element is placed somewhere reasonable to find!
+
+
