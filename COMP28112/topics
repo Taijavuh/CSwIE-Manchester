@@ -1,0 +1,91 @@
+Key Topics
+	- Byzantine Generals
+	- ACID
+	- Two Phase Commit
+	- Ahmdahls Law
+	- Littles Law
+	- Lamport Clocks vs Vector Clocks
+	- Denial of Service Attack
+	- RPC mechanisms (why can't RPC handle pointers?) (client/server stubs?)
+	- Caching vs Replication
+	- Bully Algorithm
+	- Elastication
+	- What is an IDL?
+	- What is the RMI registry?
+	- Why can't we sync clocks?
+	- Why assume latency is zero is a fallacy?
+	- Mutual Exclusivity!
+	- Semantics
+	- Load balancing + expansion
+
+2012
+	- What is a servlet?
+	- Cristians Clock Sync Algo
+	- Name Server vs Directory Server
+	- Middleware
+	- Why can't we achieve strict consistency
+	- RPC mechanisms cannot handle pointers, why?
+	- What is parameter unmarshalling?
+	- Caching vs replication
+	- Why would someone want to use cloud computing
+	- Denial of Service attack
+	- What is wrong with assumption latency is zero?
+	- What are the properties of ACID
+	- Outline the byzantine generals problem
+	- Sequential consistency + x process computing
+	- RPC client stub server stub
+	- Two phase commit protocol
+	- Lamport clocks, vector clocks
+	- Bully algorithm
+	- ACID transactions
+	- Propose an elastication strategy for threading.
+
+2013
+	- Middle ware
+	- Byzantine failures
+	- Two phase commit protocol
+	- Services with at least once semantics
+	- Why can't we achieve synchronised clocks?
+	- What is the purpose of the RMI registry?
+	- What is parameter marshalling
+	- Caching vs Replication
+	- What is littles law
+	- Denial of service attack
+	- Why are some applications not paralellisable?
+	- Ahmdahls law
+	- ACID transactions
+	- Service calculations
+	- Lamport clocks + vector clocks
+	- Why is latency is zero wrong
+	- RPC calls
+	- Bully algorithm
+	- Parallel execution
+	- Byzantine Generals problem
+	- Traitor issue
+	- How is this relevant to distributed computing
+	- Server Queue and load balancing
+
+2014
+	- Homogeneity in distributed systems
+	- why is latency is zero true
+	- publish-subscribe messaging
+	- What is an IDL and it's purpose
+	- RPC what is copy-restore?
+	- what must a server do to provide at most once semantics to it's clients?
+	- What are byzantine failures
+	- What is eventual consistency
+	- What is the rmi registry in Java RMI
+	- What could you do in lab ex2 to launch a dos
+	- What is a client stub vs a server stub?
+	- Lamport (logical) vs vector clicks, whats the difference?
+	- What is ACID?
+	- How can a centralised coordinated process provide mutex services?
+	- Mutex in distributed systems
+	- What happens in a RPC
+	- Service uptime
+	- Service speed up
+	- Why can't you put a limit on time taken for client requests
+	- Parallel processing
+	- ACID transaction
+	- Two phase commit
+	- Wait duration for queues

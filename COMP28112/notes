@@ -1,0 +1,248 @@
+Distributed Systems - COMP28112 - June 2015
+
+Key Topics - From Past Exam Papers
+	- Byzantine Generals
+	- ACID
+	- Two Phase Commit
+	- Ahmdahls Law
+	- Littles Law
+	- Lamport Clocks vs Vector Clocks
+	- Denial of Service Attack
+	- RPC mechanisms (why can't RPC handle pointers?) (client/server stubs?)
+	- Caching vs Replication
+	- Bully Algorithm
+	- Elastication
+	- What is an IDL?
+	- What is the RMI registry?
+	- Why can't we sync clocks?
+	- Why assume latency is zero is a fallacy?
+	- Mutual Exclusivity!
+	- Semantics
+	- Load balancing + expansion
+
+Topics are addressed by passing through the lecture notes in order
+
+A distributed system is a computed platform which is built with many computers that:
+Operate concurrently, are physically distributed, are linked by a network and have independent clocks
+
+A key quote relating to distributed systems is that of Leslie Lamport:
+
+You know you have a distributed system when the crash of a computer you have never heard of stops you from getting any work done!
+
+The consequences of a distributed system are that of:
+Concurretn execution of processes
+No global clock
+No global state
+Units may fail independently
+
+
+So? Why do we bother having distributed systems?
+People are in many cases distributed but need to work together in order to achieve a common goal.
+Hardware needs to be physically close to people who are distributed
+Information is distributed but needs to be shared
+Hardware can be shared by allowing work to be done in parallel.
+
+Loads of existing distributed systems:
+Internet, intranet, email, dns, electronic banking, p2p, mobile computing
+
+Evolution:
+
+Parallel computing was a hot topic in the 70s and 80s
+
+Some of the earliest distrubuted systems were that of airline reservation systems and banking systems.
+
+The real upgrade was that of networking technology and the world wide web!
+
+There are 8 key fallacies of distributed computing.
+All of these are FALSE and will cause big trouble and painful learning experiences!
+
+The network is reliable
+Latency is zero
+Bandwidth is infinite
+The network is secure
+Topolgy does not change
+There is one administrator
+Transport cost is zero
+The network is homogeneous
+
+1 : The network is reliable
+- Hardware can fail, maybe have power failures.
+- We may need to buy redundancy hardware and invest in software which can retry, ack, reorder, error correct messages!
+
+2 : Latency is zero
+Latency/Ping - Time taken for the data to move from one place to another measured in time! Limited by speed of light. AT least 30ms from EU to NA and back.
+- Make a minimal number of calls and transfer as much data as possible within these calls!
+
+3 : Bandwidth is infinite
+Bandwidth - How much data you can transfer over a period of time ( bits / second )
+- Constantly grows but so does the amount of information we are attempting to squeeze through it, and it can be reduced by packet loss!
+- We need to compress as much as possible to ensure that the bandwidth is not exceeded!
+
+4 : The network is secure
+- Quite obviously the network is rarely completely secure, and it's going to be common to want to build security into applications from day 1!
+- It's possible that as a results of security considerations you may not be able to access parts of networked resources, different user accounts may have different privileges!
+
+5 : Topology doesn't change
+- The topology doesn't change when we are in the lab, but once we get out the will often be servers appearing and disapearing without warning!
+- We can't rely on specific endpoints or routes and need to be able to consistently be prepared for change. Abstraction of the physical structure of the network helps with this, IE DNS names over IP's
+
+6 : There is one administrator
+- In general there will be different administrators associated to a network with a very varied degree of experience. As a result it may be hard for them to locate problems!
+- We need to take into account the coordination of the upgrades on a network to ensure that the human factor is not overlooked!
+
+7 : Transport cost is zero
+- Going from the application layer to the transport layer is not free!
+- Information needs to be serialised to get the data onto the wire.
+- The cost for running a network is NOT zero and we may be required to lease the necessary bandwidth ect!
+
+8 : The network is homogeneous
+- It's quite possible in the modern world for a linux and windows pc to connect!
+- Interoperability will be needed!
+- Using agreed standardised technologies such as XML json ect this allows us to share data quickly and easily!
+
+We have a number of challenges in distributed systems:
+Heterogenity
+Openness
+Securit
+Scalability
+Failure Handling
+Concurrency
+Transparency
+
+Increased Performance
+- There are a huge number of applications where a good response time is needed!
+- We have the oppertunity to increase execution time by using more computers to work in parallel! But there are limits to doing this!
+
+There are a number of scientific operations which are inherently parallel, and in a number of ways machines can operate on different data at the same time.
+In an ideal situation the exection would be sped up be a factor equal to the number of processors but this is unlikely to be true!
+
+Parallel Computing is multiple CPU's in the same computer
+Distributed Computing is computers that are connected by a network
+
+In a number of cases it is unclear where we draw the defining line between the two! A number of problems are common between both but have slightly different flavours to them!
+
+Key Issues:
+Communication - Computers need to send data to each other!
+Synchronisation - We may have issues keeping the data in sync if we allow one process to modify something whilst another is doing so!
+
+NOT ALL APPLICATIONS CAN BE PARALLELISED!!!!!!
+
+Sometimes it's just not appropriate to perform parallelisation as it's not possible to distribute the tasks needed!
+
+Amdahls law!
+
+It's used to find the maximum expected improvement to an overall system when only part of the system is improved!
+It is used to predict the theoretical maximum speedup using multiple processors, the law takes into account the parts of the program which are serial and can only be executed by one processor/thread and that of which can be executed in parallel. (We probably should consider the law of diminishing returns!)
+
+The best way to go about parallelise an application would be to:
+- Identify instructions which can be executed in parallel. (These really need to be independent of each other)
+- Identify instructions which are excuted on multiple data, thus different machines can operate on different data!
+- We can schematically plan out dependencies!
+
+There are a large number of challenges when attempting to parallelise a system. We need to consider all of them!
+
+Architectures:
+
+Tightly coupled:
+	- Machines which are highly integrated that appear to act much like a single computer!
+
+Loosely coupled:
+	- Client-Server
+	- Peer-to-peer
+	- Web services
+	- Distributed objects
+
+Tightly coupled systems:
+	- Distributed Shared Memory (DSM) - This gives the illusion of a single shared memory unit. It spares the programmer the concerns of message passing! 
+		- However machines are still connected by a network and as a result they are subject to the bandwith and latency constraints!
+		- It may be hard to keep track of the location of shared data
+		- There may be delays when attempting to access remote data
+		- Additionally there are potentially issues with concurrency over shared data!
+		- The data needs to be replicated on multiple machines, there must be a form of coherence!
+
+Loosely Coupled Styles:
+	- Layered Architectures - The layered style is much like a sandwhich with the data flowing through every layer in between!
+	- Object-based architecture style - This style has a number of objects and runs method calls in between them where required!
+	- Event-Based architecture style - This style has an event bus which allows components to remove and re-add items as required.
+	- Shared-Data space architecture style - Similar to the event based but much more free, the data space simply holds the content and it can be delivered/published as required!
+
+Middleware:
+	- Middleware is a software layer that provides a programming abstraction to mask the heterogeneity of the underlying platforms (networks, languages, hardware)
+	- EX: Java RMI, CORBA 
+	- However the end-to-end argument implies that some aspects of communication support cannot always be abstracted away from applications.
+
+	The End-To-End Argument:
+		- The function in question can completely and correctly be implemented only with the knowledge of the application standing at the end points of the communication system. Therefore providing that questioned function as a feature of the communication system itself is not possible!
+		- It's true but probably written by an asshole....
+
+Client Server Model:
+	- Server
+		- Passive (Slave)
+		- Waits for requests
+		- On a request it handles it
+		- Can be stateless or stateful
+	- Client
+		- Active (Master)
+		- Sends requests
+		- Waits for and recieves server replies
+
+Peer to Peer Model:
+	- Pretty much data is just transferred between the two participants in the system!
+
+Client Server vs P2P:
+	- CS is widely used, has a specification, is asymmetrical, is centralised and scales poorly!
+	- P2P is symmetrical, is truely distributed, can share over a large number of participants, resource discovery is a challenge!
+
+Variations on a theme:
+	- We may need to use multiple servers to increase performance and resilence
+	- We may need to use mobile code
+	- Users may require low cost machines
+	- Mobile devices are likely to be added and removed!
+
+Quick Point - Mobile Code:
+	- A mobile device may download and applet from a server which it then executes it's self without need for communication with the webserver.
+
+Quick Point - Thin Clients:
+	- A thin client will often use a server to perform complex computation rather than relying on local resources!
+
+When designing a system which is to be distributed we must consider:
+	- Performance
+		- Responsiveness
+		- Throughput
+		- Load balancing
+	- Quality of Service
+	- Caching and Replication!
+	- Dependabilty
+		- Correctness
+		- Security
+		- Fault-Tolerance
+
+All of the models have the key ingredients needed for a distributed system, and we need to be aware that some are more appropriate than others in certain situations. They are all abstractions of reality and we need to be sure to handle:
+	- Process Interaction
+	- Failure
+	- Security
+
+A number of failures in distributed systems are down to the poor management of concurrency! There are a few reasons for this:
+	- Performance of communication channels
+	- Computer clocks desync/timing events
+
+A synchronous system waits for a process to be completed before continuing, as a result:
+	- Execution speeds have a upper and lower bound
+	- There is a bound on the transmission delay
+	- The clock drifting has a known bound
+
+On the other hand a asynchronous system is a mysterys and all of the above elements could take a arbitrarily long time!
+
+Key Points:
+
+	Failure in a distributed system is normally down to the management of:
+		- Concurrency
+		- Failures
+		- Security
+
+RPC
+
+Keyword: IDL
+	Interface Definition Language: (IDL) - A specification language utilised to describe a software components interface. A language independent way to enable communication between software components that don't share a language!
+
+

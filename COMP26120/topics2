@@ -1,0 +1,82 @@
+Key Topics
+
+Understand exactly how the following work:
+	Dijkstras
+	Dynamic Programming
+	Branch and Bound
+	Greedy
+	(Enumeration)
+	Hash Tables/Trees
+	AVL Trees
+	Graphs
+
+Other topics:
+DFS vs BFS
+Heuristics
+Adj List vs Adj Matrix
+Knapsack Upper Bound
+Priority Queues
+Acyclic?
+Complexity
+
+2012
+	- Knapsack definition goal+constraints
+	- Understand optimal, non-optimal, how they work, the process behind:
+		- Brand and Bound
+		- Dynamic Programming
+		- Greedy Algorithm
+		- Complexity of each!
+	- Dijkstra's definition goal + constraints
+		- Pseudo code
+		- How it works with weighted graph
+		- Complexity
+		- Possible Modifications
+	- Binary Tree/AVL Tree
+		- Operation
+		- Pseudo Code
+		- Complexity
+	- Graphs / Graph Algorithms
+		- Adjacency List vs Adjacency Matrix
+			- How they work?
+			- How they can be implemented?
+		- Searches
+		- Directed vs Undirected
+		- Acyclic
+2013
+	- Dijkstra's
+		- Pseudo Code
+		- Show how it works
+		- Heurisitc Alternatives
+	- Knapsack
+		- Upper Bound
+		- Greedy/DP/BNB
+		- Efficiency
+		- Tabular DP?
+	- Binary / AVL Tree / Hash Table
+		- Hash Table vs AVL tree
+		- How an AVL tree works vs how a hash table works
+	- Graphs
+		- Avg List vs Matrix
+		- DFS vs BFS and algorithms
+		- 2-colouring on undirected graphs
+2014
+	- Dijkstra's
+		- Pseudo code + modification for efficiency
+		- Application how it works
+		- Heuristic (mixing greedy with djikstra)
+	- Knapsack
+		- Describe knapsack
+		- Explain greedy
+		- Fractional upper bound
+		- DP
+	- Trees / Hashing
+		- Inserting into hash table
+		- Inserting to AVL
+		- Pseudocode for adding/removing
+	- Tree Searching
+		- DFS vs BFS
+		- Priority searching + heuristic
+		- Priority queue
+		- Heap data structure
+		- Heuristic search
+
