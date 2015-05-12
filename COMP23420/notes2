@@ -1,0 +1,278 @@
+Software Engineering Semester 2 - 2015 - Notes
+
+What is Software Engineering?
+	- An engineering discipline which is concerned with all aspects of software production
+	- Theories, methods, processes, and tools for professional software development
+	- Software Engineers should adopt a systematic and organised approach to their work and use appropriate tools, processes and techniques depending on the problem!
+
+Processes:
+	- Waterfall
+	- Iterative
+	- Incremental
+	- Agile
+	- RE
+	- Design
+	- Testing
+	- etc
+
+Tools:
+	- Modelling Languages (UML)
+	- Programming Languages (Java)
+	- Programming Environments (Eclipse)
+	- Model Transformers
+	- Code Generators
+	- SW MTG Tools? Mitigation?
+	- Debuggers
+
+Products:
+	- Use cases
+	- Test cases
+	- Requirements Specification
+	- Software Specification
+	- Architectures
+	- Analysis Models
+	- Design Models
+	- Programs
+
+A software engineers effective task is to understand how the computer system needs to be implemented in the real world, what the end user wants from the software and then design it appropriately.
+
+A software process it a set of activities which assist software engineers to understand, design and implement the software-to-be, some generic examples are:
+	- Specification
+	- Development
+	- Validation
+	- Evolution
+
+In general successful software engineering project will have a key set of traits:
+
+	- The existance of a strong architectural vision.
+	- The application of a well-managed, iterative and incremental development process.
+
+Good application of appropriate software processes will lead to good software. The use of good well defined processes reduces the overall risk.
+
+There are two key generic types:
+	
+	The Macro Process
+		- Serves as the controlling framework for the entire software development lifecycle.
+		- Covers all major development activities.
+		- Measured on the scale of weeks to months of team effort.
+
+	Macro Process Models:
+		- Waterfall
+		- Iterative
+		- Agile
+		- Model Driven Development
+		- Spiral
+		- Incremental
+
+	The Micro Process
+		- Serves as the controlling framework for individual development activities.
+		- Measured on the scale of days, by the individual or small team.
+		- Overseen by the macro process.
+
+	Macro Process Models:
+		- Requirements engineering process
+		- Design process
+		- Debugging process
+		- Testing process
+		- Evaluation process
+
+Waterfall:
+	- Inflexible
+	- Difficult to respond to requirements changes
+	- Only useful for projects with well-understood requirements
+
+Iterative:
+	- Successive refinement
+	- Always part of the process for large systems
+	- Process iteration in early stages of development is common
+	- Applicable to any generic process models
+
+Incremental:
+	- Decompose the development and delivery into increments with each increment delivering part of the required functionality.
+	- Prioritise user requirements and include the highest priority requirements in early increments, this ensures the most important stuff is done as early as possible.
+	- Freeze the requirements once the development of an increment has started.
+	- Continue to evolve the requirements for later increments.
+
+	ADV:
+	- Customer value can be delivered with each increment so system functionality is avaliable earlier.
+	- Early increments act as a prototype to help elicit requirements for later increments.
+	- Lower risk of overall project failure
+	- The highest priority system services tend to recieve the most testing, hence they are less like to go wrong!
+
+Spiral:
+	- Process is represented as a spiral, each loop in the spiral represents a phase in the process.
+	- No fixed phases and loops in the spiral. It's chosen depending on what is required at that point.
+	- Risks are assessed and resolved throughout the process.
+
+	Activities:
+	- Set the objective
+	- Assess the risk
+	- Develop and validate
+	- Plan for the next phase
+
+Agile Processes:
+	- Feature-Driven Development (FDD)
+		- Integrates ideas from plan-driven processes
+	- SCRUM
+	- Crystal Family
+	- Agile Modelling
+	- Dynamic Systems Development Method (DSDM)
+	- Extreme Programming (XP) - Based on test driven development (TDD)
+		- Focused around the development and delivery of very small increments of functionality!
+		- Relies of constant code improvement, user involvement and often pair programming.
+
+Model Driven Development (MDD)
+		- Views the process of software development as the building of models and transforming models.
+		- Separates different concerns in different models
+			- CIM: Computational Independent Model
+			- PIM: Platform Independent Model
+			- PSM: Platform Specific Model
+		- Models and meta-models are primary software artefacts
+		- UML is the main language for model development
+		- Supported by automated model transformation & code generation technologies.
+
+		ADV:
+		- Models are high level of abstractions and they are much easier for the client to understand.
+		- Models are independent of programming langauges, so it's easy for us to transition between platforms.
+
+Requirements Engineering Process
+	- The analysis process
+	- Establishes what services are required and the constraints on the systems operation and development. Phases:
+		- Feasibility Study
+		- Requirements elicitation and analysis
+		- Requirements specification
+		- Requirements validation
+
+Software Design Process
+	- The implementation process
+	- Converts the specification from a design into a working excecutable program:
+		- Architectural Design
+		- Abstract Specificaiton
+		- Interface Design
+		- Component Design
+		- Data structure design
+		- Algorithm Design
+
+Debugging Process
+	- Debugs the program to remove any errors.
+	- Programmers will carry out some program testing to discover faults in the debugging process.
+
+Testing Process
+	- In test driven development the process of writing the tests is done at the start of the development rather than at the end.
+	- Involves executing the system with test cases that are derived from the specification of the real data to be processed by the system:
+		- Unit testing - Individual Components
+		- Sub-System testing - Related collections of dependent components are tested
+		- System testing - Testing of the system as a whole, testing of emergent properties
+		- Acceptance testing - Testing with customer data to check that it is acceptable
+
+Software Evolution
+	- Software is likely to evolve as requirements change, this is just because of the world of business!
+	- It is more likely that maintainance will be carried out on a system rather than a completely new system being built. Most of the time, it's a waste of time!
+
+CASE - Computer Aided Software Engineering
+	- Software that supports the software development and evolution process
+	- It automates a few areas of the process!
+		- Graphical editors for UML
+		- Data dictionary for managing design entities
+		- Graphical UI builders for UI construction
+		- Debuggers for finding problems in programs
+		- Automated translators for generating new versions of a program
+
+Initial Summary
+	- SE is key to a nations economy
+	- SE is an engineering discipline, concerning all the aspects of software production
+	- The role of a software engineer is to create an application which satisfies the customers needs through a set of pre-defined processes
+	- Software processes are the activities involved in producing and evolving a software system.
+	- General activities are specification, design and implementation, validation and evolution.
+	- Software process models are abstract representations of well-defined repeatable processes! these must be followed to create solid software!
+	- There are two types of generic software process models: macro and micro
+	- Requirements engineering is the process of developing a software specification
+	- Design and implementation processes transform the specification to a program
+	- Validation checks the system meets to it's specification
+	- Evolution is modifying the system after it's in use.
+
+##
+
+From Analysis to Design
+
+	- The process follows a set of 4 spaces, following a analysis, design transformation, implementation and validation route.
+	- Software engineering uses 3 key types of model:
+		- The Domain Model
+			- Represents the problem at an abstract level
+		- The Design Model
+			- Represents the solution at an abstract level
+		- The Process Models
+			- Represents a software process
+
+	- How to construct a domain model
+		- Identify domain objects
+		- Represent them as classes (domain classes) showing key attributes only.
+		- Identify relationships between domain classes
+		- Label the relationships with names + multiplicities
+		- Keep the model simple!!!
+
+	- How to identify domain objects
+		- Things (person, book, computer)
+		- Roles (student, doctor)
+		- Incidents (film, concert, phone call)
+		- Interactions (Transactions, rental, marrage)
+		- Specifications (Bill, bank statement, software specification)
+
+	- How to identify relationships
+		- Related by association:
+			- 1 student owns many books
+		- Aggregation can be done via containment or composition:
+
+			Containment
+			- 1 basket contains 0 - many items (contains is an open diamond!!)
+
+			Composition
+			- Water molecule consists of 1 oxygen 2 hydrogen (consists is a black diamond!!)
+
+		- Inheritance is good for representing alternative options
+			- Payment method cash/card (Is an arrow head)
+
+	- How to represent multiplicities
+		- (Cardinalities) - Model the relationship possible between classes
+		- These can be read both ways
+		- IE: Car *...* Road - Many cars can be on many roads
+		- IE: Basket 0...* Item - One item cannot be in more than one basket
+
+The Role of Domain Models
+
+	- Domain class diagrams show "real world" domain classes, not software classes
+	- But they do inspire software classes
+	- The mapping is not 1-1, some domain classes will NOT lead to design classes
+	- More domain classes may be discovered
+	- Requirements may need to be clarified further
+	- Use cases may need to be revived
+
+From Domain to Design
+	
+	- Domain classes are a good starting point.
+	- We can use GRASP to refine them.
+	- Design classes are more detailed, we want less of them on one diagram.
+
+How to convert a domain model into a design model
+	- Map domain classes to design classes
+	- Human actors should be included if we need to store data about them
+	- External software systems are not included
+	- 1-many and many-many often lead to collections in design.
+
+Pure Fabrication:
+	- Design class which does not correspond to anything in the domain
+		- Collections
+		- Interfaces to external systems
+		- Factories
+		- UI Components
+		- Abstractions/Indirections of other classes
+	- These classes are eventually likely to outnumber the domain inspired classes
+
+Notation:
+	- UML Standard is name:type
+	- Operations func(id:String) : String (public)#(protected)
+	- Static is underlined
+
+## 
+
+ 

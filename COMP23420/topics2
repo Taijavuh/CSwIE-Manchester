@@ -1,0 +1,64 @@
+Key Topics
+	- IBMS Project Arcitecture + Setup
+	- Object Orientated Programming Principles
+	- Test Driven Development
+	- MVC Architecture
+	- Software/Program Organisation
+	- Class/Domain Diagrams
+	- Bug Density
+	- Integration/System Testing (Testing in General)
+	- Scheduling vs Rostering
+	- GRASP Principles
+	- Applying GRASP to IBMS
+	- JUnit Basics (fixtures)
+	- Role Pattern
+	- OOP to UML
+
+2012
+	- IBMS Project Architecture
+	- Two roles of physical architecture
+	- Object Orientated Design, abstraction + refinement
+	- Software Organization
+	- GRASP Principles (high cohesion, low coupling)
+	- IBMS Scenario
+	- Test Driven Development, ADV, DISADV
+	- Describe MVC architecture, interactions, mapping of architecture
+	- Dependency relationships ect
+	- GRASP
+	- Class/Domain Diagrams
+	- Understanding GRASP principles
+
+2013
+	- Understanding requirements
+	- Why driver scheduling is hard
+	- Object Orientated Programming Principles
+	- Agile Software Development Principles
+	- Why write the test first?
+	- Understand basic JUnit fixture!
+	- Pure classes in OOP
+	- Role pattern
+	- GRASP principles in OOP
+	- Role pattern VS GRASP
+	- Explain IBMS vs GRASP
+	- Class Diagram
+	- Design Patterns
+	- Testing Characteristics
+	- Bug Density
+
+2014
+	- Understanding Requirements
+	- Differences between scheduling and rostering
+	- Priniples of OOP
+	- Why should you meet?
+	- Coupling
+	- Integration Testing vs System Testing
+	- Why should the tester be different from the developer!
+	- Three basic OOP views and UML representation.
+	- Methods for program organisation, how these solve OOP problems.
+	- MVC Architecture
+	- GRASP principles
+	- How IBMS was consistent with GRASP principles
+	- Class Diagram
+	- Bug Density
+	- How long it takes to find bugs
+	- System testing checks.

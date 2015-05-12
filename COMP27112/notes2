@@ -1,0 +1,189 @@
+Computer Graphics COMP27112 - Semester 2 - 2015
+
+Interactive Computer Graphics:	
+
+OpenGL:
+	- Has a 3D geometry setup
+	- Therefore 3D trigonometry needs to be used
+	- Homogeneous matrices (x,y,z)
+
+A scaling matrix has the x,y,z setup we would expect and a 1 at the end.
+
+Mesh Data Structures:
+	- Has a vertex list
+	- A edge list, which indexes into the vertex list
+	- A face list, which indexes into the edge list
+
+	All together this forms a list of meshes.
+
+F0 = E0 = V0 - > V1
+	 E1 = V1 - > V2
+	 ect
+
+3D Viewing Pipeline:
+
+	- Using a 3D vertex, there is a 6 step pipeline which results in a 3D image being simulated on a 2D pixel px, py
+	- 1 - Modelling Transformation
+	- 2 - Viewing Transformation
+	- 3 - Projection Transformation
+	- 4 - Clip to view volume
+	- 5 - Perspective division
+	- 6 - Viewport Transformation
+	- Output
+
+The Camera
+
+	- OpenGL uses a camera and perspective projection in order to display the image
+	- A good way to invision this is a stage area where if an item either leaves the front or the back of the stage it will become invisible. The edges of the stage are called the near plane (projection plane) and the far plane, we can define these values to give a different appearance to our work.
+	- We can also define the left, right, top and bottom positions of the projection (near) plane (glFrustum)
+	- This gives us a viewport from a point defined by the "eye" position of the camera.
+
+Diffuse light/surface interaction
+
+	Diffusion:
+		- Occurrs if a surface has pigment particles which will redirect the light.
+
+	Lamberts Law:
+		- Lightsource Ip
+		- Effective intensity recieved is Ie
+		- Law is - Ie = Ip cos(theta)
+		- The helps us calculate how intense the light should be
+
+	Reflection:
+		- When reflection occurs the light is specularly reflected with no change of colour.
+		- As we drift away from the exact opposite angle of incidence then the amount reflected reduced
+
+	Fresnel Equation:
+		- To model this the Fresnel Equation is used where F is the fraction of light reflected
+		- See notes...
+
+	Shading + Interpolation
+
+		Gouraud Interpolation:
+			- Computes average vertex normals at ABC to compute the overall gradient
+
+		Performing Texture Mapping:
+			- We can sample the texture at each pixel and apply the texture as part of the rasterization process.
+			- We can also apply filters at this stage, if required.
+
+		Bump Mapping:
+			- Bumpy surfaces look bumpy because the surface normal changes across the bumps, this means that the top of the bumps appear brighter than the sides.
+
+Image Encoding:
+
+	- Image encoding allows us to reduce the size of photos without reducing the quality significantly, this is done through established standards, ie jpeg, which encodes it in a certain format of which it can decode again to a similar quality. 
+	- There will be differences in the two images but they will not be significant.
+
+Raster Graphics Displays:
+	- Raster graphics uses a 2D array of pixels (screens) or dots (printers)
+	- Therefore images must be sampled in order to be represented
+	- The more samples we have a better fidelity, but a sample is always an approximation.
+
+Vector Graphics Displays:
+	- Vector graphics were the first type of graphical display, these effectively draw a line from A to B
+	- Vector displays are usually monochrome.
+
+A basic graphics architecture would be:
+	- CPU runs the application
+	- Graphics software on the CPU performs transforms, conversions, shading, textures, hidden surfaces
+	- GPU Holds the frame buffer memory and the DAC to render to screen
+	- The CPU produces pixels to the frame buffer memory and the DAC consumes the pixels
+	- Double buffering is a method creating two frame buffers, this allows them to be read/written two alternatively, ensuring that syncronisation is achieved.
+
+OpenGL
+	- There is an alternative to OpenGL - it's DX11/9/8/7/6/5/ whatever
+	- They offer roughly the same functionality.
+	- OpenGL is the graphics system and sits between the application and the input devices + display
+	- OpenGL provides a specification of an API for functions that perform 3D computer graphics.
+	- It's used in engineering, games, education. Everything.
+	- It's evolving, opengl 1-2 have a fixed pipeline, opengl 3 has a programmable pipeline
+	- OpenGL can be used on a crazy number of languages on pretty much everything (yay for everything)
+
+	Things about OpenGL
+	- OpenGL generates pixels, it doesn't handle interaction devices. This is why we add GLUT, which is a library for openGL that does this.
+	- OpenGL does 3D graphics, coordinate transformations, a camera, removes hidden surfaces, lighting, texturing, and pixel operations.
+	- OpenGL expresses coordinate transformations as 4x4 homogeneous matrices, we can transform in many directions.
+	- We can combine and nest transformations, thus creating complex objects from simple parts.
+	- The camera creates 2D scenes of 3D scenes.
+
+	Libraries
+	- Using both GLU and GLUT as libraries for OpenGL we can perform higher level rendering.
+	- GLU provides functions for curves, surfaces, cylinder, discs, quadratics ect as well as utility functions for viewing, textures, tessellation.
+	- OpenGL requires convex polygons (if a line was drawn between two points and fell outside the shape it would be non-convex!)
+	- To allow us to draw shapes that satisfy this we can use tessellation.
+	- GLUT provides interaction, and primative shapes.
+	- The combination of GLUT, GLU and OpenGL is loosely called OpenGL
+
+Transformations
+	- Objects are represented with 3D cartesian coordinates as a point in space
+	- A vector represents a direction in space, with respect to X Y Z axes. It has a length.
+	- A relationship between an object and the origin will have a vector.
+	- We can apply geometric transformations to points to change them, we can perform:
+		- Translation
+		- Scaling
+		- Rotation
+	- To transform a shape we just modify all it's points.
+
+	Translation:
+	- Translation is simply the addition of a set value t to the new position, acting as a 3D shift.
+
+	Scaling
+	- Scaling applies a scale factor enlarging the shape, this is effectively multiplying the shapes coordinates by a set value.
+
+	Rotation:
+	- Rotation is slightly more complex and requires the use of cos and sin.
+
+		To rotate about Z:
+		x = x.cos(theta) - y.sin(theta)
+		y = x.sin(theta) + y.cos(theta)
+		z = z
+
+		X:
+		x = x
+		y = y.cos(theta) - y.sin(theta)
+		z = z.sin(theta) + z.cos(theta)
+
+		Y:
+		x = x.cos(theta) + x.sin(theta)
+		y = y
+		z = z.-sin(theta) + z.cos(theta)
+
+	As each of these transformations are different we need a homogeneous solutions ( the same for each )
+
+	To do this we utilise vector and matrices, to give a uniform way to perform transformations on objects.
+
+	A scaling matrice would multiply each axis in it's own column to give the desired result.
+
+	Rotation using a matrice simple allows us to put the cos, -sin, sin, cos pattern in each position to give a 3x3 transformation matrice.
+
+	Translation is a pain!!!! 
+
+	Translation requires a 4x4 matrice as we don't want to modify any of the co-ordinates by multiplication. As a result we need to add a 4th row and column to allow us to add the translation which will be * 1.
+
+	This also allows us to do projection from 3D to 2D.
+
+Homogeneous Coordinates
+
+	- The form (x,y,z,w) is called homogeneous coordinates.
+	- 'w' is the 4th dimension! But we don't care why...
+	- The homogenous coordinates allow us to perform all of the translations inside a single matrix.
+
+Composite Transformations
+
+	- Because we are using homogeneous coordinates we can apply two transformations at once
+	- To do this all we do is perform the transformations onto the matrice in the order we wish to carry them out.
+	- It is vital that we do this in the correct order!!!
+	- If we were to add two matrix inverses in a composite transformation, the result would do nothing when applied. You would also be able to see nothing was going to happen when looking at the composite transformation.
+	- Should note that not all matrices actually have an inverse.
+
+Transformations in OpenGL
+
+	- In OpenGL every 3D point to be drawn is automatically transformed by the projection matrix and the model view matrix. These enable camera and shape positioning and the way that the camera image is projected onto the screen.
+
+
+Vectors:
+
+	- We can perform normal vector transformations on vectors in OpenGL
+	- Vector geometry is quite important to 3D graphics, it's based around it...
+	- Cross Product - y1*z2 - z1*y2, x1*z2 - z1*x2, x1*y2 - y1*x2 - IE each by each, minus the opposite.
+	- Dot Product - x1*x2 + y1*y2 + z1*z2 - Opp NO by Opp NO for result!

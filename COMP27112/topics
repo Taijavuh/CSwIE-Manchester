@@ -1,0 +1,80 @@
+2012
+ 	- Matrices for transformations in 3D space
+ 	- OpenGL viewing pipeline
+ 	- Modelview matrix
+ 	- OpenGL matrix stack
+ 	- How to use a sequence of transformations
+ 	- Difference between modelling and rendering
+ 	- Light intensity calculations (ambient, diffusal, specular)
+ 	- Coloured light
+ 	- Gouraud's technique of something
+ 	- Thresholding
+ 		- How to calculate
+ 		- Issues with brightness
+ 		- Algorithms for image processing
+ 	- Convolution techniques and applications
+ 		- Examples of use
+ 		- Modifications to improve
+
+2013
+	- Matrices for transformations in 3D space
+	- Duality of modelling and viewing
+	- Creating transformation matrixes
+	- Projection, perspective, clip planes
+	- Scan conversion
+	- Hidden Surfaces in 3D models
+	- Intensity of light
+	- Ambient light
+	- Thresholding
+		- How to calculate
+		- Issues with brightness + correcting issues
+		- How to compute values sensible for the whole image
+	- Colour image data through 3 primative colours
+		- Perceptual colour spaces
+		- Which give the best results
+	- Algorithms for detecting changes!
+
+2014
+	- Modelling and rendering
+	- Scan conversion
+	- z-buffer & hidden surfaces
+	- Light intensity (ambient, diffuse, specular)
+	- Local Illumination Model
+	- Matrices for transformations in 3D space
+	- The camera, viewing + modelling, perspective projection, clip planes
+	- Calculating transformation matrixes
+	- Biometric identifier
+		- Techniques for locating and recognising parts of an image
+		- Biometric measurements
+		- Accuracy evaluation
+	- Region Detection
+		- Field of View
+		- Focal Length
+		- Mapping paths
+		- Finding most followed path
+
+
+Key Topics:
+- Matrices for transformations in 3D space
+- OpenGL viewing pipeline
+- Modelview
+- How to use a sequence of transformations
+- Difference between modelling and rendering
+- Light intensity calculations + coloured light
+- Hidden Surfaces + z-buffer
+- Projection, perspective, clip panes
+- Scan Conversion
+- Thresholding
+	- How to calculate
+	- Brightness + Correcting issues
+	- Calculating a sensible value for the whole image
+- Convolution techniques
+	- Examples of use
+	- Mapping paths
+	- How focal length effects this
+- Colour image data
+	- Perceptual colour spaces
+	- Which are the most popular
+	- Why this method is better
+- Smoothing types
+- Homogeneous coordinates
