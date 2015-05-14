@@ -245,4 +245,274 @@ Heaps, Dictionaries and Hash Tables
 				Double Hashing:
 					- Double hashing is a process which eliminates the data clustering all together. In the case of double hashing, should a collision occur then a secondary hash function is used to find an appropriate location. This way the clustering is avoided and the element is placed somewhere reasonable to find!
 
+##
+
+Ordered Dictionaries
+
+	- In an ordered dictionary we use a comparator to provide order relation.
+	- We can't use an log file or hash table for implementation of a dictionary as neither of the two data structures have ordering among the keys.
+	- If a dictionary is order, the items can be stored in a vector, by non-decreasing order of the keys.
+	- The ordered vector implementation of a dictionary D is reffered to as the lookup table.
+	- Using a lookup table insertion takes o(n)
+	- Finding an element is significantly quicker than a log file.
+
+	Binary Search
+
+		- If we have a ordered sequence, the element at rank i, has a key that is not smaller than the keys of the items i-1 durrr
+		- This ordering allows quick searching of S
+		- Doing a binary search is effectively looking in the middle, working out if it's higher or lower and adjusting the sample size until we find it.
+		- A binary search runs in worst case o(log n)
+
+	Binary Search Trees
+
+		- We can adapt a tree data structure to use a binary search algorithm, it is effectively a tree where the left is lower and the right is higher.
+		- We can perform a search at each node.
+		- The computational cost of this is as before, o(log n)
+		- In order for this to work we need to maintain the structure, this can be done with a balance after each insertion. (AVL Tree)
+
+		Inserting
+
+			- Inserting to a binary search tree is simple first we check the node is not already in the tree.
+			- Then we get the node where it would be attached, perform a comparison and insert at either the left or right position depending on the result.
+
+		Removal
+
+			- First we find the node, if it's a leaf node we can just go ahead and take it out straigh away.
+			- If it's an internal node we have to find the left most internal node in the right subtree.
+			- We then copy this item up into the position of what we were removing, and move it's children if any to it's parent.
+
+	AVL Trees
+
+		- These trees are designed to balance themselves thus to make them as efficient as possible. Maintaining the logarithmic height of the tree, aka the height balance property. An AVL tree holds detail about the height of the tree.
+		- A height balanced tree can only have the left + right side depth differ by at most one!!!
+		
+		Inserting
+
+			- Inserting a key is exactly the same as for any binary tree, comparisons are performed and the element is inserted at the correct position.
+			- However the insertion of the element causes the tree to become unbalanced.
+
+		Trinode Restructuring
+
+			- In order to balance the tree we can perform trinode restructuring on the node causing the height balance property issue.
+			- This is effectively a single or double rotation on the nodes depending on the shape which moves the new node back into the correct position.
+
+		Deleting
+
+			- Deleting a node is as easy as before if the node is a in a leaf position.
+			- If it is not we will have to perform trinode restructuring again to restore the balance.
+			- To rebalance we address the height balance property issue and perform a rotato!
+
+		woo tooobe: https://www.youtube.com/watch?v=YKt1kquKScY
+
+##
+
+Graphs
+
+	- Graphs are a set of nodes and a set of edges which link the nodes together.
+	- A directed graph has edges with a direction
+	- A undirected graph has edges without a direction (multigraph)
+
+	- Two nodes linked by an edge are adjacent
+	- For a directed graph there is a source and target node.
+	- An edge is incident if it has the node as source or target (directed) or links the node to another (undirected)
+	- In undirected raphs the number of edges incident at a node is the degree of the node
+	- In a directed graph the number of edges with the node as a source is the out-degree
+	- And the number of edges with the node as a target is the in-degree
+
+	- A path is a sequence of adjacent nodes and the linking edges, a path can also be empty. (undirected)
+	- A path is a sequence of adjacent nodes and edges with the edges in the same direction. (directed)
+	- If there is a path from A to B it is reachable
+	- A path from a node to itself is a cycle (via elsewhere)
+	- A loop is an edge from a node to itself (via nowhere)
+
+	- Two nodes are connected in a undirected graph if there is a path between them.
+	- In directed graphs nodes are connected if there is a sequence of adjacent nodes between them.
+	- A graph is connected if all pairs of nodes are connected.
+
+	- A subgraph is a graph with nodes and edges that as a subset of the original graph
+	- A connected component is the largest possible subgraph of a graph (additional nodes cannot be added without becoming disconnected.)
+
+	We can represent graphs in a number of ways, there are two common methods and we choose depending on:
+		- Properties of the graph
+		- Algorithms we wish to implement
+		- Programming language + how data structures are implemented
+		- Application of the code
+
+	Methods of representation:
+
+		Adjacency Lists:
+			- Consists of a list of all the nodes
+			- Each node has a list of all adjacent nodes (targets in directed graphs)
+			- Complexity o(n+e) (nodes edges) - Simple stack based algo
+
+		Adjacency Matrixes:
+			- 2 Dimensional array (matrix) representing the connections between nodes in the graph.
+			- Simple binary 1 if edge, 0 if not.
+			- Complexity o(n^2) (nodes) - Simple stack based algo
+
+	- Both methods are tabular representations, exact choice depends on application. Adjacency list may be array of linked lists.
+	- Adjacency matrix may have a large amount of 0's and can get stupidly huge!!!
+	- For undirected graphs, a matrix will be symmetrical
+	- We can do arithmetic with adjacency matrices!
+
+	Traversal:
+
+		There are many techniques to traverse the graph:
+			- DFS - Depth First Search - Visit all descendants of a node before visiting siblings
+			- BFS - Breadth First Search - Visit all children of a node, then all grandchildren.
+			- Priority Search - At each node choose the higher priority child first.
+
+		Each has an appropriate data structure:
+			- Stack - Last in first out - DFS
+			- Queue - First in first out - BFS
+			- Priority Queue - Weighted movements - Priority Search
+
+		There is often an optimization property when it comes to shortest paths. this means there are direct methods of computing shortest paths, ie we only need to combine other shortest paths.
+
+		This is the basis for Floyds Algorithm and Dijkstra's Algorithm
+
+	Planarity:
+
+		The art of depicting graphs in 2D space.
+
+		- Embedding of a directed/undirected graph is the allocation of points and linking together via edges so that none of the edges intersect.
+		- Not all graphs can be embedded in the plane!
+		- Graphs that can be embedded in the plane are called planar graphs
+
+		Graphs can also be coloured, we can determine if a graph can be coloured but it's a NP-complete problem.
+		The only algorithms that exist for colourability are exhausive unlimited back-tracking algorithms and run in exponential time.
+
+		The four colouring of planar graphs is a celebrated problem. "Every planar graph can be coloured with just 4 colours." who cares really....
+
+##
+
+Problem Solving Techniques
+
+	Algorithmic techniques give a range of tools for constructing algorithms which may or may not help.
+
+	Three basic techniques:
+
+		- Divide and Conquer
+		- Greedy
+		- Dynamic Programming
+
+	Divide and Conquer
+
+		- Ironically this method involves splitting the input into parts and then solve them, once done combine the solutions back together again to give the final results.
+		- Divide and conquer fairly often uses recursion to enable it to be implemented quickly and effectively on large data sets.
+		- Quite a wide array of algorithms use divide and conquer:
+			- Sorting algorithms (mergesort/quicksort)
+			- Fast integer multiplication
+			- Fast matrix multiplication
+			- Nearest neighbour problems
+
+	Greedy
+
+		- A greedy strategy is one where in effect it grabs the best possible result presented to it first. It will always go for what may appear to be the best initial result and work the rest out in the same manner to solve the problem.
+		- It may not always work
+		- It won't always be the most efficient way
+		- It will be the most efficient way in some cases
+		- It will normally be quite quick 
+		- Examples:
+			- Path-finding algorithms
+			- Job scheduling
+			- Spanning trees
+			- Knapsack!
+
+	Dynamic Programming
+
+		- Always produce an optimal solution to the problem
+		- Creates an array with results for all the possible sub problems
+		- Bottom up style, solves all the similar problems and combines to answer the given problem.
+		- Examples:
+			- Path finding
+			- Text similarity
+			- Knapsack!
+			- Optimal search trees
+			- Travelling salesperson problem
+
+	Polynomial Time:
+
+		- Both divide and conquer and greedy algorithms often will give a fast (polynomial time) algorithm.
+		- Dynamic programming can be fast but it also used when no fast algorithms are avaliable.
+		- An algorithm with polynomial time is when worstcase complexity is among:
+			o(1) o(n) o(n^2) o(n^3) ect
+		- We consider these as fast algorithms
+
+		Exponential Algorithms
+		- Algorithms which behave in worst case 2^n n^n or n! are very slow and are considered intractable algorithms, in general!
+		- They run so slows as the size of N increases and they are only going to get worse!
+
+	What can we use?
+
+		- Working out how complex a computational task is very difficult. Problems which may appear very similar has have widely different time complexities.
+		- Exponential algorithms arise from either exhausive enumeration, listing everything!!! or systematic searches using unbounded backtracking!
+
+	Colouring a graph:
+
+		Enumeration
+		- To colour a graph with each nodes linked having a different colour, we need a minimum number of colours, this is the chromatic number.
+		- One approach is exhaustive enumeration: 
+			- Enumerate all the allocations of k colours to the nodes of the graph
+			- Check the allocation to see if it's valid
+
+		As a result of this there will be k^N allocations of k colours to the nodes. And to check we will need E checks
+
+		Thus the complexity is o(E*k^n) not great.
+
+		Systematic Search
+		- For each node we try the colour, if all the colours fail we undo the colour of the previous and try a new colour.
+		- We keep doing this until all the nodes are coloured.
+
+		This is exponential in the worst case.
+
+		But all known algorithms for graph colouring are exponential! Thus it is a NP-Complete problem, the only algorithms known are exponential.
+
+	The Travelling Salesperson Problem:
+
+		- Find a tour of N cities in a country where the tour should visit each city once, return to the starting point and be of minimum distance.
+		- This is an optimisation problem.
+		- We can solve by exhausive enumeration, thats exponential.
+		- Or dynamic programming!
+		- But they are all exponential in the worst case...
+
+	Knapsack:
+		- The knapsack problem requires us to fit a number of items of different sizes into a container optimally by value.
+		- Some knapsack problems have polynomial and some only have exponential solutions!
+		- Knapsack has a number of constraints:
+			- Compatability Constraints - What task fits in what slot.
+			- Scheduling Constraints - Do tasks need to be undertaken in a certain order?
+			- Resource Constraints - Are resources limited or unlimited
+			- Optimisation requirements - We may require solutions which maximise or minimize measures.
+
+		The problem is allocate the tasks satisfying constraints.
+
+		Examples of scheduling:
+			- Multitasking operating systems
+			- Industrial processing
+			- Rostering
+			- Timetabling
+
+		Scheduling:
+			- Can have linear or polynomial solutions, can use simple allocation methods.
+			- Most scheduling problems only have exponential solutions:
+				- We may end up using exhausive enumeration
+
+	Heuristics:
+
+		- These are rules we can use in decision making to help make an optimal solution easier. They can help reduce exhausive searches from exponential time to polynomial time, but may effect the results. 
+
+	Puzzles:
+
+		- Interestingly most puzzles can only be solved with exponetial algorithms, thats what makes them interesting. We generally have to use exhausive search with unbounded backtracking!
+
+
+	Things still to touch on:
+		- Knapsack in detail
+		- Djikstra in detail
+		- Fractional Knapsack
+		- Textbook
+
+
+
 

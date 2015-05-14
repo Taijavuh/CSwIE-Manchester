@@ -1,0 +1,90 @@
+2012
+	- Processor Efficiency
+	- Processing Analogue Signals
+	- Calculating how many bytes per sample per song ect
+	- time-domain and frequency-domain representation
+	- event-driven systems
+	- Shannon-Hartley Law
+	- Quantisation (noise)
+	- Bit rates
+	- Discrete Fourier Transform vs Fast Fourier Transform vs Discrete Cosine Transform
+	- What is zero padding
+	- Spectral Analysis
+	- Speech production
+	- Huffman coding
+	- Packet loss
+	- Realtime media
+	- Variable bit rate errors
+
+2013
+	- Nyquist criterion
+	- Fourier Transform
+	- A-Law encoding
+	- Soft vs Hard real time systems
+	- Double buffered DMA real-time data.
+	- Interleaving in FEC
+	- Spectrograph
+	- White noise
+	- Huffman coding
+	- Waveform coding & Parametric coding
+	- Quantisation noise
+	- mp3 music coding
+	- frequency masking
+	- temporal masking
+	- FEC
+	- Hamming coding
+	- CRC and convolutional coders and viterbi decoders
+	- Shannon-Hartley Law
+	- JPEG compression algorithm
+	- MPEG compression algorithm
+	- Centralised Mobile Analysis?
+
+2014
+	- Fast Fourier Transform
+	- Non-uniform quantisation
+	- periodicity, pseudo-periodicity
+	- Frequency-Domain processing
+	- Run length coding in MP3 coders
+	- 1 persistent carrier sensing multiple access
+	- Goals of 4G
+	- Downloading MPEG video, what buffer.
+	- Spatial Multiplexing
+	- additive white gaussian noise.
+	- Shannon-Hartley Law
+	- Narrowband sampling
+	- 2G transmission
+	- Voiced speech and unvoiced speech
+	- Linear predictive coding (LPC 10)
+	- vector quantisation - code-excited LPC
+	- How the avaliable spectrum of 2G-GSM was changed with introduction of 3G.
+	- CRC (CALCULATE)
+	- FEC
+	- convolutionally coded transmission
+	- FEC on wlan
+	- FEC in mobiles
+	- JPEG standard
+	- run-length coding
+	- Huffman coding
+
+Key Topics
+	- Huffman Coding
+	- Run-Length Coding
+	- JPEG Standard
+	- MPEG Standard
+	- 4G, 3G, 2G
+	- Cellular Networking
+	- Spatial Multiplexing
+	- CRC
+	- FEC
+	- Wireless LAN error control
+	- Mobile error control
+	- Fourier Transform
+	- Time Domain / Frequency Domain
+	- Shannon-Hartley Law
+	- Quantisation
+	- White noise
+	- Realtime Media
+	- Masking
+	- A-Law encoding
+	- Hamming Coding
+	- Bit rate calculations

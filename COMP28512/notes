@@ -1,0 +1,121 @@
+Mobile Systems COMP28512 - Semester 2 - 2015
+
+Energy Efficiency:
+
+	- Joule = Unit of energy (= 1 Newton-Meter)
+	- Watt = Unit of power (Joule per second)
+
+	Baby required 5 Joules per instruction
+	DRACO requires 2x10^-9 Joules per instruction.
+
+	It's over 2 billion times better than baby.
+
+Analogue Signals:
+
+	- An analog signal is represented by a sine-wave, it's continuous in value and in time.
+	- The frequency is sin(2*pi*t/T) where t = time
+
+Sampling an analogue signal:
+	
+	- In order to be able to represent a signal in a computer we need to convert it to digital, this is done via sampling.
+	- We measure the value of the signal at regular points in time, now it is a discrete time signal.
+	- The amplitude is still continuous
+	- By sampling frequency enough, we effectively lose nothing (although this isn't strictly true, we should be able to guess what comes between the gaps)
+	- If the sampling frequency is more than twice the maximum frequency we want to capture, nothing is lost.
+	- This is the sampling theorem, or NYQUIST CRITERION
+
+Quantisation:
+	
+	- As we have a limited number of bits avaliable to store each sample, we need to quantise.
+	- This turns a sine-wave into a series of integers
+	- By performing quantisation we introduce errors into the samples values
+	- This is quantisation NOISE
+	- If we have a number of bits pers sample the error is likely to be small, however this does require high storage/transmission capacity.
+	- When we start to reduce the number of bits per sample, the error becomes larger and we can notice the errors.
+	- We refer to it as quantisation noise.
+
+Aliasing
+
+	- When we are sampling we may use a frequency of Fs, in practice we can effectively sample input frequencies up to Fs/2 Hz
+	- Frequencies which are higher "should" be filtered out, in practice we may find that the aliasing effect cause a musical note to go up rather than down, thus causing a harmonic to be out of tune.
+	- The aliasing effect causes frequencies past the point of the maximum frequency to go down again!
+	- Aliasing effectively means that the samples are not being taken often enough for the reconstruction to be effective, therefore we get completely the wrong reading!!!
+
+CD Quality
+
+	- Humans can hear sound over the range 20Hz to 20kHz
+	- This makes CD sampling frequency 44.1kHz
+	- This frequency covers the range from the quietest to the loudest audible sound that we can hear.
+
+	- Using power ratio(dB) = 10 * log10 (power of loudest/power of quietest)
+	- We have a power ratio of 120dB
+	- To store this in a bit, using uniform quantisation we get 6dB per bit.
+	- For 120dB we need about 20 bits.....
+	- This is far too much, as a result we settled for 16 bits and we use DCR to bring the sample to 16 bits rather than 20
+	- We effectively made quiet parts louder, thus we can turn the volume down.
+	- DCR is necessary, controversial but commercially benefical as loud sells!
+	- A stereo CD data rate is 16*44,100*2 = 1,411kbit/s
+
+Telephone Quality
+
+	- Telephones use narrow band, which is 300Hz - 2.4 kHz
+	- It loses the naturalness but it can still be understood
+	- However in practice it's not uncommon for there to be distinguishing errors.
+	- It's sampled at 8kHz with 8 bits per sample
+	- 94kbits/s bit rate, and required non-uniform quantization
+		- mu-law or a-law
+		- ITU-G711 standard
+
+Uniform Quantisation
+
+	- Each value is spread evenly
+	- Each sample of speech is represented by a binary number x[n]
+	- Each binary number represents a voltage.
+	- A constant voltage difference between the voltages for adjacent binary numbers. Represented by delta
+	- Basically this means the sound will be x*delta, where delta is an adjusted value
+	- We then need to choose the right value of delta for the sample!
+		- Larger amplitudes we use a larger delta
+		- And we change the size of delta from sample to sample in a "step-size" style
+
+Non-uniform quantisation
+
+	- Firstly uniform quantization is performed
+	- Values are spread evenly, companding formulas are used to adjust the evenly spread values
+	- Values are no longer spread evenly we can now "re quantise" to get a smaller bit sample
+	- Once we reach the target we use an expander to reverse the effects of the compander.
+
+	Compander & Expander
+
+		- The compander increases smaller amplitudes of x, and reduces larger ones
+		- Expander decreases smaller amplitudes of x and increases larger ones. It also modifies delta with the values.
+		- Famous companding formulas: A-Law, Mu-Law
+		- These require 8-bits per sample.
+		- Companding is similar to compression but done for coding purposes not for listening to directly.
+
+Quantisation Error:
+
+	- Uniform quantisation produces error in samples.
+	- It's random in the range ± delta/2
+	- When the samples are converted back to analogue the error is heard as WHITE NOISE
+	- Noise is unwanted signal, and white noise is spread evenly across all the frequencies.
+	- The MSV of noise is delta^2/12
+	- MSV is a mesaure of power
+
+	Signal to quantisation noise ratio (SQNR)
+
+		- SQNR = 10log10(signal power/quantisation noise power)
+		- This only applies to uniform quantisation
+		- Applies strictly to sine-waves \w 8 bits per sample and a fixed delta 
+		- It shows that 8bits/sample is not enough with uniform quantisation
+		- This is why we must use non-uniform quantisation (quiet people would'nt be heard on the phone)
+		- Use A-Law or Mu-Law
+
+Speech & Music on Mobile Phones
+
+	- 64 kbps/s is still too high for modiles.
+	- We need to encode speech at around 13kb/s or lower.
+	- To solve this we can use LPC coding!
+
+##
+
+Frequency-Domain Processing
