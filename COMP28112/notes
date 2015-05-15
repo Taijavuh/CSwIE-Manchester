@@ -240,9 +240,481 @@ Key Points:
 		- Failures
 		- Security
 
-RPC
+RPC - Remote Proceedure Call
 
-Keyword: IDL
-	Interface Definition Language: (IDL) - A specification language utilised to describe a software components interface. A language independent way to enable communication between software components that don't share a language!
+	- Distributed systems can be built to send and recieve methods, these are rather low level and basic.
+	- RPC provides a higher level alternative.
+	- It also provides access transparency, use of a local service has the same form as a non-local one.
+
+	How it works:
+		- The client calls a process on the server to execute the code of the proceedure.
+		- Arguments for the proceedure are sent in the message.
+		- The result is sent in the reply.
+		- RPC can be both synchronous and asynchronous as required
+
+	- RPC is a middleware layer and acts at a high level, just below the application services level.
+	- RPC must have an agreed format of messages, you can't have the client and server both using addresses.
+
+	Stubs:
+		- Stubs are the case in the client where the arguments are put in a message, sent to the server.
+		- The stub then waits for the reply message, unpacks the results and returns to the application.
+
+	Server Stub:
+		- As the process is transparent the code can be used by other code on the server to provide the service to the local system. Thus RPC messages go to a server stub code on the server machine.
+		- The server stub acts very much like an unpacking queue + prepration for processing and execution. As well as repacking and returning.
+	
+	Parameter Marshalling:
+		- Packing the parameters away into a message is known as parameter marshalling, the inverse is unmarshalling.
+		- These operations need to take into account problems associated with different machines + languages in use on the network.
+		- Client + Server can represent floats, big-endian/little-endian, charsets, size issues (64vs32bit int) in different ways!
+		- Once we have specified the exact format of the parameters we can generate the code for the stubs.
+
+	Keyword: IDL
+		Interface Definition Language: (IDL) - A specification language utilised to describe a software components interface. A language independent way to enable communication between software components that don't share a language! 
+		- This is the best way to store the format for the parameters, thus enabling the remote service to be avaliable to as many languages as possible.
+		- Number of different IDLS:
+			- CORBA
+			- Sun
+			- DCE
+		- They have a similar syntax to that of an interface but they also have extra information (eg. in, out, inout)
+
+	Uuidgen - Creates a unique identifier which is put in the header file to check that the client and server stubs are compatible!
+
+	RMI - Remote Method Invocation
+		- Included in Java
+		- Marshalling is simple as it is Java to Java
+		- Objects sent must be serializable
+		- RMI references remote objects, whereas RPC does not!
+
+		Implementation:
+			- A client has a stub (called a proxy) for each remote class instance, this is used to marshal arguments to and unmarshall arguments from.
+			- This communicates with the dispatcher for the class which forwards to the skeleton for unmarshalling.
+			- The server has a dispatcher and a skeleton for each remote object
+			- The dispatcher recieves the metssage, and passes it to the correct method in the skeleton.
+			- The skeleton implements the methods of the remote interface, unmarshalls the arguments and invokes the corresponding method in the servant.
+
+		rmiregistry:
+			- The rmiregistry makes a remote object avaliable to clients.
+			- Has a string bound to the object and the clients can interrogate the registry using the string.
+			- The client must know the server machine name and the port the registry is running on.
+
+Name and Directory Servers
+
+	Finding a Server
+	- It's not desirable practice to hardwire a machine name and port number into a client!
+	- A directory server is a better idea to find the machine.
+	- We can use a local daemon on the resolved machine to find the port.
+
+	Names
+	- Pure names contain no information about the item they are associated with.
+	- Othernames may tell you what sort of object+where is can be found.
+	- An address is an extreme example of a non-pure name.
+
+	Name Resolution
+	- A name is resolved when it is translated into data about the item.
+	- Names are boudn to attributed. (ie addresses)
+	- A name has a namespace/domain
+	- You can compose names to make bigger ones (URL's)
+
+	URL/URI/URN
+	- URI - Uniform Resource Identifiers - Identifiers on the web, starts with http: ftp: ws: ect...
+	- URL - Uniform Resource Locators - Subset of URI's which provide the location for a resources
+	- URN - Uniform Resource Names - URI's which are not URL's
+
+	Namespaces
+	- Can be flat, a number/string or structured - Heirarchial
+	- If it's heirarchial then each part of the name is resolved in a different context
+
+	DNS
+	- Domain Name System - Names computers across the internet.
+	- Uses replication and caching but strict caching is not vital
+	- Contains a huge amount of data
+	- In general more than one name server needs to be used to resolve a full name.
+
+	Namespace Distribution
+	- 3 Key layers:
+		- Global Layer - .com/.edu/.net - Worldwide
+		- Administrational Layer - cs.com/oce.com/acm.com - Organization Level
+		- Managerial Layer - whatever.cs.com - Managerial Level
+	- Each client has a local name resolver, it can work either iteratively or recursively.
+	- Iteratively it will contact each of the require nameservers in sequence to locate the address.
+	- Recursively the client will get the name servers to pass the result up through the system and only return the result.
+	- Recursive puts more burden on the name servers, but makes caching more effective. It also potentially reduces communication costs. BUT global layers only support iterative resolution.
+
+	Zones
+	- DNS data is divided into zones
+	- Each zone contains attributed data for a domain, but no information about the sub-domain.
+	- There are two authoritative name servers for a zone.
+	- They hold the names of servers for domains and zone management data.
+
+	Name Server vs Directory Server
+	- A name server takes a name and returns one or more attributes of the named object.
+	- A directory server takes attributes values and returns sets to attributes of objects with those attribute values.
+	- Both are like a telephone directory.
+
+	X.500 Directory Service
+	- Invented by standards organisations
+	- Collection of all entries, Directory Information Base (DIB) - Portions on different servers
+	- Clients are Directory User Agents (DUA's)
+	- And they retrieve a Directory Information Tree (DIT)
+
+	LDAP
+	- Lightweight Directory Access Protocol
+	- Simple protocol for use with X.500
+	- Allows a more simple directly lookup than X.500.
+	- Widely adopted.
+	- There is enough information provided to navigate the DIT, then other attributes can be obtained.
+
+Time and Logical Clocks
+
+	Synchronization
+		There are two key issues that affect synchronization
+		- Difficulty of setting the same time
+		- Clock drifting
+
+	UTC - Coordinated Universal Time
+	- International atomic time, derived from clocks with atomic oscillators. Rarely drifts
+	- Effectively derived from sun/stars ect
+	- Based on atomic time, with occational insertion of leap seconds to keep it in time.
+	- UTC is broadcast by GPS
+
+	Computer Time
+	- GPS recievers are about accurate to 1 micro second
+	- Recievers from terrestrial stations are accurate to a few millisec.
+	- But most computers don't have these methods of setting the time.
+
+	Cristians Clock Synchronization
+	- Time Server - Clients set the clock by measuring the round-trip time to process the request and adding half the time to the reply. This assumes that the time out is the same as the time back, this is likely to be true if the rtt is short. But may be inaccurate for longer journeys.
+
+	Berkeley Algorithm
+	- 1 Processor polls the others
+	- Slaves reply with their times
+	- Master estimates the times using the RTT's as before.
+	- Master averages the times and eliminates any anomolies.
+	- Instead of returning the correct time, the master returns the time +/- the RTT.
+	- If the master fails a distributed election algorithm exists to elect one of the slaves as a replacememnt.
+	- Designed primarily for intranets.
+
+	NTP - Network Time Protocol
+	- Designed for larger scale internet
+	- Network of servers:
+		- Primary with UTC
+		- Secondard synchronized with primary
+	- Can be reconfigured if either source fails, so either machine can become primary/secondary.
+
+	NTP Synchronization
+	Three key methods:
+		- Multicast
+			- Used on highspeed LAN's
+			- Server sends time to all servers on LAN at once.
+			- Each resets clocks
+
+		- Procedure call
+			- Effectively cristians algorithm
+			- Server accepts request and responds with time.
+			- Used when multicast is not supported or higher accuracy is needed.
+
+		- Symmetric
+			- Highest accuracy
+			- Messages exchanged and data built up to improve accuracy over time.
+			- Each message contains timing information until the time can be accurately pinpointed.
+
+	Data Filtering:
+
+		- NTP servers filter successive offset and delay values, to work out the most reliable server.
+		- Each server will interact with many servers to identify the most reliable
+		- Achieves accuracies of 10s of millisec over internet paths.
+
+	Logical Time (Lamport)
+
+		- In a single processor every event can be uniquely ordered in time using the local clock.
+		- We want to be able to do this is a distributed system. As we can't use physical time!
+
+		The initial principles are very simple, if two events happen in the same process they occur in the order given by the process. And if messages are sent between processes the act of sending happens before the act of recieving. These rules define partial ordering of events, through the "happens-before" relationship.
+
+	Logical Clock
+
+		- The logical clock is a monotonically increasing software counter, each process has one and uses it to timestamp events.
+
+		Totally ordered logical clocks allow us to put the ordering of events together so there is a order between every pair of events. This is done using an ordering of process identifiers where logical clocks are thte same in different processes. This is used to control entry to critical sections of code.
+
+	Vector Clocks
+
+		- A vector clock in a system with n processes is an array of n integers.
+		- Each process keeps it's own
+		- Inter process messages contain the vector clock of the sender as a timestamp.
+		- Each clock starts at 0
+		- Events in the process increment the processes element in the vector clock.
+		- When a process recieves a timestamp in a message. It resets each element in it's clock. This is a merge.
+
+	+
+	- We don't end up with an arbitrary order when one is not required.
+	Lamports clocks do not capture casuality, which can be captured by vector clocks
+
+	-
+	Costs the extra amount of data in a timestamp
+
+Coordination & Agreement
+
+	Mutual Exclusion:
+		- In a single machine semaphores can be used to implement mutual exclusion
+		- In a distributed system we can only use clever instructions in a machine with shared memory to apply semaphores.
+		- A simple solution is a central server which creates a request token on entry and releases it on exit. If it doesn't have a token it get's placed in a queue.
+		- But this is a single point of failure, and has the potential to be a bottleneck on the system.
+
+	Election:
+		- We need to have a process in order to implement mutual exclusion + coordinate distributed transactions.
+		- Elections are a great way for getting processes in a distributes system to cooperate.
+		- Our elections need to have all processes to learn and agree with the results of the election
+		- Any process must be able to initiate an election so there could be more than one occuring at the same time.
+
+		Ring Based Election:
+			- Processes are arranged in a ring, so a process know's it's owners.
+			- Assume there are no failures and the system is asynchronous.
+			- Every process is a non-participant, apon start the process becomes a participant and sends an election message to it's neighbour with a specific identifier.
+			- The reciever compares the identifier, if it is larger than it's own it forwards the message. Otherwise if it is a participant the message is discarded, if it is not then it forwards the message but with it's own identifier, then it becomes a participant.
+			- This process continues around the ring until the identifier equals that of the node it arrives at. At this point the process has been elected and it sends a message around the ring to inform all the participants.
+
+			- This process makes it tricky for new processes to join the ring. And can be quite inefficient on large scale systems.
+
+		Bully Algorithm
+			- A process knows the identifiers of all the other processes and can communicate.
+			- Three messages, election, answer (response to an election message) and coordinator (sent to notify the winner).
+			- A timeout period T is specified and if a message is not responded to within the time a crash is assumed.
+			- A process sends an election message to all processes higher than it's self.
+			- Any that have not crashed will respond.
+			- Any process that recieves a election message should respond
+			- The process will then initiate it's own election to all processes with a larger identifier.
+			- A process with no answering processes with a higher ID assumes it's self elected and notifies all lower processes.
+
+			- The complexity depends on which process initiates the election process, as it cascades up the nodes! o(n^2) if lowest!!!
+
+Fault Tolerance - Transactions
+
+	- The aim is to tolerate faults and operate in an acceptable way when a partial failure occurs.
+	- Fault tolerance and dependability are strongly related.
+
+	Dependability:
+		- Avaliablity - Probability that the system is operating correctly at any time.
+		- Reliablity - Length of time the system can run continuously without failure.
+		- Safety - If and when failures occur the consequences are not catastropihic for the system.
+		- Maintainability - How easily a failed system can be repaired.
+
+	Types of Failures:
+		- Crashes - Server Halts!!!
+		- Ommision Failures - Server fails to respond/recieve to incoming requests
+		- Response Failures - The servers response is incorrect
+		- Timing Failures - Server fails to respond within a certain time.
+		- Arbitrary Failures - A component may produce output it should have never produced, (but may not be detected as incorrect)
+
+	Failure Masking:
+		- Physical Redundancy: Planes can fly on 3/4 engines ect
+		- Time Redundancy: Action can be performed repeatedly, helpful when faults are transient + intermittent.
+		- Information Redundancy: Send extra bits to allow recovery.
+		- BUT Redundancy costs money!!!
+		- HOWEVER - We need to make sure that any failure won't leave our system in an inconsistent (corrupted) state!
+
+	All-or-Nothing
+		- Either all operations execute or none do!
+		- The sequence of operations must execute as an atomic operation.
+
+	Isolated Execution
+		- We must ensure that concurrent applications do not interfere with each other!
+
+	Serial Executions
+		- Concurrent executions do not interfere with each other if their execution is equivalent to a serial one
+		- Simple solution, one transfer at a time.
+		- NOT SCALEABLE
+
+	Creating a durable solution could be only performing updates after the application has completed successfully!
+
+	An application should NEVER violate a database's integrity constraints.
+
+	ACID
+
+	Atomicity
+	Consistency
+	Isolation
+	Durability
+
+	Simple way to write database applications, ensure that the ACID properties are met. 
+
+	A transaction either commits or aborts.
+
+	This is a fast way to recover from all sorts of failures, and manages concurrency.
+
+	Implementation:
+
+	- Concurrency control algorithms
+		- These algorithms are equivalent to a serial execution: transactions have a short duration to prevent blocking of other transactions.
+
+	- Durability
+		- Recovery algorithms are put in place which allows committed transactions to be replayed and undo the performed actions.
+
+	Concurrency Control
+
+		- Concurrency control often uses a two-phase locking where a read-lock and a write-lock are acquired before performing their respective functions. These are called "Acquire locks"
+		- Release locks occur when the transaction is done regardless of the state.
+
+	QS:
+
+	- Redundancy is the key to handle failured.
+	- We use transactions to avoid data corruption!
+
+Distributed Transactions:
+
+	By performing Aquire and Release locks we are reducing the potential for concurrency even though it can be really needed in many cases.
+	Additionally it is possible for this to result in deadlock.
+
+	We can make some improvements:
+		- Optimistic Concurrency Control - Transactions are allowed to proceed and we check everything at the commit transaction phase, any issues at this point will result in a aborted transaction.
+		- Timestamp ordering - Each operation in a transaction is validated when it is carried out. If it cannot be validated the transaction is aborted.
+
+	Recovery:
+		Backward Recovery:
+			- Bring the system from it's present state back into a previously correct state, to do this we need to keep checkpoints that we can roll back to.
+		Forward Recovery:
+			- Bring the system to a correct new state where it can continue to execute. Must know in advance which errors may occur so it is possible to correct them.
+
+	Distributed Transactions:
+		- Distributed transactions have more than one server involved! this can make things pretty complex
+
+		We can use All or Nothing again:
+			ALWAYS
+				 All databases commit or all databases abort
+				 All the databases must agree on a single outcome
+
+		Effectively all the members of the process group perform the operation or none do!
+
+		One Phase Commit
+			To support these kind of transactions we need to appoint a coordinator (could do this using bully?)
+
+			The client then tells the coordinator to commit or abort the transaction, and this result is communicated to all the participants.
+			BUT if one of the participants can't perform the operation it can't tell the coordinator.
+
+		Two Phase Commit
+			The two phase commit works very similarly except it performs a check with the participants to enquire if they can commit before sending the command to commit. It also requires a response to confirm the commit.
+
+			BUT the two phase commit can fail, if the coordinator fails or can't be trusted. It's also possible for distributed deadlocks to occur!!!
+
+Brucey Bonus - Deadlocks:
+
+	If we use locking we can get deadlocks therefore we need deadlock detection!
+
+	Deadlock Detection:
+		We can resolve a deadlock by aborting one of the transactions.
+		We can use priority to decide which transaction should be aborted.
+
+	Distributed Deadlock:
+		A single server is very simple to manage deadlock.
+		Distributed transactions however are held in different servers and the deadlock may not be apparent to any one server.
+
+		A solution to this is to have a coordinator which is sent the "wait-for-graph"
+
+		But we don't really want a centralised coordination.... It may cause issues of phantom deadlocks...
+
+	Phantom Deadlocks:
+
+		- Information gathered is likely to be out of date
+		- A transaction may have released a lock, and thus a deadlock that doesn't exist may have been detected!!!
+
+	An alternative to centralised coordination is edge chasing/path pushing, this effectively sends a message around the servers to determine if the item is still blocked ahead. If it loops around deadlock can be detected.
+
+
+Byzantine Fault Tolerance:
+
+	- It's possible message will be lost due to an unreliable communication channel
+	- It's possible that parts of a distributed system may give wrong answers.
+
+	The Two Generals Problem
+	- Two armies with a general, each on either side of the valley.
+	- Must attack at the same time
+	- Generals can only communicate using messengers through the valley.
+	- Generals must attack at the same time to succeed!
+
+	Solutions:
+	- If we send 1000 messages the probability of being lost is low.
+	- If we send 1000 messages confirming again the probability is low.
+
+	Three Generals, but one traitor on a reliable channel
+	- It's still possible for issues to arise!!!
+	- We could have a majority vote, this would outnumber the traitor. But requires the messages of each general to be sent to all generals!!!
+
+	Byzantine Failures
+	- These are the worst possible type of failure
+	- Handling these is the handling of byzantine fault tolerance!
+
+	Best Practice:
+	- These kind of failures may be expensive BUT they may also be rare!!!
+	- Use redundancy to achieve reliablity.
+	- Use majority voting to achieve reliablity.
+
+Performance Issues:
+
+	Performance Modelling is quite important to analyse the behaviour of a system under various circumstances.
+
+	Performance Tuning is a huge territory and trying to find the sources and solutions to performance problems (bottlenecks)
+
+	Approaches to Modelling:
+		- Analytical
+			- Formulas, Maths, Queueing Theory
+
+		- Simulation
+			- Monte-Carlo Simulations (random numbers) - Great for computing a result over a large number of samples
+			- Discrete Event Simulation (rng  + events over time) - Implies a notion of time (computer games)
+
+		Amdahls Law!! - Estimate the running time!
+
+		Some simulations are easy and based on probability theory. We can sample the processing rate and study systems behaviour with slightly randomized parameters.
+
+	Littles Law:
+
+		AVG NO CUSTOMERS = arrive_rate * service_time
+		simples!
+
+Replication Reasons
+
+	Relibility:
+
+	Replication is a technique to increase avaliablity, if a server crashes there is a replica which can still be used. Therefore failures are tolerated by using the redundant component. ie - should always be two routes between two routers.
+
+	Basically, the chances of all the replicated services being down at the same time is basically none...
+
+	We just times the probabilities by each other to get the failure of all of them.
+
+	Performance:
+
+	By having a copy of the data near to the process using it, the access time decreases. This helps us achieve scalability, and you could say caching is an application of this!!!
+
+	Capacity Planning:
+
+	We need to determine the number of replicas to make to meet a level of demand! This can be done through simulation and queueing theory.
+
+	Issues with replication:
+		- Consistency issues - If copies are modified all the time we need to ensure that the copy is updated throughout the network, we have to propagate the update to all the other replicas before they can read!
+		- Global Sync taks a long time if the replicas are worldwide!
+		- Costing duh
+
+	We can solve the sync issues by relaxing consistency restraints so that copies don't have to be the same everywhere. But we need to apply an update pattern to ensure that the data can eventually be brought inline.
+
+Consistency Models
+
+	A consistency model is a contract between processes and the data store. It acts like a contract between processes and the data store, so if certain rules are obeyed then the store will work correctly!
+
+	It can be possible for it being hard to define what happened last if there is no global clock! 
+
+	Tight Consistency
+	Having a tight consistency means that a data item will retun the most recent write. But this is almost impossible in a distributed system as it needs absolute global time. Something that is almost impossible!!!
+
+	Sequantial Consistency
+	The result of execution is the same if they are executed in the order that they are specified by the program.
+
+	Casual Consistency
+	A casual store needs to see processes which are casually related in the same order, concurrent writes may be seen in a different order by differeny processes.
+
+Placing Replicas
+
+	Heuristically speaking the best place for replicas is to find the total cost of accessing each site from all the other sites. Thus finding the site with the minimum total cost.
+
 
 
