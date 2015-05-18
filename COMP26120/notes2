@@ -44,7 +44,9 @@ Complexities:
 	Binary Search Tree: O(n) (all ops)
 	AVL Tree: O(log(n)) (all ops)
 	BFS/DFS: O(N + E)
-
+	BNB: O(2^n)
+	DP: O(n * w) (where w is weight)
+	Greedy: O(nlogn) (because of the sort)
 
 A heap based priority queue:
 	- There are a number of things that a heap based priority queue is made up from:
@@ -66,7 +68,6 @@ A heap based priority queue:
 			- Downbubbling is the process of switching the LAST node to the root element then performing comparison of child nodes in an attempt to find the highest value to switch it with until the the heap-order property is successfully validated again
 
 The implementation of a heap based priority queue is the most efficient way to go about PQ's
-
 
 ## Full Notes ##
 Trees
