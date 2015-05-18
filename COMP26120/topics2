@@ -1,23 +1,29 @@
 Key Topics
 
 Understand exactly how the following work:
-	Dijkstras
-	Dynamic Programming
-	Branch and Bound
-	Greedy
+	Dijkstras (k)
+	Dynamic Programming (k)
+	Branch and Bound (k)
+	Greedy (k)
 	(Enumeration)
-	Hash Tables/Trees
-	AVL Trees
-	Graphs
+	Hash Tables/Trees (k)
+	AVL Trees (k)
+	Graphs (k)
 
 Other topics:
-DFS vs BFS
-Heuristics
-Adj List vs Adj Matrix
-Knapsack Upper Bound
-Priority Queues
-Acyclic?
-Complexity
+DFS vs BFS (k)
+Heuristics (k)
+Adj List vs Adj Matrix (k)
+Knapsack Upper Bound (k)
+Priority Queues (k)
+Acyclic? (k)
+Complexity (r)
+Knapsack Constraints (k)
+
+Pseudo Code
+	- Djikstra (k)
+	- DFS / BFS (k)
+	- Generic Tree Search (k)
 
 2012
 	- Knapsack definition goal+constraints

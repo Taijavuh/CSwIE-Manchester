@@ -180,7 +180,6 @@ Transformations in OpenGL
 
 	- In OpenGL every 3D point to be drawn is automatically transformed by the projection matrix and the model view matrix. These enable camera and shape positioning and the way that the camera image is projected onto the screen.
 
-
 Vectors:
 
 	- We can perform normal vector transformations on vectors in OpenGL

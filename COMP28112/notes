@@ -716,5 +716,219 @@ Placing Replicas
 
 	Heuristically speaking the best place for replicas is to find the total cost of accessing each site from all the other sites. Thus finding the site with the minimum total cost.
 
+##
 
+The Integration Game
+
+	Building a large scale distributed system requires a balance of:
+		- Performance
+		- Reliablity
+		- User Requirements
+		- Other Constraints
+
+	This builds the service idea, which links a requestor with a provider.
+
+	Semantic descriptions are needed to ensure that the requestor gets the "right" service.
+
+	SOA - Service Orientated Architecture
+	- Principle for building systems that meet requirements.
+	- Reliability, fault tolerance, responsive, scaleable and secure!
+	- Interoperate accross computing platforms and administrative domains!
+
+	A Service
+	- Collection of code and data that stands alone
+	- Only way in/out is via messages
+	- Services are durable and survive crashes.
+
+	Tenets of SOA:
+	- Service boundaries are explicit
+		- No amibiguity as to where a piece of code + data resides
+		- Explicit if code is inside or outside a service.
+
+	- Services are autonomous
+		- Services are developed and managed independently
+		- Service can be re-written without impacting other services (with some constraints)
+
+	- Services share schema and contracts
+		- Schema defines the messages a service can send and recieve
+		- Contract defines permissable message sequences
+		- Services do not share implementations
+
+	- Service compatibility is based on policy
+		- Defines the rules for using a service (ie security policy specifies who may use the service)
+		- Introduces the idea of roles into distributed computing
+		- Question of whether services are organised in a virtual organisation or accessed over an open network/market.
+
+	Service Schema
+
+		- EX: Defines the message schema for:
+			- Quote Requests
+			- Quote
+			- Orders
+			- Invoice
+
+	Service Contract
+
+		- Defines the casual relationship between the messages e.g quote request before quote
+		- Co-Relation identifier to link the messages in a conversation style.
+
+	Together:
+
+		A transaction occurs inside a service, following the service contract using the service schema.
+
+	In order to work together services can share schema, the best way to achieve this is to agree a standard schema, this creates something thats completely scaleable!
+
+	Schema Issues:
+	
+		Schema Mapping:
+		- There are difficulties in mapping a services internal schema to another (shared/standard) schema, sometimes this can be impossible!
+
+		Name Conflicts:
+		- Can have items which have the same concept but different names, or the otherway around!
+
+		Structural Mismatches:
+		- The information structure could be completely different!
+
+	Semantics:
+		- By capturing the name of the data/service we can hope to understand what it is/represents appropriately.
+
+	Standards:
+		- Agreement on a standard is HARD!!!
+		- Not just for technological reasons, services want to reduce the costs of writing code to transform their data to and from the standard.
+		- Sometimes it's hard/impossible to transform data.
+		- Standards evolve, but often slowly.
+
+	MOM: Message Orientated Middleware (MOM)
+		- Pluming for shipping messages between services
+		- Async and non-blocking passing.
+
+		Point to Point - Message is delivered to ONE recipent!!!
+
+		MoM supports three types of delivery modes:
+			- At most once
+				- Sends and forgets, appropriate for non-essential messages
+				- Message MAY be lost due to failures
+
+			- At least once
+				- A copy of the message will eventually arrive, for messages which MUST arrive.
+				- Survives network/service failures
+				- If no ACK, sender resends, written to stable storage on both sides.
+				- Can create duplicates, needs to determine if the message is a duplicate.
+
+			- Exactly once
+				- One copy will eventually be recieved
+				- Reciever knows that it hasn't recieved the message yet.
+				- Easier to write application.
+				- Written to stable storage on both sides
+
+			- In order delivery
+				- Messages are delivered to the recieving application in the same order as they were sent by the sending application.
+
+			Messages are delivered to the recieving application in the same order as they were sent by the starting application.
+
+		Publish Subscribe
+			
+			- Sender publishes a message on a topic rather than a destination, much like a mailing list.
+			- Topics are organised in a heirarchy, subscriber will receive all messages published on the subscribed topic + it's sub-topics.
+			- Has the same delivery modes as point to point.
+
+	Messaging Technologies
+		- IBM WebSphere MQ
+		- MSMQ
+		- SQLServer
+		- ActiveMQ
+		- TIBCO Rendvouz
+
+	Why we need it:
+		- Services must be able to exchange messages.
+		- Services should be free to choose the MoM of their choice.
+		BUT
+		- MOM's don't interoperate, so all applications must use the same MOM implementation
+
+	Emerging Standards:
+		- Web Services Reliable Messaging (WS-Reliable Messaging)
+		- Advanced Message Queuing Protocol (AMQP)
+
+	SOA/Messaging
+		- Has worked for many centuries, key for EAI and B2B integration.
+
+Engineering Internet Scale Distributed Systems:
+	
+	Requirements:
+		- High Avaliablity
+		- Scalable
+		- Reliable and Fault-Tolerant
+		- Data Consistency in the presense of failures/concurrency
+
+	How to design these systems!
+		- With defined guiding principles
+		- Technology independent
+
+	The Web:
+		- Has characteristics we want
+		- REST architecture - Representational State Transfer
+		
+		REST
+		- Key abstraction is resources
+		- Provides the image of a network of linked representation of resources, each representation provides information about the state of the resource.
+		- Clients navigate through the resources via links, and each link transfers the client to the representation of another resource.
+
+		How:
+		Uses exisiting techonology (URL, XML, HTTP, SMTP) to build web services.
+		Independent of any middleware
+		URL's identify resources, no details of implementation
+		ONLY the representation is exposed.
+		Client defines what representation it wants to recieve.
+		Resources have the same interface, which simplifies the overall architecture.
+		Interactions are stateless and the request has no context stored on the server!
+			- It's reliable and scalable
+
+Grid + Cloud Computing
+
+	- Long Integer Factorisation - Find the prime factors of an integer (useful for public-key cryptography)
+
+	An early experiment was written to perform integer factorisation, running on a machine when it is idle! This could be achieved in a few days for free with good implementation!!
+
+	Science did/does rely on a small amount of crowd sourcing of work to computers across the world!
+
+	The Grid was a hardware/software infrastructure that was needed to perform High Performance Computing (HPC) - The use of parallel supercomputers and computer clusters linked together to provide high-end capabilities!
+
+	The Grid coordinates resources that are not subject to centralized control! Using standard, open protocols and interfaces to deliver non-trivial qualities of service!
+
+	Thus the grid is a implementation of distributed computing with a common set of interfaces, tools, api's the ability to coordinate resources across domains, a means to provide abstraction of services/resources and the sharing of resources in dynamic virtual organisations!
+
+	Grid computing must provide resource discovery and information collection/publishing, data management between resources, process management between resources, common security mechanisms, process/session recording.
+
+	Real world value in virtualisation of the underlying distributed resources, especially for science/business.
+
+	Cloud computing effectively evolved from the grid.
+
+	The idea is to provide on-demand resource provisioning, so users of the cloud are consumers who don't have to own the resources they use; these resources are provided by others as a service.
+
+	Concepts:
+		- Software as a service (SaaS)
+		- Platform as a service (PaaS)
+		- Infrastructure as a service (IaaS)
+
+	Virtualisation
+
+		Cloud computing uses the same concept that a traditional OS can virtualise, clould computing can virtualize across multiple hardware sets.
+
+	The Sims and Diffs:
+
+		- Both are scalable, work by divide and conquer, handle tonnes of data, have SLA's
+		- But the grid has a tighter relation between users and administrators, the execution model on the grid is more restrictive.
+
+	Both are here to stay and will be critical in handling BIG DATA in the future!!!
+
+## 
+
+Summary
+
+	- Distributed systems emcompass a number of tradeoffs:
+		- Constraints/Optimisations
+		- Unreasonable demands
+		- Imperfections
+
+done
 

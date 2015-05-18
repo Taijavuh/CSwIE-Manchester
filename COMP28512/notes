@@ -118,4 +118,58 @@ Speech & Music on Mobile Phones
 
 ##
 
-Frequency-Domain Processing
+Frequency-Domain Processing //TODO
+
+	- Periodic waves are those which are effectively the same segement repeated over and over.
+	- Speech and Music are not purely periodic (otherwise they would be rather boring)
+	- But if we take a small segment we can consider it to be periodic (short term periodic)
+
+	Fourier Series
+	- The fourier series acts like a filter, extracting the harmonics at certain frequencies. This effectively enables us to boost specific harmonics if required, or create a representation of the original wave with more harmonics.
+	- The same can be applied if we simply need to remove all sinusoids of a certain frequency.
+
+##
+
+Image Coding
+
+ 	 - Static image are big effectively need about 21.6mb
+ 	 - Movies are enormous
+
+ 	 WE NEED COMPRESSION!
+
+ 	 - The human eye is assumed to have a RGB color sensor
+ 	 - Can't resolve more than 8 bits per colour.
+
+ 	 We can use a discrete cosine transform (DCT) to give values to features of the image which are fine and low detail. A higher value of k & l will result in a higher level of detail.
+
+ 	 We may need to convert from RGB to YIQ (NTSC) as this makes processing easier:
+ 	 	y - luminance
+ 	 	i - colour
+ 	 	q - colour
+
+ 	At this point we can calculate areas which have small amplitudes under a specified threshold and set them to 0.
+
+ 	JPEG Compression (lossy):
+ 		- Convert RGB to YIQ
+ 		- For each plane perform a scan
+ 		- For each 8x8 block
+ 			- DCT
+ 			- Quantization
+ 			- Zigzag Scan
+ 			- DPCM on DC Component
+ 			- RLE on AC Components
+ 			- Huffman coding
+
+ 	Huffman Coding:
+
+ 		The idea is to use a lower number of bits to encode the data that occurs more frequently. Codes are stored in a code book which is constructed for each image or a set of images.
+
+ 		For each node in the list (except for the last one) we pick two nodes with the lowest frequencies and create a parent node of them. This effectively forms a tree where the most common items are at the top of the tree and the least common are at the bottom. Therefore the number of bits required to display the image is minimal!
+
+ 	MPEG Video Compression
+
+ 		- Each frame is either an I frame, P frame or B frame
+ 		- I Frames is a encoded JPEG image
+ 		- P Frames are positions of moving blocks predicted from previous I & P frames & remaining differences.
+ 		- B Frames are positions of moving blocks estimated from previous AND next I & P frames & remaining differences.
+ 		- The audio and video frames are then syncronised with a clock.

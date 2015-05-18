@@ -3,8 +3,72 @@ Algorithms and Imperative Programming - Semester 2 - 2015 Notes!
 Will be a question on graphs, will need to know complexity ect. Understand dijk's alg and heuristics.
 Will be a question on knapsacks, with need to know complexity ect. bnb and dp methods please!
 
-Other two could be on any of the other course material. Could be hashing and trees, or trees/tree searching.
+Other two could be on any of the other course material. Could be hashing and trees, or trees/tree searching
 
+## Quick Notes ##
+
+Knapsack has a number of constraints:
+	- Compatability Constraints - What task fits in what slot.
+	- Scheduling Constraints - Do tasks need to be undertaken in a certain order?
+	- Resource Constraints - Are resources limited or unlimited
+	- Optimisation requirements - We may require solutions which maximise or minimize measures.
+
+Heuristics:
+	- These are rules we can use in decision making to help make an optimal solution easier. They can help reduce exhausive searches from exponential time to polynomial time, but may effect the results. 
+
+Branch and Bound
+	- Fractional Upper Bound is calculated by ALLOWING the fractionalisation of a item to calculate the abosolute best case.
+	- Creates a tree style based on all of the possible combinations!
+	- Each node contains the benefit, weight and upper bound.
+	- Upper bound is maximum possible benefit at that point in the tree, calculated at each point in the tree! (using fractional knapsack as above)
+	- Always work with the best possible upper bound.
+	- Once a solution is found with the highest upper bound this is the best solution, we don't explore other routes with a lower benefit.
+
+Hash Table
+	- Effectively an array, normally quite big.
+	- Has a hash function, converts a key to an index number that allows it to be stored in the array.
+	- Good hash function makes use of all info provided by a key, uniform distribution, similar keys to different hash values, only uses fast operations.
+	- Lots of different ways to handle collisions, linked list/2D array (chaining), linear probing (moving to the next index).
+
+AVL Tree
+	- We control the depth of the tree so always log(n)
+	- The height must be balanced (should differ by at most one)
+	- Complexity is o(log(n))
+	- Use rotations to balance the tree, left/right or double rotations (left then right, or right then left)
+
+Acyclic - No way to start at a vertex and follow a sequence of edges to return to v
+Cyclic - Path from a node/vertex to it's self
+
+Complexities:
+	Djikstra: O(e+nlog(n))
+	Binary Search Tree: O(n) (all ops)
+	AVL Tree: O(log(n)) (all ops)
+	BFS/DFS: O(N + E)
+
+
+A heap based priority queue:
+	- There are a number of things that a heap based priority queue is made up from:
+		- heap - The complete binary tree with keys that satisfy the heap-order property
+		- last - A reference to the last node in T.
+		- comp - The comparitor which defines the total order relation amongst the keys, the result of the comparitor should keep the minimal element at the root of the tree!
+	- Inserting to a heap base PQ
+		- To store a new key-element pair we need to add a new node to the tree, this is done as the LAST node in the tree.
+		- Once the insertion has been completed it is possible that the heap-order property is no longer true. As a result we use UPBUBBLING
+
+		Upbubbling:
+			- Upbubbling is the process of running the comparitor of the tree on the parent and the new node. If the new node is smaller then it must be cascaded up!
+
+	- Removal from a heap based PQ
+		- To remove a key-element pair we basically have to take away the root of the tree, since this would completely screw up a binary tree we need to do something about it.
+		- The process to do this is called downbubbling and ironically it's pretty much the opposite of upbubbling!
+
+		Downbubbling:
+			- Downbubbling is the process of switching the LAST node to the root element then performing comparison of child nodes in an attempt to find the highest value to switch it with until the the heap-order property is successfully validated again
+
+The implementation of a heap based priority queue is the most efficient way to go about PQ's
+
+
+## Full Notes ##
 Trees
 
 A tree is an abstract data type for heirarchical storage of information. Ironically it represents the structure of a tree, who would know!
@@ -513,6 +577,10 @@ Problem Solving Techniques
 		- Fractional Knapsack
 		- Textbook 
 
+Before Exam Watch:
+
+	https://www.youtube.com/watch?v=WN3Rb9wVYDY - DJK
+	https://www.youtube.com/watch?v=EH6h7WA7sDw - Knapsack
 
 
 
