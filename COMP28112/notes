@@ -1,21 +1,47 @@
 Distributed Systems - COMP28112 - June 2015
 
+## Quick Notes ##
+
+Amdahls law!
+
+It's used to find the maximum expected improvement to an overall system when only part of the system is improved!
+It is used to predict the theoretical maximum speedup using multiple processors, the law takes into account the parts of the program which are serial and can only be executed by one processor/thread and that of which can be executed in parallel. (We probably should consider the law of diminishing returns!)
+
+The best way to go about parallelise an application would be to:
+- Identify instructions which can be executed in parallel. (These really need to be independent of each other)
+- Identify instructions which are excuted on multiple data, thus different machines can operate on different data!
+- We can schematically plan out dependencies!
+
+Middleware:
+	- Middleware is a software layer that provides a programming abstraction to mask the heterogeneity of the underlying platforms (networks, languages, hardware)
+	- EX: Java RMI, CORBA 
+	- However the end-to-end argument implies that some aspects of communication support cannot always be abstracted away from applications.
+
+	The End-To-End Argument:
+		- The function in question can completely and correctly be implemented only with the knowledge of the application standing at the end points of the communication system. Therefore providing that questioned function as a feature of the communication system itself is not possible!
+		- It's true but probably written by an asshole....
+
+	Servlet - Java program that extends the capabilities of a server. Commonly used for web servers.
+
+
+## Full Notes ##
+
 Key Topics - From Past Exam Papers
-	- Byzantine Generals
-	- ACID
-	- Two Phase Commit
-	- Ahmdahls Law
-	- Littles Law
-	- Lamport Clocks vs Vector Clocks
-	- Denial of Service Attack
-	- RPC mechanisms (why can't RPC handle pointers?) (client/server stubs?)
-	- Caching vs Replication
-	- Bully Algorithm
+	- Byzantine Generals (d)
+	- ACID (d)
+	- Two Phase Commit (d)
+	- Ahmdahls Law (d)
+	- Littles Law (d)
+	- Lamport Clocks vs Vector Clocks (d)
+	- Denial of Service Attack (d)
+	- RPC mechanisms (why can't RPC handle pointers?) (client/server stubs?) (d)
+	- Caching vs Replication (d)
+	- Bully Algorithm (d)
 	- Elastication
-	- What is an IDL?
-	- What is the RMI registry?
-	- Why can't we sync clocks?
-	- Why assume latency is zero is a fallacy?
+	- What is an IDL? (d)
+	- What is the RMI registry? (d)
+	- Why can't we sync clocks? (d)
+	- Why assume latency is zero is a fallacy? (d)
 	- Mutual Exclusivity!
 	- Semantics
 	- Load balancing + expansion
@@ -103,7 +129,7 @@ Bandwidth - How much data you can transfer over a period of time ( bits / second
 We have a number of challenges in distributed systems:
 Heterogenity
 Openness
-Securit
+Security
 Scalability
 Failure Handling
 Concurrency
