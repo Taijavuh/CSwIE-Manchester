@@ -42,7 +42,7 @@ Key Topics - From Past Exam Papers
 	- What is the RMI registry? (d)
 	- Why can't we sync clocks? (d)
 	- Why assume latency is zero is a fallacy? (d)
-	- Mutual Exclusivity!
+	- Mutual Exclusivity! (d)
 	- Semantics
 	- Load balancing + expansion
 

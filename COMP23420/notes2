@@ -275,4 +275,338 @@ Notation:
 
 ## 
 
+GRASP Principles
+
+Agile Teamworking
+	- Every team member should learn from the others.
+	- Teams should aim to work together better than in the last
+	- Have a physical reflection meeting at the end of each iteration
+
+	Idea is to:
+	- Build the right software
+	- Build the software right
+
+	Big software systems tend to end up as big balls of mud. OO techniques help up to a point but do not solve the problem. It's possible for subsystems to interact in unpredictable ways and initial designs may end up being inappropriate. Changing the code to improve design is vital, we should never refactor whilst adding/changing functionality!
+
+	Red-Green-Refactor
+	Red - Write tests
+	Green - Write the application code in the simplest way possible.
+	Refactor - Restructure and improve the code
+
+	GRASP - General Responsibility Assignment Software Patterns
+	- A set of principles for assigning responsibilities to classes.
+	- Provides the building blocks for design patterns
+
+	Cohesion and Coupling
+	- High Cohesion: A class must represent a single well defined entity.
+	- Low Coupling: Minimise dependencies between classes.
+
+	Coupling is not just the number of connections, the complexity of the connections is also important.
+
+	Internal Coupling - Between classes within a subsystem.
+	External Coupling - Between the subsystem and the rest of the system.
+
+	Pure Fabrication - A design class which does not correspond to anything in the domain:
+	- Collections
+	- Interfaces to external systems
+	- Factories
+	- UI Components
+	- Indirections to, and abstractions of other classes
+
+	Information Expert:
+	- GRASP Principle - Put a responsibility in the class which has the information to carry out that responsibility.
+	- Converse - Put the information needed for an operation in the class where that operation naturally fits.
+
+	Customer Collaboration:
+	- Ideally a customer representative is part of the project team.
+	- However often different users/stakeholders have different requirements.
+	- Regular demonstrations to customers are important to ensure the application is developed to specification.
+
+	Protected Variations - Design so that if something is to change the rest of the code is not badly affected, or abstract "the thing that varies" so the code is never trashed in the case that something is to change.
+
+	Polymorphism - Use inheritance to improve cohesion, reduce coupling and protect against variation. When inheritance is used properly it is very powerful. Dynamic binding is often better than if-statements. BUT Inexperienced designers sometimes misuse inheritance.
+
+	Inheritance should only be used if:
+		- There is a clear is-a-kind of relationship between the superclass and its subclasses
+		- Each of the subclasses is different in some non-trivial way from the others and from the superclass.
+		- Every object of the superclass type belongs to exactly one subclass.
+
+	GRASP Creator - A set of guidelines for where to create objects.
+		- A special case of information expert.
+		- Find an exisiting class which has the information required to create instances of another class.
+		- Sometimes this method cannot be applied as there are no suitiable classes.
+
+	Indirect Object Creation
+		- Creating new objects by stating new with parameters is a weak link in encapsulation. A concrete class name and parameters must be provided. Better to create objects indirectly.
+
+	Factories:
+		- A factory is a class whose role is to create objects of other classes.
+		- It's an alternative to creator, when object creation is complex or dependent on external factors.
+		- The objects to be created can be specified in many ways.
+		- Factories can implement caching and other object management functions.
+
+	Factories + GRASP:
+		- Factories are Pure Fabrications
+		- They are also information experts
+		- They decouple object creating from the code that uses those objects, and therefore improves the cohesion of both.
+		- Factories aren't always applicable.
+
+	Controllers:
+		- Another Pure Fabrication which mediates between the view and model.
+		- Only applied if there is genuine complexity in one or both of the above.
+		- Needs to be organised systematically.
+		- Can have a UseCase controller or a Facade controller.
+		- MVC is optional BUT model-view separation is compulsory!
+
+	Quick Tips:
+		- Do everything in exactly one place
+		- Keep classes and methods small
+		- Start with the simplest design, then make it complex.
+		- Assume the requirements WILL change during design.
+		- Refactor early and often
+		- Inspect and think about designs from experienced designers.
+
+	Handling Large Systems:
+		- Don't attempt stupidly large projects.
+		- Always design with GRASP principles and design patterns in mind
+		- Avoid optimisations unless it's really necessary
+		- Test as much as possible
+		- Hire good team players
+		- Never Assume
+		- Use Agile strategies
+		- Work in pairs
+		- Work closely with real users
+		- Test Driven Development
+		- Avoid excess diagrams
+		- Avoid future proofing
+		- Never stop learning
+
+##
+
+Software Testing Concepts
+
+	Working software has a greater value than comprehensive documentation!
+
+	Embury's Law - This software has bugs in, we just don't know what they are yet.
+
+	Modern Airliner: ~10m Lines of code
+	Euroliner Fuel Control System: 80k Lines of code
+
+	Rule of Testing: A successful test is one which causes the software to fail.
+		- Doing this is often hard for the person who WROTE the code, it's not the same as debugging.
+
+	The traditional solution is to have a team who are as nasty to the software as possible.
+	The agile solution is to write the tests before the code. This also helps clarify the requirements of the system.
+
+	How many bugs?
+		3-5 per hundred lines of untested C code!
+		90% by routine debugging
+		90% of the rest by sensible testing
+		90% of the rest by really rigorous testing
+
+		But very unlikely to reach 0. Around 30-50 in a million line program. Getting to 99.9% is very expensive!
+
+	Bug Density
+		Design: Good design leads to fewer bugs.
+		Type: Concurrent systems are much harder than sequential systems
+		Language: Java < C < Perl
+		Programmer Competence
+		Expect 1-10 bugs per hundred lines of code that compiles for the first time. (Less for pair programming)
+
+	But we cannot afford 30-50 bugs in things like aircraft!!
+
+	We can solve this by using redundancy, it's very unlikely 2-3 systems will fail a majority vote. It also allows for:
+		- Continuous Testing (finds bugs!)
+		- Graceful Degradation
+		- Majority Voting
+
+	Kinds of Testing:
+		- Unit Testing - Tests one unit at a time
+		- Integration Testing - Test that the components of a system work together correctly.
+		- System Testing - Test that the system works in the context in which it will be required to work.
+		- Alpha and Beta Testing - Test with real users
+		- Acceptance Testing - Gets the customer to pay
+
+		Unit + Integration Testing need to be done repeatedly - This is regression testing.
+
+	Agile Testing:
+		- Basic idea - Testing drives everything
+		- Write the tests before the code.
+		- If you can't write the tests you shouldn't bother writing the code.
+		- Avoids feature bloat
+		- Only code which will actually be used is tested/writted in close collaboration with the customer.
+
+##
+
+Unit Testing and JUnit
+
+	Static Importing - We can simply import the static features of a class using "import static"
+
+	Annotations - Annotations start with a @ and are intended to be used by other tools, maybe to remind you of something you need to do.
+
+	Reflection:
+		- Ability to represent programming language constructs such as classes adn methods within the language itself.
+		- Can get mind bending, ie a Calendar.class is a Class representing the Calendar class. But Class.class is a instance of class which represents the class class. Herpaderp
+
+	JUnit Testing:
+		- Using asserts we can pass/fail a test, ie assertTrue(boolstatement)
+		- Wwe can use annotations to mark the tests with @Test
+		- We can also use @Before, @BeforeClass and the after counterparts, Before/After will always run before/after every test. Before/AfterClass will be run just once at the start of the class.
+		- We run tests using the JUnit Jar file, or from within an IDE
+
+	Test Suites:
+		- We probably want to run tests together, we can do this using a @RunWith annotation and the test class we wish to use (using reflection)
+
+	JUnit Features:
+		- We can also parameterise tests so we can run the same test many times with different parameters.
+		- Test the exception handling behaviour of your code.
+
+	Black Box vs White Box
+		- JUnit test classes are separate from the classes they are testing so can only use the public interface.
+		- Black Box testing is preferable and helps to clarify requirements.
+
+	Design by Contract
+		- The idea is to define a contract between calling code and called code, the called code must fulfill it's obligation if the calling code does its.
+		- Can be done in Java with annotations, and there are several tools avaliable to insert contract-checking code. This can be used to reduce the testing effort.
+
+	Testing Tips:
+		- Real-world data is messy, check all the cases are covered.
+		- Test small parts before assembling them into bigger parts.
+		- Document known bugs
+		- Use a variety of real users when doing system testing.
+
+##
+
+Software Metrics
+
+	Definitions
+		Metric - A quantitiative measure of degree to which a system, component or process possesses a given attribute.
+		Measure - A quantitiative indication of extent, amount, dimension, capacity or size of some attribute of a product or process.
+
+	Why Measure Software?
+		- Determine the quality of the current product or process.
+		- Predict quality of a product/process
+		- Improve quality of a product/process
+		- Estimate software development cost and effort
+
+	The 3 P's of Software Measurement
+		- Product
+		- Process
+		- People
+
+	Measuring the Product (Product Metrics)
+		- Product refers to the actual software system, documentation and other deliverables.
+		- Examine a number of aspects:
+			- Size
+			- Functionality
+			- Cost
+			- Various Quality Attributes
+
+	Measuring the Process (Process Metrics)
+		- What lifecycle do we use?
+		- What deliverables are produced?
+		- How can the process help to produce products faster?
+		- How can the process help to produce better products?
+
+	Measuring the People (People Metrics)
+		- Analysis of the developers
+		- How fast?
+		- How many bugs?
+		- How many sick days?
+
+		(VERY Controversial - But measuring people is commonplace!)
+
+	Size Orientated Metrics:
+		- Size of a System
+		- LOC - Lines of Code
+		- KLOC - 1k Lines of Code
+		- SLOC - Statement Lines of Code (ignore whitespace)
+
+		We can then measure these against errors, defects, cost, documentation
+
+		Issues:
+			- In a different language you will get different readings.
+			- The same system developed by different people will give different readings.
+			- The system needs to be implemented to calculate LOC
+			- This isn't adequate for a prediction of cost.
+
+			Key Issues (ways to fake productivity):
+			- Ignores software reuse, code duplication, redesign benefits.
+			- Lower level the language the more productive the programmer.
+			- The more verbose the programmer, the higher the productivity.
+
+	Complexity Metrics:
+		- Complexity is an important attribute to measure.
+
+		Halstead's Complexity Metrics:
+			- Views a program as a sequence of operators and their associated operands, computed directly from source code in a static manner.
+			- Number of distinct operators, operands.
+			- Total number of distinct operators, operands.
+
+		Cyclomatic Complexity Metrics:
+			- Based on a control flow representation of the program.
+			- The program graph is used to depict control flow, nodes represent tasks and edges represent flow between nodes.
+
+	Object Orientated Metrics and their Indicators
+
+		Class Size
+			- Number of operations
+			- Number of attributes
+			- Large numbers indicate too much responsibility for a single class.
+
+		Number of Operations Overridden
+			- Large number indicates possible design problems
+			- Poor abstraction in inheritance hierarchy
+		
+		Number of Operations Added
+			- As inheritance increases, NOA should decrease
+
+		Number of Children
+			- As NOC grows, reuse increases, but abstractions may be diluted.
+
+	Software Quality Metrics
+		
+		Correctness - Degree to which a program operates to spec.
+
+		Maintainability - Degree to which a program is open to change
+
+		Integrity - Degree to which a program is resistant to attack
+
+		Usability - Easyness to use: productivity improvemenets, skill gap.
+
+	Metric Tools:
+
+		Jmetric - OO metric calculation tool
+		CCCC - Metric analyser.
+
+##
+
+GoF Design Patterns
+
+	Design Patterns:
+		- Reusable designs which can be used in different situations
+		- Have names with agreed meanings
+		- Encapsulate best practice
+
+	Building on GRASP:
+		- More specific + complex than GRASP
+		- Solutions to typical recurring problems
+		- Build on GRASP principles, polymorphism and indirection.
+		- Applied to protect against variation!
+
+	Examples:
+
+		Adapter - Plug together components with incompatible interfaces VIA an adapter
+		(Simple) Factory - Create objects indirectly via a separate object, decouple object created from the code.
+		Singleton - Ensure only one instance fo the class can be created.
+		Strategy - Encapsulate a alogirthm in objects so algorithms can be pluggable at runtime
+		Composite - Treat atomic and composite entities uniformly, giving a tree structure of objects with a common interface.
+			- A way of dealing with any tree structure of any shape and depth.
+			- Can apply to many situations
+			- Dual relationship between item and compositeitem
+			- Allows nesting to any depth
+
+		Observer - Provide a flexible interface between observables with behaviour and observers who want to monitor that behaviour.
+			- Flexibly associate observers with observables at runtime.
+			- Publish subscribe style (publish - subscribe - act)
  
