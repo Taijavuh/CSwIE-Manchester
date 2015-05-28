@@ -1,5 +1,37 @@
 Software Engineering Semester 2 - 2015 - Notes
 
+##
+
+Quick Notes
+
+What is GRASP:
+Provides a set of principles for assigning responsibilities to classes.
+
+Internal Coupling - Inside a subsystem
+External Coupling - Between subsystems
+
+GRASP Principles (9):
+	- Low Coupling
+	- High Cohesion
+	- Information Expert
+	- Creator
+	- Controller
+	- Polymorphism
+	- Indirection
+	- Pure Fabrication
+	- Protected Variations
+
+Basic Views in OOP Modelling:
+	- Structural View
+	- Behavioural View
+	- Functional View
+
+Program Organisations:
+	- Software Architectures - System decomposed into smaller systems, top down
+	- Design Patterns - Classes brought together to form organisations, bottom up
+
+##
+
 What is Software Engineering?
 	- An engineering discipline which is concerned with all aspects of software production
 	- Theories, methods, processes, and tools for professional software development

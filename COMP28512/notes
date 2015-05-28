@@ -173,3 +173,448 @@ Image Coding
  		- P Frames are positions of moving blocks predicted from previous I & P frames & remaining differences.
  		- B Frames are positions of moving blocks estimated from previous AND next I & P frames & remaining differences.
  		- The audio and video frames are then syncronised with a clock.
+
+ ##
+
+ Bit Error Control
+
+ 	Mobile systems now transmit and recieve packets but bit errors can occur due to noise, as a result we need to attempt to achieve error free transmission:
+ 		- FEC - Forward Error Correction
+ 		- ARQ - Error detection and retransmission
+ 		- A combination of both
+
+ 	FEC
+ 	- The correction of bit-errors at receiver based on redundancy built into the transmission by appending check bits or coding to product larger packets.
+ 	- The FEC decoder then tries to correct any bit errors.
+ 	- Error detection checks if bit errors remain
+ 	- ARQ can be used to request re-transmission.
+
+ 	Block & Convolutional Coding:
+ 	- Block codes are used for both error detection and correction.
+ 	- Convolutional codes are generally used for bit error correction.
+
+ 	Block Coding:
+ 		- Request the whole block of data to be avaliable before it can be coded.
+ 		- Complete block of coded data must have been recieved before decoding can begin.
+
+ 	Convolutional Coding:
+ 		- Convolutional coding can start as soon as a few bits are avaliable, can continue uninterruped forever!
+ 		- Can start producing it's error corrected bit-stream once about 50 bits have been recieved.
+ 		- Can go on decoding for as long as the transmitter is transmitting!
+
+ 	Simple Block Coding - Parity:
+ 		- Effectively an xor on the result over each bit.
+ 		- Transmitter can append the parity bit on to the end
+ 		- If the parity is odd a bit error must have occurred, otherwise it might be correct!
+ 		- This method isn't perfect, it won't detect an even number of bit errors.
+
+ 	Hamming Distance:
+ 		- The hamming distance between two binary number is the number of bits that are different.
+ 		- We can obtain this by xor-ing and counting the number of '1's
+ 		- Hamming distance can be relevant to error correct as we can define the parameters of the numbers we are sending so the distance between them is > n - As a result if there was a bit error forcing a damaged number, apon the hamming distance check we can determine that there has been an error and use the other numbers to work out what the other value should be!
+ 		- We can correct the damaged value if the number of bit errors is less than (1-hammingdist)/2
+ 		- Otherwise we can only detect the error.
+
+ 	Hamming Codes:
+ 		- Assumes we are sending "m-bit" messages
+ 		- Introduces r check bits
+ 		- Allows detection of single & double bit-errors
+ 		- Allows correction of a single bit error.
+ 		- Hamming codes are block codes
+
+ 	CRC - Cyclic Redundancy Check
+ 		- Block code for bit error detection
+ 		- Express the remainder when divided by a certain number in binary
+ 		- Use these bits as check bits
+ 		- Perform same operation at receiver
+ 		- If we get a different remainder, there was an error!
+ 		- But it is possible depending what the division performed was that there will be occational errors!
+
+ 	Real CRC
+ 		- By using polynomials and xor on the bits we can sum the check bits and then divide, we only need the remainder!
+ 		- A combination which adds any multiple of the divisor will not be detected!
+ 		- We can make this unlikely by making the order of the divisor polynomial large.
+
+ 	CRC Standards:
+ 		- CRC-8 - x^8+x^2+x+1
+ 		- CRC-16 - x^16+x^15+x^2+1
+ 		- CRC-32 - (as above) 32+26+23+22+16+12+11+10+8+7+6+5+2+x1+1
+
+ 	Convolutional Coder //TODO
+ 		- A convolutional coder performs a rolling parity check with a constraint length of 4
+
+ 	Advantages of FEC
+ 		- FEC increases energy efficiency and effectiveness of spacial multiplexing by frequency re-use.
+ 		- Transmitting at higher power is on way of making sure a signal is recieved with fewer errors.
+ 		- High power signals carry further and cause interference over a wider range. This makes re-use of frequency bands some distance aways harder, and depleates the battery.
+ 		- Reducing transmission power and using FEC is a much better idea.
+ 		- This solves cellular frequency re-use problem and reduces power consumption.
+
+ 	Bit Rate + Bandwidth
+ 		- Digital information is conveyed by voltage pulses, binary signalling being 1 or 0 volts
+ 		- 2 bit's per pulse is 0,1,2,3 volts
+ 		- 3 bits = 0-7
+ 		- this is mulitlevel signalling
+ 		- The channel capacity depends on the noise level.
+
+ 	Shannon Hartley Law:
+ 		- Channel capacity = C = Blog(1+S/N)
+ 		- Max bit rate achieveable with a small bit error rate over channel effected by noise
+ 		- Bandwidth B Hz
+ 		- S/N = Signal Power to noise power ratio
+ 		- SNR = Signal to noise ratio
+
+ ##
+
+ Mobile Networks:
+
+ 	Cellular networks were developed largely to provide speech for mobile phones. "Circuit Switched Networks" evolved from plain old fashioned telephone networks.
+
+ 	WiFi networks were developed to provide data for laptops & PDA's. "Packet Switched Networks" evolved from computer networks including ethernet.
+
+ 	Right from the start cellular networks started providing data and WiFi networks were used for speech. But now the use for speech is saturated but data use is expanding vastly.
+
+ 	Mobile devices have basically converged themseleves into one device.
+
+ 	Cellular Concept:
+
+ 		- Use of licensed frequency bands with spatial multiplexing
+ 		- Cities are divided into cells with a given frequency band, the bands are then reused when the cells are far enough away.
+ 		- Users must not transmit too loud!
+ 		- Frequencies must be different in adjacent cells
+ 		- To have more users we reduce the size of cells and the power needed.
+ 		- BUT reducing power makes bit-errors more likely! So we need FEC
+
+ 	Generations of Mobile Technology:
+ 		- 0G - Radio Telephones (not cellular)
+ 		- 1G - Cellular Analogue for voice
+ 		- 2G - Cellular Digital for voice and slow data
+ 		- 3G - For speech and faster data
+ 		- 4G - Traditional circuit switched technology abandonded, all IP style infrastructure.
+ 		- 5G - The future.
+
+ 	Multiplexing
+
+ 		Different multiplexing ideas allow a number of devices to communicate conccurently.
+
+ 		FDMA - Frequency Division Multiplexing - Each device has a different frequency
+ 		TDMA - Time Division Multiplexing - Each device has a regular timeslot
+ 		CDMA - Code Division Multiplexing - Each device uses the same band but with a unique code
+ 		OFDMA - Orthognal Frequency Division Multiplexing - Uses Multi Input Multi Output (MIMO) antennas over several frequencies, data sent in packets.
+
+ 		All of the above utilise the spatial multiplexing provided by cells.
+
+ 		TDMA (2G) - Is effectively every time the train comes around dump a load. FEC is applied before it gets put on the train, and taken off, like a ticket check.
+
+ 		CDMA (3G) - For a 1, a certain x bit code is sent the same for a 0. The reciever of the message is also using the same code and therefore will be able to decode. Otherwise it is just disregarded by the device as noise. If a huge amount of people are sending messages, a cell will decrease in size until it can operate effectively.
+
+ 		Circuit vs Packet Switching
+ 			- Circuit switching was effectively connecting wires for analogue transmission, not used in 4G
+ 			- Data networks have always been packet switched, this is included in 4G for both speech and data.
+
+ 		5G - The Plan
+
+ 			Beam Division Multiple Access - An antenna transmits with equal power in all directions, we can move it around and it will plot where it expects it to be, allowing direct communication. Our reciever with 7 antennas will only target a specific transmitter. It's a little like having wires connecting devices, except you can't see them.
+
+ 			Group Cooperative Relaying - Effectively using other devices to forward a transmission, could amplify and forward, or could decode and forward.
+
+ 			Cognitive Radio - Allows system to search for and use the best wireless channels with capacity. Will need to adapt transmission/reception parameters to the channel. A type of dynamic spectrum management.
+
+ 			Mobile IPv6 - Mobile IP is not used by 3G but is used for accessing data services. IPv6 is needed for mobile systems.
+
+ 			Energy Efficiency - Effectively allow base stations to shut down more when not under peak demand, reducing power consumption.
+
+ 		WiFi - Provides wireless access via access points over a IP network it's effectively wireless ethernet, desinged for data, packet based. AND it's cheaper. Bands 2.4Ghz, 5Ghz, 60Ghz
+
+
+ 		MIMO: Uses more than one transmitter antenna and same number of reciever antennas to increase capacity of wireless link. Signals travel by slightly different path, causing different frequency dependent loss and delay. (we have to sum the values for the different transmitters/receivers) FFT style.
+
+ 		WiMax is WiFi on steroids, it's much better at greater distances and is more similar to wifi than generic cellular technology. It's was designed as a last mile alternative to cable, it's also an alternative to GPP-LTE.
+
+##
+
+Multiple Access and Medium Access Control (MAC)
+
+	Broadcast Networks:
+		- Station Model - N Independent stations each generating packets for transmission at random times
+		- Single Channel - All stations can transmit and recieve on it
+		- Collision Assumption - If two frames overlap in time they are lost. (stations can detect collisions, no errors except packet loss)
+		- Time
+			- Continuous Time: Packets can be sent at any time
+			- Slotted Time: Time is divided into discrete intervals
+		- Current Transmission
+			- Carrier sense - Station can detect busy channel
+			- No Carrier sense - Station cannot detect busy channel (transmit and determine success later)
+
+	Multiple Access
+		- Communication link via wire or radio, provide access to several users at once.
+
+		Techniques:
+			FDMA - Frequency Division
+			TDMA - Time Division
+			CDMA - Code Division
+			OFDMA - Orthogonal Frequency Division
+			SDMA - Spatial Division
+
+		Techniques can be combined.
+		All offer connection orientated channels that don't interfere with each other.
+
+		Pure ALOHA
+			- Stations transmit whenever.
+			- Success detected by listening to channels while transmitting or ACK.
+			- If a frame is destroyed retransmit after a random period. This is a contention system.
+
+		Slotted ALOHA
+			- There are specific slots rather than random time
+			- This reduces the chance of a collision as the transmitter must wait until the start of a new slot before sending.
+
+		ALOHA Performance
+			- Pure ALOHA 18% Max Utilization
+			- Slotted ALOHA 37%, 37% empty, 26% collisions
+
+		CSMA 
+			- Effectively listen before you speak, and wait a random time until nobody is speaking then you can speak.
+			- Quite efficiently used for a number of users, but will be VERY SLOW for an individual as it may take packets forever to get through.
+			- CSMA with Collision Detection - Monitor own transmissions, abort if a collision is detected. (used in ethernet)
+			- CSMA with Collision Avoidance - Hard to monitor own transmissions if wireless. Can either transmit or recieve NOT both.
+
+			Contention Mode (DCF):
+				- Real channel sensing - Senses the channel, if it's free transmits, collisions sensed at end of transmission, retransmission requested when needed.
+				- Virtual channel sensing - Sends a RTS request to send to target, target responds with CTS clear to send. When frames are recieved they are ACK'ed, if not in time they are repeated. If others hear a RTS/CTS they set a NAV (network allocation vector flag) to wait for a period.
+
+			Hidden/Exposed Device Problem:
+				- If the devices are not in range of each other, it's possible they may confuse if it is possible to transmit to one another.
+
+			Bluetooth Architecture
+				- Effectively a pico-net
+				- Has a master node and up to 7 slaves within 10m
+				- Two piconets can connect to form a scatternet
+
+	Power Modulation:
+		- Transmit power affects battery life
+			- Excessive transmit power also increases interference with other users
+		- We want to use the minimum power necessary
+			- Better error connection = lower power
+			- Trade off extra bits for higher redundancy
+
+##
+
+Real Time Computation
+	
+	Often computing "as soon as possible" is okay.
+
+	But it's pretty useless for stuff like anti-lock braking/streaming media
+
+	We need real time computing.
+
+	Hard Real-Time - Missed deadline is a system failure
+	Soft Real-Time - Missed deadline is a loss of service quality
+
+	Requirements:
+		- Event should not occur until a given time has elapsed
+		- Event must take place before a given time has elapsed
+		- A certain computational activity must take place within a specified period of time.
+		- Responding to one event must take priority over another event.
+
+	As we know the readyness of tasks, how long they need to execute and their deadline we need to appropriately schedule them.
+
+	We can respond to external events in a few ways:
+		- Polling - Cycle through possible input events repeatedly until an active input is found, polling is awful and wastes power.
+		- Interrupts - An event flag causes the processor to switch attention to handling the event.
+		- DMA (Direct Memory Access) - Data is moved for processing later
+
+	Buffering
+		We can use buffers to enable us to handle input and output processes exactly as needed, as they allow the CPU to process blocks of data rather than taking one at a time.
+
+		DMA is a great way to transfer data directly to the main memory.
+
+		Double buffers is a method of writing to one buffer whilst the other one is being read, we can then switch between them seamlessly.
+
+	Timing
+		Run off the system clock, can be programmed to interrupt after a certain period of time or at regular intervals. The processor is provided with a real time reference.
+
+	Watchdog Timers
+		If there is a glitch and the system crashes a watchdog timer can be used to interrupt/reset the system. Normally software will reset the watchdog before it can trigger, but should the software crash the watchdog will trigger and reset the system so functionality is restored.
+
+	Real Time Communications
+		- Sending real-time data streams over variable delay networks, RTP (Real-time transport protocol)
+		- Dropped packets will arrive too late!
+		- We send packets with sequence number so we know whats missing, a timestamp for realtime output
+		- BUT without flow control, error control, ack, retransmit.
+		- We can interpolate to approximate lost data.
+
+	Power Efficiency
+		- In realtime systems there are no points for finishing early
+			- When there is nothing to do we need to be in a low power mode with the clocks disabled
+			- A interrupt can wake the CPU up
+			- Follow a event driven model of computation
+
+	RTOS
+		- Real-Time Operating Systems
+			- Class of operating system for real-time systems
+			- Event driven priority scheduling (switches task only when a higher priority event needs the service)
+
+		Context Switch
+		- Saving the state
+		- Starting the new
+		- Can take 10/100 CPU cycles
+
+		Interrupts
+		- Cause an automatic context switch for interrupt handling
+		- MAY cause a preemptive task switch
+
+		CoRoutines
+		- May be used to reduce context switch
+		- Share stack + process state
+		- Cooperative multitasking
+		- Control is handed over at a mutually convenient time!
+		- MUST observe various programming restrictions!!!
+
+##
+
+Voice and Multimedia Communication
+
+	We need to move large amounts of data efficiently, reliably and in real time with a delay limit.
+
+	We also need to compress, perform error correction and power optimization
+
+	Local Copy Model
+		- Download file
+		- Resend if we need to recover errors
+		- When file is avaliable play it
+
+	Streaming Media (Buffering):
+		- Start player as soon as sufficient reservoir is avaliable
+		- Reduces delay + memory requirement
+		- Buffer smooths fitter
+		- Buffer fills up much like a bucket, will pause if the bucket get empty to wait for more data.
+
+	Bit Errors + Lost Packets
+		- TCP not used for multimedia streaming, resending packets is too expensive.
+		- We use interpolation to approximate any missing data!
+
+	VoIP
+		- Different from streaming as it is interactive
+		- Round trip delay must be limited
+		- Can't use TCP
+		- Use UDP (RTP)
+		- Fire and Forget strategy, if we lose it we lose it
+		- Two key forms
+			- Application Layer (Skype)
+			- IP Layer VoLTE in 4G telephony
+
+	Voice over 4G
+		- LTE standard only supports packet switching
+		- 4 Ways:
+			- Voice over LTE
+				- Voice service delivered as data flows within LTE data flow
+			- Circuit Switched Fallback
+				- LTE just provides data, voice calls work on circuit switched
+			- Simultaneous voice + LTE
+				- Phone works in both LTE and circuit switched modes
+				- LTE mode for data, circuit switched for voice
+			- OTT content services
+				- Use VoIP apps like skype on the LTE network. nnaaaa
+
+	VoLTE - Needs to smoothly handover to 3G or 2G, Circuit Switched Fall Back is being used currently!
+
+	Issues with Media Communications:
+		- Sending to server needs:
+			- Capture media
+			- Compress
+			- Redundancy
+			- Transmit
+
+		- Recieving from server
+			- Receive
+			- Detect + Correct Errors
+			- Interpolate Uncorrectable
+			- Decompress
+			- Display result
+
+	Optimizing Power
+		- Quality is improved with more data
+		- Power is needed for more data (compression/transmission)
+		- Power can be saved by error correction (but needs extra data + power)
+
+	Coding Media Signals
+		- Increase capacity of channels
+		- Data compression reduces bit rate + transmit power needed
+		- Minimise effect of transmission errors
+		- Will still be uncorrectable errors, use interpolation.
+
+	Dynamic Control
+		- Radio signals are affected by:
+			- Reflections
+			- Movement
+			- Interference
+			- Near-far problem
+		- Use feedback to maintain funcationality
+		- Measure correctable error rate at receiver
+		- Use feedback to control:
+			- Transmission power
+			- ECC redundancy
+			- Compression ratio
+
+	The Near Far Problem:
+		- Unwanted nearby signals may overwhelm wanted signals from far away!
+
+	LPC-10 Decoder?! // TODO
+
+##
+
+Chip Design
+
+	We are designing for low power consumpton
+
+	We need maximum battery life from mobiles and maximum efficiency for high performance computer.
+
+	Better power efficiency means:
+		- More performance
+		- More CPU cycles for compression
+		- Reduce radio power
+		- Better battery life
+
+	Lower power gives market advantage!
+
+	CMOS Power Consumption:
+		- Voltage change on a gate capacitance requires charge transfer + power consumption
+		- But once it's charged it can maintain it's level.
+		- CMOS circuitry only consumes power when switching states
+		- Until leakage starts to bite
+
+	Energy Consumption:
+		If p is constant Energy e = p * time 
+
+		- In battery powered devices we need to worry about P and E
+		- If P is too high heat may cause damage to circuits
+		- If P is reduced by computing time is too high battery life will be limited
+		- Can run intermittenly by turning power on off. (good way to save power and energy, JIT processing may be better?)
+
+	Threshold Voltage:
+		- Voltage that must be exceeded for a transistor to switch from off to on.
+		- Depends on factors determined by manufacturer
+		- Leakage will cause battery drain through an inactive circuit, so we lose the advantages of CMOS.
+
+	Chip Design:
+		- Mobile systems are complex System on a Chips, all functions are on a single chip except for maybe large memories.
+		- Based around re-usable IP blocks
+		- Connected via bus architectures
+		- Built using automated design tools!!
+
+	Low Power Design:
+		- Minimize activity but trade off compression/ECC/RF power
+		- Localize activity:
+			- Use onchip memory over off chip
+			- Use cache to minimize access to off-chip memory
+			- Plan streaming data movement
+
+	Usage:
+		Data moves: 43%
+		Control flow: 23%
+		Arithmetric: 15%
+		Comparisons: 13%
+		Logical Ops: 5%
+		Others: 1%
+
+

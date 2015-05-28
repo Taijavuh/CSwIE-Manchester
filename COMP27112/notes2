@@ -186,3 +186,222 @@ Vectors:
 	- Vector geometry is quite important to 3D graphics, it's based around it...
 	- Cross Product - y1*z2 - z1*y2, x1*z2 - z1*x2, x1*y2 - y1*x2 - IE each by each, minus the opposite.
 	- Dot Product - x1*x2 + y1*y2 + z1*z2 - Opp NO by Opp NO for result!
+
+##
+
+Polygons & Pixels
+
+	2D Graphics Units is the Pixel
+	3D Graphics Units are the Polygon
+
+	A polygon is an ordered set of vertices, with a set of edges between each pair of vertices. The polygon is bounded by the vertices.
+	We can have bizzare complex polygons but we avoid these.
+
+	Planar Polygon - When all vertices lie on a plane. This is ideally what we want.
+	Non-Planar Polygons - Don't lie on a single plane, "have two sides" - These can cause issues with graphical algorithms. (Most graphic systems will only guarantee to draw planar polygons)
+
+	Polygon Attributes:
+		- Winding - The order in which the vertices connect is the winding.
+		- Faces - If we have a consistent winding then the polygon has a front and a back face.
+		- Surface Normal - Vector perpendicular to the plane of the polygon. Gives the polygon a distinguishable front and back, this can bue used to give a distiguishable front and back, and describe it's orientation in 3D space. (important for lighting/collisions/culling)
+
+	We can use the cross product to find the surface normal by finding two sequential edges, inverting one and computing the cross product.
+
+	Polygon Soup - Have a list of all the polygons and colour and draw individually.
+		- It's a waste of storage space.
+		- A loss of semantics (what does the polygon belong to?)
+		- Brute force rendering, makes interaction complex!
+
+	Polygon Meshes - A linked group of polygons used to represent surfaces
+		- Reduces storage as vertices and edges are SHARED
+		- Makes interaction easier
+		- Allows us to structure individual models.
+
+	Meshes:
+
+		Triangle Strips:
+			- Collection of linked triangles
+			- Very widely used - efficient as we are only adding 2 verticies to create a new triangle!
+
+		Triangle Fan:
+			- Collection of linked triangles again this time in a fan like structure.
+
+		Quad Strip:
+			- Same as linked triangles but with quads, obviously requires more vertices.
+			- Tesselated into trinagles during rendering
+
+		Quadrilateral Meshes:
+			- Collection of linked quadrilaterals
+			- Used in terrain modelling for approx curving
+			- Quite effective for a 4x4 grid or anything which isn't a strip
+			- Tesselated into triangles during rendering.
+
+	Once we have modelled in 3D space we utilise a camera to create a 2D screen image (via the viewing pipeline)
+
+	Scan Converting:
+		- The process of converting the true geometry of a line into pixels.
+		- Samples the geomerty and appropximates the nearest pixels avaliable.
+
+	Bresenham's Algorithm is an application of scan converting, (y = mx + c | y = y + m) y gets rounded.
+
+	Scan converting a polygon is slightly trickier, and there are many approaches.
+		- We can plot the xy position in the same way as for plotting a basic line
+		- Then fill the area covered
+		- This is not really used, there are more efficient methods.
+
+	The "sweep line" algorithm
+		- Steps down a pair of edges filling in everything inside the edges or covering over half of the pixel.
+		- EASY!
+
+	Hidden Surface Removal:
+		- We need to make sure things which are technically behind something else aren't being shown.
+		- We can solve this in two ways, either in world space or display space.
+
+			World Space:
+				- This means that we are working the issue would in 3D geometrically. This is really hard and was the first approach!
+
+			Display Space:
+				- This means whenever we are generating pixels we check to determine if another 3D object closer to the eye maps to P, a much simpler and logical approach!
+
+		The Z Buffer:
+			- z Buffer holds the z-value of each pixel.
+			- Effectively holds information about what COULD be displayed by P, if there are multiple objects in P's line (or whatever)
+
+		Z Fighting:
+			- If the z-buffer has a lack of precision then incorrect rendering may occur, which probably looks awful. This is stitching.
+			- A solution is glPolygonOffset()
+
+	Structures:
+		- A model is made of objects
+		- Each object is made of surfaces
+		- Each surface is made of polygons
+		- Each polygon is made of edges/vertices!
+		- A simple structure to create big complex things!
+
+	General Polygon Mesh + The Mesh Data Structure
+
+		- Provides a flexible way to define linked polygons.
+		- The Mesh Data Structure:
+			- Face List - Has a list of all the faces which leads to the edge list
+			- Edge List - Has a list of all the edges which leads to the vertex list
+			- Vertex List - Has a list of all the vertexs
+
+	In general meshes are often big, and can have many different file formats. It's a very complicated area and techniques like laser scanning are ways that potentially we can generate meshes very quickly and easily.
+
+##
+
+Cameras
+
+	Viewing in 2D
+		- We need to specify what we want to see and where we want to see it.
+		- We are effectively mapping the world to our screen, much like taking a photograph.
+		- A window in the world is translated to the viewport on our screen - This transformation is called the viewing transformation, it's a simple process which involves scaling the shape to be the same size as the viewport.
+		- Clipping is when we want to remove parts outside the viewport
+		- Multiple Windows - We may have multiple windows displaying multiple viewports, giving a different on screen arrangement.
+
+		Viewing Transformation: P(screen) = M(view) * P(world)
+
+	Viewing in 3D
+		- In 3D graphic we need to convert our 3D view to a 2D view before it can be displayed. This is a much more complex operation.
+		- We need to set the following transformations:
+			- Modelling
+			- Viewing
+			- Projection
+			- Viewport
+			By performing transformations we are effectively performing the operation of arranging a scene, pointing the camera at the scene, adjusting the zoom and determining the size of the image.
+
+		Modelling + Viewing:
+			- They have a certain level of duality, if we are adjusting the camera distance from the object or the object distance from the camera, the relative position remains the same.
+			- This is how we do it, as we don't have a camera and moving the camera x units away, we can achieve the same effect by moving the object 3 units in the opposite direction!
+			- A camera has an eye point, a centre of interest and a up vector. We can use this information to apply transformations to all the objects!
+			- We then make the viewing transformation and apply it, thus giving us the same view as if we had a real camera.
+
+##
+
+Projections
+
+	The process of projections performs the mapping from the 3D coordinates to 2D coordinates.
+		- Parallel Projection - Used in CAD and Engineering Drawing for precise measurements.
+		- Perspective Projection - Used due to their sense of realism.
+
+	Parallel Projection:
+		- The planes are directly projected onto the plane at the point where the projectors intersect the projection plane thus angles between edges may be distorted.
+		- Orthographically when inline with the axis x,y,z these are idea as the lengths/angles will not be distorted, which makes them ideal for engineering drawing.
+		- We can use a number of popular projection planes: Isometric, Dimetric, Trimetric
+		- Projections can make ANY ANGLE
+		- Projection plane can have ANY ORIENTATION
+
+	Persepective Projection:
+		- Reflects the way we see things.
+		- Has a centre of projection "eye point" so the projectors converge
+		- Objects further away become smaller, edges become distorted.
+		- Things could be either small OR far away
+		- There are 3 "classic" perspective projections based on the number of "vanishing points" are in the image
+			- 1 point - 2 of xyz Parallel to the projection plane
+			- 2 point - 1 of xyz Parallel to the projection plane
+			- 3 point - 0 of xyz Parallel to the projection plane
+
+		We can compute perspective based on where the projection plane is located by working on the point where the vector from the object to the eye point intersects the plane, once we have computed the perspective projection we also need to divide by w, which is PERSPECTIVE DIVISION.
+
+	"The Camera" can only see objects infront of it, in it's FoV and up to a finite distance.
+
+	We define the view volume which is attached to the camera, it creates a projection (near) and far plane which are the boundaries for displaying images in the world.
+
+	In parallel projection the near and far planes are orthogonal to the camera and they are a cuboid.
+	But in perspective projection the view volume is a frustum, which is a truncated pyramid, defined by the near and far planes.
+
+	We have an issue when we do perspective as we lose the idea of the 3D object's z-coordinate. As we want to keep this information for hidden-surface removal it's kinda important.
+
+	As a result we use projection normalization which we distort the object and apply an orthographic projection, which gives us the same results as a perspective projection.
+
+	Clipping is a result of when a object falls outside the regions to be displayed, it is therefore clipped out.
+
+	The Viewport Transformation:
+		- Now we have 3D coordinates, we then perform a transformation from -1 to 1 in x+y and then retain Z to determine how to remove hidden surfaces.
+
+##
+
+Rendering
+
+	Local and Global Illumination
+		- A local illumination model effects objects directly thus each object in a scene is separate from other objects
+		- A global illumination model effects objects directly AND indirectly and thus each object is also effected by other objects
+
+	Illumination Models
+		- The interaction of light is complex and our methods behind this are approximate.
+		- (We are only ever approximating)
+
+		Elements - To develop a model step-by-step we need to include the following:
+			- Ambient Illumination
+			- Diffuse Reflection
+			- Positional Lightsource
+			- Specular reflection
+			- Colour of lights and surfaces
+
+		Reflectivity - Three kinds of reflection
+			- Perfect diffuse reflection - Some light is reflected in all directions the result is a dull or matte surface
+			- Perfect specular reflection - Light is reflected perfectly the result is effectively a mirror
+			- Imperfect specular reflection - Light is reflected imperfectly thus some of the rays are at irregular angles, the surface looks shiny with highlights.
+
+		We can model the different effects.
+
+		Illumination Sources:
+			- Ambient Illumination - Multiple reflections cause a general level of illumination in the scene.
+				- Each object is uniformly illumniated, so there's no 3D information in the image!
+				- It's not the same as true ambient lighting
+			- Point Illumination - Source at infinity
+				- We can use lamberts law to calculate the light falling on a surface
+				- We also have a diffuse reflection coefficient of the surface
+				- This gives us some depth to our scene
+			- Point Illumination - Source in the scene
+
+		We can also apply a light source distance based on the way that light intensity falls off with the square of distance travelled.
+
+		Modelling Specular Reflection:
+			- We need to work out an appropriate way to calculate specular reflection.
+			- We can work out based on the divergance of the angle from the primary specular angle.
+			- We can use phong's specular function to calculate this (effectively cos against angle)
+			- Taking into account wavelength is the fresnel equation
+			- By doing this we can work with a point light source, and diffuse/specular reflection
+
+##
