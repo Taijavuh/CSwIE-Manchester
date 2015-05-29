@@ -22,9 +22,9 @@ GRASP Principles (9):
 	- Protected Variations
 
 Basic Views in OOP Modelling:
-	- Structural View
-	- Behavioural View
-	- Functional View
+	- Structural View - Structure of classes in a system + relationships
+	- Behavioural View - Runtime behaviour
+	- Functional View - Describing the processes and data flows of a system
 
 Program Organisations:
 	- Software Architectures - System decomposed into smaller systems, top down
