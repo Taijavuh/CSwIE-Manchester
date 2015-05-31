@@ -404,4 +404,95 @@ Rendering
 			- Taking into account wavelength is the fresnel equation
 			- By doing this we can work with a point light source, and diffuse/specular reflection
 
+	Once we have a local illumination model we want to implement it!
+
+	Shading a Surface:
+		- Flat/Constant Shading
+		- Gouraud/Intensity Shading
+		- Phong/Normal-Vector shading
+
+	Flat Shading:
+
+		Simplest approach, compute the colour at a vertex and use it for ALL the pixels in the polygon. This means that each polygon is uniformly coloured based on it's orientation and we can clearly view the mesh!
+
+		Mach Banding - Effectively is the fact that we can really easily see the edges of the strips because they stand out.
+
+	Gouraud Shading:
+
+		Invented by Henri Gouraud in 1971, uses interpolation to smooth out discontinuities. A method that approximates the underlying surface by averaging the normals where vertices are shared.
+
+		Effectively uses scanlines and works out what corners are what colour then gradients the middle (average colors)
+
+		It gives a better result which is much more smooth. BUT it is still polygonal (no natural smoothing)!
+
+		Problems:
+			- Specular highlight may be distorted or averaged away as shading works on VERTEX colours.
+			- Might still see mach banding
+
+	Phong Interpolation:
+
+		- Phong interpolates normal vectors and computes the illumination model for EVERY pixel!!
+		- This means that the light source can clearly be seen on the shaded model. (Basically the highlight is correct!)
+
+		BUT
+
+		Local illumination model takes about 60 flops to compute a colour for a pixel.
+		A gouraud shaded triangle is 180 flops (2 per pixel)
+		Phong is 60 PER PIXEL!!!
+
 ##
+
+Surface Detail
+
+	Texture Mapping
+		- Texture is a 2D array of texels (often read from an image file)
+		- Defined in it's own coordinate system, conventionally refferred to as (u,v)
+		- We associate the texture coordinates with each vertex, and then interpolate the texture coordinates during scan-conversion.
+		- The pixel colour is blended with the texture colour (sampling the texture at each pixel)
+
+		Seams - Textures will often have edges which are where they repeat, often good to have repeating textures so they match up and are seamless.
+
+		Mismatches - We can have situations where the pixel resolution is > texture resolution and the otherway around, we need to filter the texture. It's effectively possible that two pixels will map to the same texel.
+
+		Solutions if the pixel res is >
+
+			No Filter - Select the pixel we would (image looks blocky)
+			Bilinear Interpolation Filter - Computes a texel colour from adjacent texels averaging both horizontally and vertically. Effectively smooths the image.
+
+		But if the texel res is >
+
+			We may end up with images which are considerably blurred because the texels being matches are so far apart! (thus missing detail)
+
+			Mipmap Filtering:
+
+				We can use mipmapping which uses a simple idea that the further away we are the less detail we need. We use a set of texture maps and select which map to use based on the distance.
+
+			Creating a MipMap
+
+				We effectively downsample by 1/2 until 1x1 texture, we store all the textures in memory.
+				When selecting a textures we do it according to the distance of the pixel from the view point.
+				We can also choose the two closest textures and do bilinear interpolation
+
+			When using mipmapping we are effectively replacing aliasing with blurring.
+
+	Textures as Illumination
+		- Textures can be used to add accurate illumination to a real time scene.
+		- Off-line we compute accurate diffuse illumination of the scene and use a global model.
+		- In real time apply lightmap textures and actual surface textures.
+
+	Modelling Bumpy Surfaces
+		- The surface normals change across the bumps so the top is brighter than the sides.
+		- So instead of altering the surface colour we can alter the surface normal.
+		- Introduce "bump" vectors to add to the surface normal and alter it's direction.
+
+	We can draw a texture as a "bump map"
+		- Value of a text can be a value to control bumpiness
+		- Can use values to compute gradients.
+
+##
+
+End of Part 1
+
+##
+
+
