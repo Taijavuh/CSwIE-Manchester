@@ -41,7 +41,8 @@ Mobile Systems COMP28512 - Semester 2 - 2015
 	FEC: Less power, less interference, health risks (if any)
 
 	Hamming Coding:
-		- miss out of in each additional bit
+		- where you xor the bits in order to give a bonus bit
+		- miss one out of in each additional bit
 		- make sure all the bits have even parity
 		- if there are parity errors 1 instead of 0
 
