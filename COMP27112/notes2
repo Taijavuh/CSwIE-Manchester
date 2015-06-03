@@ -1,11 +1,169 @@
 Computer Graphics COMP27112 - Semester 2 - 2015
 
+##
+
+Quick Notes:
+
+3D Graphics:
+
+2 Types of display: Raster + Vector
+
+Modelview Matrix - Used for transforming geometry drawn
+Projection Matrix - Used for transforming the camera image onto the screen
+P = Projection * Modelview * Pspecified (open auto does this)
+
+System is a producer consumer with CPU Software making pixels and GPU Frame Buffer eating pixels.
+
+Uses double buffering, switches buffer in the VBLANK time.
+
+We can simulate camera movement by transforming the object instead.
+
+ROTATION MATRIX:
+
+About X: cos, -sin, sin, cos
+About Y: cos, sin, -sin, cos
+About Z: cos, -sin, sin, cos
+
+Homogenous Coordinates (The addition of w) - Needed to keep a consistent matrix representation, it's a 4th dimension. Means we can produce composite matrixes.
+
+Scan Conversion = Sweep Line!
+
+We can string together rotations to create a composite transformation matrix.
+
+To transform about a vector V, we map to two axis's (to x, to y) then transform and then inverse the translations and move back.
+
+Surface Normal = Cross Product (x1*y2)-(y1*x2) ect
+Dot Product = (x*x) ect
+
+Modelling Transformation - Models the scene
+Viewing Transformation - Maps the camera to the world.
+Projection Transformations - Transform the objects onto the plane basically setting a lense (Parallel / Perspective Projection)
+Clip to View Volume - Creates a Cuboid (parallel) or Frustum (perspective) which define near + far planes.
+Perspective Division - Converts x,y,z,w to x,y,z 3D points
+Viewport Transformation - Converts 3D to 2D but retains Z for hidden surfaces.
+
+Illumination:
+	
+	Local - Treat each separately - NO Shadows, NO Object interaction
+	Global - All objects together + effecting each other.
+
+	Diffuse Reflection - Absorbtion + Uniform Re-Radiation
+	Specular Reflection - Reflection to air/surface, same colour as light source
+		Perfect = Mirror
+		Imperfect = Shiny
+
+		(0 = theta)
+
+	Lamberts Law: I = Icos(0)
+
+	Ambient Illumination - I = K*I
+		- Where K = Ambient Reflection Co-efficient
+		- Where I = Intensity of ambient light
+
+	LIM 1: I = K*I
+
+	Diffuse Reflectivity - I = Ikcos(0) OR Ik(N.L)
+		- Where k = Diffuse reflection co-efficient
+
+	LIM 2: I=K*I+Ik(N.L)
+
+	Distance Travelled - I = I/k+kd+kd^2
+		- Where d = Distance
+
+	LIM 3: I=kI+(I/d)*k(NL)
+		- Where d = k+kd+kd^2
+
+	Finally Incident + Wavelength - = 1/2(sin2(y-u)/sin2(y+u) + tan2(SAME))
+
+	LIM 4: I = k(a)I + I/d(k(d)(N.L)+k(s)(R.V)^n)
+		- Where k(a) = Ambient Reflection Co-efficient
+		- Where I(a) = Intensity of Ambient Light
+		- Where I(d) = Intensity of Light Source
+		- Where d = k(constant) + k(linear)*d + k(quadratic)*d^2 (d = distance)
+		- Where k(d) = Diffuse constant
+		- Where k(s) = Specular refleciton coefficient
+
+	Colour = do intensity for RGB (3 times)
+
+	Gouraud Shading - Use interpolation to smooth out discontinuities. (does average colour between points) may miss edges
+
+	Mach Banding - Seeing the lines between different polygons.
+
+	Phong Interpolation - Computes normals for each pixel and completes illumination model for each.
+
+	(pixel bigger) Bilnear Interpolation - Compute a texel from adjacent texels.
+
+	(texel bigger) MipMap - Have a set of texture maps for scaling down, smaller polygon/model = less detail. (maps made in pre-processing)
+
+	Bumpmapping - Alter the surface normal by two vectors to give a new value. Often produced as a texture, different intensity = greater modification to normal.
+
+
+Image Processing:
+
+	3 Resolutions:
+
+		Spatial - Size (no pixels)
+		Brightness - (no colours/grey) amplitude
+		Temporal - No images captured+stored (fps)
+
+	H - Hue - Underlying colour
+	S - Saturation - depth of colour
+	V - Value - Intensity of sample/brightness
+
+	CIE - Range of colours realisable by a monitor showen by the triangle.
+	RGB - Make any colour but hard to predict the changes.
+	HSV - Colour space created.
+
+	Extrinsic Parameters - Camera to World Transform
+	Intrinsic = Image Camera Transform
+
+	Four Connectivity = north esw
+	Eight - Block around but not always
+
+	When Resampling
+		Bilinear interpolation - similar to 3d - Sum of nearest neighbours.
+		Nearest Neighbour - only takes one into account
+
+	Thresholding:
+
+	Incremental - Work through the image with a suggested threshold from the histogram, if not averaging at the end, increment threshold and go again.
+
+	Automated - Intial threshold, if average done use it. Otherwise keep going.
+
+	P-Tile Thresholding - Assuming an object is brighter/darker than the background and we know it occupies percentile P of image. Set the threshold so 1/p values are below the threshold.
+
+	Modal Thresholding - Perform thresholding with the value between the histograms two peaks. May need to apply smoothing
+
+	Optimal Thresholding - Find average intensity levels for foreground + background peaks, and set the threshold to the average of the two.
+
+	Double Thresholding - Use two different algorithms and then compare for overall thresholding.
+
+	Issues: Local thresholding methods are invoked where illumination is varient. Divides the image into regions which are thresholded independently of it's neighbours.
+
+	Color + Thresholding - Threshold for each colour space. Better to use HSV for this.
+
+	Edge Detection:
+
+	Canny Deriche = Gaussian followed by Sobel/Robert. Reduces noise before feature extraction.
+
+	Region Detection:
+
+	Take ariel photo, thresholding to clearly define the object, region detection to find dark pixels, maybe estimate average size for grouping detection, use templating to determine if object is correct shape (effectively on a car, see if the item has a white no plate or headlights or wheels)
+
+	Convolution:
+
+	For Smoothing: Gaussian: Lessens the effect of noise, smooths down curve of histogram.
+	For Edge Finding: Sobel: Important for recognising regions, significant change in intensity, two kernels to put toegether to find gradient + orientation of line.
+	For Templte Matching: Uses the template to determine the measure of similarity between the object and the template thus finding matches.
+
+##
+
 Interactive Computer Graphics:	
 
 OpenGL:
 	- Has a 3D geometry setup
 	- Therefore 3D trigonometry needs to be used
-	- Homogeneous matrices (x,y,z)
+	- Homogeneous matrices (x,y,z,w)
 
 A scaling matrix has the x,y,z setup we would expect and a 1 at the end.
 
@@ -494,5 +652,134 @@ Surface Detail
 End of Part 1
 
 ##
+
+Image Processing + Computer Vision
+
+	Image Processing - Manipulating a digital image to generate a second image.
+	Computer Vision - Extracting numerical or symbolic information from images
+
+	OCR - Recognise characters in an image, printed text, hand printed text, cursively written text ect.
+		- We can quite easily read printed text
+		- We can kinda read hand printed text
+		- We haven't yet found a way to read handwritten text reliably
+
+	Biometry - Identifying people from their physical characteristics. Basically the recognition using images of the physical characteristics. A key area for the future + now is the iris! Lighting causes the iris to dilate/contract thus changing the size. This can be mapped to coefficients which are unique for each individual.
+
+	Ariel Photography - We can take photo's of the earth looking down, these give us a view with coordinates and a upward direction we need to track. We can also assemble these into a larger mosaic thus computing a overview of the area.
+
+	A computer vision system performs 3 key stages:
+		- Enhancement - Performs an operation which removes any degredations/unwanted data that may cause issues extracting the features.
+		- Feature Extraction - Identifies structures in the image which are useful for the objects being analysed.
+		- Feature Recognition - Uses the features extracted to assign a label to the images/parts of the image.
+
+##
+
+Image Representation
+
+	The Human Visual System
+		
+		Works by light reflected from surfaces focused onto light sensitive cells in the eye. This converts light energy to electrical signals which are transmitted to the brain. These are the objects we see. The eye also contains structures to regulate the amount of light and focus rays of light.
+
+		The eye is proposed to be most sensitive to RGB colours, and this is how we often represent colours in a computer.
+
+	Image Capture
+
+		Many instruments exist to capture images. Mostly captured by video cameras. All instruments convert energy to a visible form. The key is that continuous data will be transformed into discrete sampled image.
+
+		Sampling is a process which maps the image captured to a value, then quantisation is used to convert this to the nearest integer which can be represented. Quantisation effectively does create some noise. We measure quality by reviewing the signal to noise ratio.
+
+		Image degredation can occur in a number of ways:
+			- Noise in electronics
+			- Geometric distortion via lense
+			- Scattering by material in optical path
+			- Overflow/Clipping happens if a signal has an excessive amplitude
+
+		Guassian Noise has zero mean and finite amplitude, it causes corruption in that any pixel will have a value that differs from the expected one.
+
+		SNR = 20log10 sig/noise
+
+	Image Resolution
+
+		Three Key Resolutions:
+		- Spatial - No. of pixels
+			- Doesn't take into account distance of objects from camera / fov
+			- Nyquist rate - Can't tell much if we have under the rate of pixels.
+
+		- Brightness - No of shades of grey / colours in image
+			- Effectively increasing the number of different shades we can have with progressively more.
+
+		- Temporal - No of frames captured/processed per second
+			- Number of images which are capturing analogue video. Realtime processing requires 12 (min)
+
+		Interactions
+
+		- Spatial and brightness resolutions need to be considered separately as they have different effects. But they can interact in affecting the overall perception of an image. Sometimes poor spatial resolution can compensated for with a good brightness resolution.
+
+	Connectivity + Distance
+
+		We need to decide if a pixel is connected to another in digital images we need this to detect lines ect. To avoid making the wrong decision we need to be flexible in the choice of connectivity model. (either a four or eight connectivity) Thus choosing which is the most appropriate in the given situation.
+
+	Colour Representation
+
+		Colours can by synthesised to create suitiable combinations of RGB primary colours. These can be combined to make almost any colour. RGB is convienient as colour images are captured in this format, but it's probably not the best. (if we change a value by a fixed amount it depends on what it was prior), it's also hard to predict what will happen to a colour if we change it by a certain amount.
+
+		HSV is an alternative - Hue (underlying colour), Saturation (depth of the samples colour), Intensity (Intensity of sample/brightness)
+
+	Camera Calibration
+
+		First stage is to relate the image co-ordiantes to a frame aligned to the camera. Second is to relate that camera frame to a arbitrary co-ordinate frame at that is fixed to a point in the physical world. There are two sets of parameters (extrinsic/intrinsic) that relate the camera to the world co-ordinate transform.
+
+		The extrinsic parameters define the translation + rotation of the camera co-ordinate frame so that it aligns with the world co-ordinate frame.
+
+		The intrinsic parameters perform correction to ensure that there are no optical aberrations.
+
+##
+
+Image Transforms and Feature Extraction
+
+	Can be defined to all operations which manipulate image data, from simple operations to more complex ones.
+
+	Often propose image transformation algorithms.
+
+	Feature Extraction - Any operation that extracts information from an image.
+
+	Image Processing May:
+		- Remove/Correct Degredations
+		- Improve the appearance of the image
+		- Identify + Quantify structures in the image
+		- Transform the image to an alternative representation.
+
+	Point Transformation - Manipulate the Grey/Colour of a pixel without considering the neighbouring values. (Brightness + Colour)
+
+		Grey Scale Manipulations: May be manipulated in many ways to modify the image's apperance. May use a constant multiplier, may add a constant value.
+
+	Thresholding - Transforms an input image into a binary image, thus either 1 or 0. Helps significantly for making decisions regarding the identity of objects or pixels.
+
+	Histogram Manipulation - Transforming based on the histogram, likely to achieve well defined and well founded results. Works based on the frequency of each value in the image. Then we expand the more common values and compress the smaller to create a more uniform histogram.
+
+	Local Transforms - Computed using a small region of interest surrounding the pixel. 
+
+	Convolution - Template that is placed over all possible image locations, at each location the product is computed and the output value is given at that location. The use of convolution with a template can be used to "repair" images, or convert them.
+
+	Smoothing - Removing sharp, sudden changes in the brightness function. May be cause by noise, or obuscuring objects. We get a new image with an improved signal to noise ratio. But this will result in some edges not being as sharp as they were previously.
+
+	Sharpening + Edge Enhancement - Converse of smoothing. Sharpening exaggerates them. Edges are important as humans detect edges much easier. Edges define structure! Effectively working by looking for adjacent similar pixels
+
+	Global Transforms:
+
+		- Hough Transform - Initially for detecting linear features in an image, it's used to locate line in an image by firstly enhancing the edges in an image then thresholding them.
+		- Geometrical Transformations
+			- Linear Transformations
+				A geometric transformation will move a pixel from x,y to x1,y1, they are related by the transformation equation.
+				We can apply the transformations as before with a single matrix product.
+
+			- Non-Linear Transformations
+				Involves higher order terms with polynomials. Allow this.
+
+			- Image resampling
+				If we are rotating an image to a position where it is unlikely to have a non-integer position we may need to resample the image
+				We can truncate, round or share the pixel.
+				- Nearest Neighbour Interpolation - Rounds to the nearest neighbour.
+				- Bilinear Interpolation - Weighted sum of the four nearest neighbours. More computations, but more pleasing output.
 
 
